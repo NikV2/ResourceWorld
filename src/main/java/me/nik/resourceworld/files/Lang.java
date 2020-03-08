@@ -1,7 +1,9 @@
 package me.nik.resourceworld.files;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 public class Lang {
@@ -13,7 +15,7 @@ public class Lang {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                //Doesnt exist
+                //Does not exist
             }
         }
         config = YamlConfiguration.loadConfiguration(file);

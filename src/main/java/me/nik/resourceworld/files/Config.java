@@ -1,7 +1,9 @@
 package me.nik.resourceworld.files;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 public class Config {
@@ -41,6 +43,5 @@ public class Config {
         Config.get().addDefault("WorldName", "Resource");
         Config.get().addDefault("GenerateStructures", true);
         Config.get().addDefault("WorldType", "NORMAL");
-        Config.get().addDefault("Generated", false);
     }
 }
