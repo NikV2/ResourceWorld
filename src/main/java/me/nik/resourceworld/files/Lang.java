@@ -39,9 +39,9 @@ public class Lang {
 
     public static void addDefaults() {
         //lang.yml
-        Lang.get().addDefault("Not Enabled", "§a§lResource World is Disabled, Enable it from the §a§l§nconfig.yml");
-        Lang.get().addDefault("Generating", "§a§lGenerating a Resource World!");
-        Lang.get().addDefault("Deleting", "§a§lCleaning up the old Resource World");
-        Lang.get().addDefault("Generated", "§a§lA New Resource World has been Generated!");
+        Lang.get().addDefault("Not Enabled", "&a&lResource World is Disabled, Enable it from the &a&l&nconfig.yml");
+        Lang.get().addDefault("Generating", "&a&lGenerating a Resource World!");
+        Lang.get().addDefault("Deleting", "&a&lCleaning up the old Resource World");
+        Lang.get().addDefault("Generated", "&a&lA New Resource World has been Generated!");
     }
 }

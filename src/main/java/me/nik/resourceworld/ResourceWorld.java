@@ -1,6 +1,6 @@
 package me.nik.resourceworld;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
+import me.nik.resourceworld.utils.ColourUtils;
 import me.nik.resourceworld.utils.WorldDeleter;
 import me.nik.resourceworld.utils.WorldGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,15 +9,13 @@ public final class ResourceWorld extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //Load Built in configs
+        //Load Built in Files
         Lang.setup();
         Lang.addDefaults();
         Lang.get().options().copyDefaults(true);
         Lang.save();
-        Config.setup();
-        Config.addDefaults();
-        Config.get().options().copyDefaults(true);
-        Config.save();
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
 
         //Startup Message
         String ServerVersion = getServer().getVersion();
@@ -30,8 +28,8 @@ public final class ResourceWorld extends JavaPlugin {
         System.out.println("§r                                   ");
 
         //Create World
-        if (!Config.get().getBoolean("Enabled")) {
-            System.out.println(Lang.get().getString("Not Enabled"));
+        if (!getConfig().getBoolean("Enabled")) {
+            System.out.println(ColourUtils.format(Lang.get().getString("Not Enabled")));
         } else {
             new WorldGenerator().createWorld();
         }
@@ -40,7 +38,7 @@ public final class ResourceWorld extends JavaPlugin {
     @Override
     public void onDisable() {
         //Delete World
-        if (Config.get().getBoolean("Enabled")) {
+        if (getConfig().getBoolean("Enabled")) {
             new WorldDeleter().deleteWorld();
         }
     }
