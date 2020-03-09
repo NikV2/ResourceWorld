@@ -31,6 +31,7 @@ public final class ResourceWorld extends JavaPlugin {
         System.out.println("§r                                   ");
 
         //Create World
+        //Start Interval
         if (!getConfig().getBoolean("Enabled")) {
             System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Not Enabled")));
             Bukkit.getServer().getPluginManager().disablePlugin(this);
