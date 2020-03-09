@@ -12,7 +12,7 @@ public class WorldGenerator {
     World world;
     Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     public void createWorld() {
-        System.out.println(ColourUtils.format(Lang.get().getString("Generating")));
+        System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Generating")));
         WorldCreator wc = new WorldCreator(plugin.getConfig().getString("World Name"));
         wc.type(WorldType.valueOf(plugin.getConfig().getString("World Type")));
         wc.generateStructures(plugin.getConfig().getBoolean("Generate Structures"));
@@ -21,6 +21,6 @@ public class WorldGenerator {
         }
         world = wc.createWorld();
         Bukkit.getServer().getWorld(plugin.getConfig().getString("World Name")).save();
-        System.out.println(ColourUtils.format(Lang.get().getString("Generated")));
+        System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Generated")));
     }
 }

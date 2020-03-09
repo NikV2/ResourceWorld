@@ -4,6 +4,7 @@ import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.utils.ColourUtils;
 import me.nik.resourceworld.utils.WorldDeleter;
 import me.nik.resourceworld.utils.WorldGenerator;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -31,11 +32,13 @@ public final class ResourceWorld extends JavaPlugin {
 
         //Create World
         if (!getConfig().getBoolean("Enabled")) {
-            System.out.println(ColourUtils.format(Lang.get().getString("Not Enabled")));
+            System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Not Enabled")));
+            Bukkit.getServer().getPluginManager().disablePlugin(this);
         } else if (!getConfig().getBoolean("Automated Resets")) {
-            System.out.println(ColourUtils.format(Lang.get().getString("Automated Resets Disabled")));
+            System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Automated Resets Disabled")));
             new WorldGenerator().createWorld();
          }else{
+            System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Automated Resets Enabled")));
             int interval = getConfig().getInt("Interval") * 72000;
             BukkitTask ResetWorld = new ResetWorld(this).runTaskTimer(this, interval, interval);
             new WorldGenerator().createWorld();

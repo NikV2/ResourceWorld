@@ -39,13 +39,14 @@ public class Lang {
 
     public static void addDefaults() {
         //lang.yml
-        Lang.get().addDefault("Not Enabled", "&a&lResource World is Disabled, Enable it from the &a&l&nconfig.yml");
-        Lang.get().addDefault("Generating", "&a&lGenerating a Resource World!");
-        Lang.get().addDefault("Deleting", "&a&lCleaning up the old Resource World");
-        Lang.get().addDefault("Generated", "&a&lA New Resource World has been Generated!");
-        Lang.get().addDefault("Automated Resets Disabled", "&a&lAutomated Resets are Disabled, Skipping");
-        Lang.get().addDefault("Automated Resets Enabled", "&a&lAutomated Resets are Enabled, Starting tasks");
-        Lang.get().addDefault("Resetting The World", "&a&lCleaning up the Resource World, This may cause Lag!");
-        Lang.get().addDefault("World has been reset", "&a&lThe Resource World has been Reset!");
+        Lang.get().addDefault("Prefix", "&a&l[&2Resource World&a&l]&f&l: ");
+        Lang.get().addDefault("Not Enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml");
+        Lang.get().addDefault("Generating", "&f&lGenerating a Resource World!");
+        Lang.get().addDefault("Deleting", "&f&lCleaning up the old Resource World");
+        Lang.get().addDefault("Generated", "&f&lA New Resource World has been Generated!");
+        Lang.get().addDefault("Automated Resets Disabled", "&f&lAutomated Resets are Disabled, Skipping");
+        Lang.get().addDefault("Automated Resets Enabled", "&f&lAutomated Resets are Enabled, Starting tasks");
+        Lang.get().addDefault("Resetting The World", "&f&lCleaning up the Resource World, This may cause Lag!");
+        Lang.get().addDefault("World Has Been Reset", "&f&lThe Resource World has been Reset!");
     }
 }
