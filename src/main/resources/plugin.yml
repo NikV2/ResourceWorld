@@ -2,5 +2,6 @@ name: ResourceWorld
 version: ${project.version}
 main: me.nik.resourceworld.ResourceWorld
 api-version: 1.13
+load: POSTWORLD
 authors: [Nik]
 description: Unlimited resources!

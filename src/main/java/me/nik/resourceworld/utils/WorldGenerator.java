@@ -11,19 +11,15 @@ public class WorldGenerator {
     World world;
 
     public void createWorld() {
-        try {
-            System.out.println(Lang.get().getString("Generating"));
-            String wname = Config.get().getString("WorldName");
-            String wtype = Config.get().getString("WorldType");
-            Boolean gstr = Config.get().getBoolean("GenerateStructures");
-            WorldCreator wc = new WorldCreator(wname);
-            wc.type(WorldType.valueOf(wtype));
-            wc.generateStructures(gstr);
-            world = wc.createWorld();
-            Bukkit.getServer().getWorld(wname).save();
-            System.out.println(Lang.get().getString("Generated"));
-        }catch (NullPointerException e){
-            //Nothing
+        System.out.println(Lang.get().getString("Generating"));
+        WorldCreator wc = new WorldCreator(Config.get().getString("World Name"));
+        wc.type(WorldType.valueOf(Config.get().getString("World Type")));
+        wc.generateStructures(Config.get().getBoolean("Generate Structures"));
+        if (Config.get().getBoolean("Use Custom Seed")) {
+            wc.seed(Config.get().getInt("Seed"));
         }
+        world = wc.createWorld();
+        Bukkit.getServer().getWorld(Config.get().getString("World Name")).save();
+        System.out.println(Lang.get().getString("Generated"));
     }
 }

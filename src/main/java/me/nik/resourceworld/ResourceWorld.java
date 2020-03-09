@@ -1,8 +1,8 @@
 package me.nik.resourceworld;
-
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.utils.WorldChecker;
+import me.nik.resourceworld.utils.WorldDeleter;
+import me.nik.resourceworld.utils.WorldGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ResourceWorld extends JavaPlugin {
@@ -22,16 +22,26 @@ public final class ResourceWorld extends JavaPlugin {
         //Startup Message
         String ServerVersion = getServer().getVersion();
         System.out.println("§r                                   ");
-        System.out.println("§r            §a§lResource World §2§o§nv1.0.0");
+        System.out.println("§r            §a§lResource World §o§nv1.0.0");
         System.out.println("§r                                   ");
-        System.out.println("§r     §a§lRunning on §f§n§l" + ServerVersion);
+        System.out.println("§r                   §f§lAuthor: §nNik");
+        System.out.println("§r                                   ");
+        System.out.println("§r     §a§lRunning on §b§n§l" + ServerVersion);
         System.out.println("§r                                   ");
 
-        //Check, Unload, Delete, Create
-        if (!Config.get().getBoolean("Enabled")){
-            System.out.println(Lang.get().getString("NotEnabled"));
-        }else{
-            new WorldChecker().wCheck();
+        //Create World
+        if (!Config.get().getBoolean("Enabled")) {
+            System.out.println(Lang.get().getString("Not Enabled"));
+        } else {
+            new WorldGenerator().createWorld();
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        //Delete World
+        if (Config.get().getBoolean("Enabled")) {
+            new WorldDeleter().deleteWorld();
         }
     }
 }

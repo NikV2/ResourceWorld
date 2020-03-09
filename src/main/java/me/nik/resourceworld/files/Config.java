@@ -15,7 +15,7 @@ public class Config {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                //Doesnt exist
+                //Does not exist
             }
         }
         config = YamlConfiguration.loadConfiguration(file);
@@ -40,8 +40,10 @@ public class Config {
     public static void addDefaults() {
         //config.yml
         Config.get().addDefault("Enabled", false);
-        Config.get().addDefault("WorldName", "Resource");
-        Config.get().addDefault("GenerateStructures", true);
-        Config.get().addDefault("WorldType", "NORMAL");
+        Config.get().addDefault("World Name", "Resource");
+        Config.get().addDefault("Generate Structures", true);
+        Config.get().addDefault("World Type", "NORMAL");
+        Config.get().addDefault("Use Custom Seed", false);
+        Config.get().addDefault("Seed", -686298914);
     }
 }
