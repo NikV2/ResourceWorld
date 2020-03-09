@@ -43,5 +43,9 @@ public class Lang {
         Lang.get().addDefault("Generating", "&a&lGenerating a Resource World!");
         Lang.get().addDefault("Deleting", "&a&lCleaning up the old Resource World");
         Lang.get().addDefault("Generated", "&a&lA New Resource World has been Generated!");
+        Lang.get().addDefault("Automated Resets Disabled", "&a&lAutomated Resets are Disabled, Skipping");
+        Lang.get().addDefault("Automated Resets Enabled", "&a&lAutomated Resets are Enabled, Starting tasks");
+        Lang.get().addDefault("Resetting The World", "&a&lCleaning up the Resource World, This may cause Lag!");
+        Lang.get().addDefault("World has been reset", "&a&lThe Resource World has been Reset!");
     }
 }

@@ -4,3 +4,5 @@ Generate Structures: true
 World Type: NORMAL
 Use Custom Seed: false
 Seed: -686298914
+Automated Resets: false
+Interval: 1

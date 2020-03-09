@@ -1,9 +1,11 @@
 package me.nik.resourceworld;
 import me.nik.resourceworld.files.Lang;
+import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.utils.ColourUtils;
 import me.nik.resourceworld.utils.WorldDeleter;
 import me.nik.resourceworld.utils.WorldGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
 
@@ -30,11 +32,15 @@ public final class ResourceWorld extends JavaPlugin {
         //Create World
         if (!getConfig().getBoolean("Enabled")) {
             System.out.println(ColourUtils.format(Lang.get().getString("Not Enabled")));
-        } else {
+        } else if (!getConfig().getBoolean("Automated Resets")) {
+            System.out.println(ColourUtils.format(Lang.get().getString("Automated Resets Disabled")));
+            new WorldGenerator().createWorld();
+         }else{
+            int interval = getConfig().getInt("Interval") * 72000;
+            BukkitTask ResetWorld = new ResetWorld(this).runTaskTimer(this, interval, interval);
             new WorldGenerator().createWorld();
         }
     }
-
     @Override
     public void onDisable() {
         //Delete World
