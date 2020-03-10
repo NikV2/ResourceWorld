@@ -6,3 +6,7 @@ Use Custom Seed: false
 Seed: -686298914
 Automated Resets: false
 Interval: 6
+World Border: true
+Size: 2500
+Max Teleport Range: 1250
+Teleport Cooldown: 60

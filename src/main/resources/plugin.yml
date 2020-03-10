@@ -5,3 +5,10 @@ api-version: 1.13
 load: POSTWORLD
 authors: [Nik]
 description: Unlimited resources!
+commands:
+  resource:
+    description: Unlimited resources!
+    usage: /<command> <subcommand>
+    aliases:
+      - rw
+      - resourceworld

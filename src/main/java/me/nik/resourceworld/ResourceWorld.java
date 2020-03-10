@@ -1,4 +1,5 @@
 package me.nik.resourceworld;
+import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.utils.ColourUtils;
@@ -29,6 +30,9 @@ public final class ResourceWorld extends JavaPlugin {
         System.out.println("§r                                   ");
         System.out.println("§r     §a§lRunning on §b§n§l" + ServerVersion);
         System.out.println("§r                                   ");
+
+        //Load Commands
+        getCommand("Resource").setExecutor(new CommandManager());
 
         //Create World
         //Start Interval

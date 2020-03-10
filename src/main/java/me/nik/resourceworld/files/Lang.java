@@ -46,7 +46,13 @@ public class Lang {
         Lang.get().addDefault("Generated", "&f&lA New Resource World has been Generated!");
         Lang.get().addDefault("Automated Resets Disabled", "&f&lAutomated Resets are Disabled, Skipping");
         Lang.get().addDefault("Automated Resets Enabled", "&f&lAutomated Resets are Enabled, Starting tasks");
-        Lang.get().addDefault("Resetting The World", "&f&lCleaning up the Resource World, This may cause Lag!");
-        Lang.get().addDefault("World Has Been Reset", "&f&lThe Resource World has been Reset!");
+        Lang.get().addDefault("Resetting The World", "&fCleaning up the Resource World, This may cause Lag!");
+        Lang.get().addDefault("World Has Been Reset", "&fThe Resource World has been Reset!");
+        Lang.get().addDefault("Unsafe Location", "&fDid not find a safe location to teleport, Please try again!");
+        Lang.get().addDefault("Console Message", "&f&lYou cannot execute Resource World commands through the console:(");
+        Lang.get().addDefault("No Perm", "&cYou do not have permission to execute this command!");
+        Lang.get().addDefault("Cooldown Message", "&cYou must wait in order to Randomly teleport to the Resource World again!");
+        Lang.get().addDefault("Reloaded", "&fYou have successfully reloaded the plugin!");
+        Lang.get().addDefault("Reloading", "&fReloading... This may cause lag!");
     }
 }

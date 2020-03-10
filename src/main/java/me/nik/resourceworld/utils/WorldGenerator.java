@@ -2,10 +2,7 @@ package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Lang;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
+import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 
 public class WorldGenerator {
@@ -19,8 +16,12 @@ public class WorldGenerator {
         if (plugin.getConfig().getBoolean("Use Custom Seed")) {
             wc.seed(plugin.getConfig().getInt("Seed"));
         }
-        world = wc.createWorld();
-        Bukkit.getServer().getWorld(plugin.getConfig().getString("World Name")).save();
+            world = wc.createWorld();
+        if (plugin.getConfig().getBoolean("World Border")) {
+            WorldBorder wb = Bukkit.getWorld(plugin.getConfig().getString("World Name")).getWorldBorder();
+            wb.setCenter(0, 0);
+            wb.setSize(plugin.getConfig().getInt("Size"));
+        }
         System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Generated")));
     }
 }
