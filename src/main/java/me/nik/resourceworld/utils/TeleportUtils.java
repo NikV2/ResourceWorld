@@ -17,6 +17,7 @@ public class TeleportUtils {
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.FIRE);
         unsafeBlocks.add(Material.WATER);
+        unsafeBlocks.add(Material.CACTUS);
     }
     public static Location generateLocation(World world) {
         Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
@@ -29,7 +30,7 @@ public class TeleportUtils {
         Location randomLocation = new Location(Bukkit.getWorld(plugin.getConfig().getString("World Name")), x, y, z);
 
         y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
-        randomLocation.setY(y + 3);
+        randomLocation.setY(y + 2);
 
         while (!isLocationSafe(randomLocation)) {
             randomLocation = generateLocation(world);

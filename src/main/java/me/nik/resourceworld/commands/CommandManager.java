@@ -32,11 +32,12 @@ public class CommandManager implements CommandExecutor {
                     }
                 }
             }else if(args.length == 0){
-                p.sendMessage(ChatColor.GREEN + "---------------------------------");
+                p.sendMessage(ChatColor.DARK_GREEN + "                        >> Resource World <<                  ");
+                p.sendMessage(ChatColor.GREEN + "----------------------------------------------------");
                 for (int i = 0; i < getSubcommands().size(); i++){
                     p.sendMessage(getSubcommands().get(i).getSyntax() + " - " + getSubcommands().get(i).getDescription());
                 }
-                p.sendMessage(ChatColor.GREEN + "---------------------------------");
+                p.sendMessage(ChatColor.GREEN + "----------------------------------------------------");
             }
         }
         return true;

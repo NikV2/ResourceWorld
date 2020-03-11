@@ -51,7 +51,7 @@ public class Lang {
         Lang.get().addDefault("Unsafe Location", "&fDid not find a safe location to teleport, Please try again!");
         Lang.get().addDefault("Console Message", "&f&lYou cannot execute Resource World commands through the console:(");
         Lang.get().addDefault("No Perm", "&cYou do not have permission to execute this command!");
-        Lang.get().addDefault("Cooldown Message", "&cYou must wait in order to Randomly teleport to the Resource World again!");
+        Lang.get().addDefault("Cooldown Message", "&cYou must before Randomly teleporting to the Resource World again!");
         Lang.get().addDefault("Reloaded", "&fYou have successfully reloaded the plugin!");
         Lang.get().addDefault("Reloading", "&fReloading... This may cause lag!");
     }

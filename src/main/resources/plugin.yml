@@ -1,5 +1,5 @@
 name: ResourceWorld
-version: ${project.version}
+version: 1.0.0
 main: me.nik.resourceworld.ResourceWorld
 api-version: 1.13
 load: POSTWORLD
