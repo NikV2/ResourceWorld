@@ -30,12 +30,14 @@ public class Reload extends SubCommand {
             player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("No Perm")));
         } else {
             if (args.length > 0) {
+                plugin.saveConfig();
+                Lang.save();
                 player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Reloading")));
                 plugin.getServer().getPluginManager().disablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
                 plugin.getServer().getPluginManager().enablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
                 player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Reloaded")));
                 System.gc();
+                }
             }
         }
     }
-}

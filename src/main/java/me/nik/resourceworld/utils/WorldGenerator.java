@@ -22,6 +22,7 @@ public class WorldGenerator {
             wb.setCenter(0, 0);
             wb.setSize(plugin.getConfig().getInt("Size"));
         }
+        System.gc();
         System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Generated")));
     }
 }

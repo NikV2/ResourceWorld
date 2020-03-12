@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class Teleport extends SubCommand {
     ArrayList<String> cooldown = new ArrayList<>();
+
     @Override
     public String getName() {
         return "TP";
