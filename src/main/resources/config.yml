@@ -12,6 +12,7 @@
 Enabled: false
 
 # World Settings.
+# World Name must NOT be: world , world_nether , world_the_end
 World Name: 'Resource'
 Generate Structures: true
 
@@ -44,3 +45,10 @@ Max Teleport Range: 1500
 # Is going to get Teleported to a Safe Location, I would suggest putting a Medium - High Cooldown interval.
 # (Interval is in Seconds, So by default: 1 Minute)
 Teleport Cooldown: 60
+
+# Commands listed below will be Disabled if they're executed inside the Resource World.
+Disabled Commands:
+  - /sethome
+  - /claim
+  - /setwarp
+  - /tpahere

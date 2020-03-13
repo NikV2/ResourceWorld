@@ -1,6 +1,7 @@
 package me.nik.resourceworld;
 
 import me.nik.resourceworld.commands.CommandManager;
+import me.nik.resourceworld.events.DisabledCmds;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.utils.ColourUtils;
@@ -11,7 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-public final class ResourceWorld extends JavaPlugin {
+public final class ResourceWorld extends JavaPlugin{
 
     @Override
     public void onEnable() {
@@ -25,16 +26,19 @@ public final class ResourceWorld extends JavaPlugin {
 
         //Startup Message
         String ServerVersion = getServer().getVersion();
-        System.out.println("                                   ");
-        System.out.println("            " + ChatColor.GREEN + "Resource World " + ChatColor.UNDERLINE + "v1.0.0");
-        System.out.println("                                   ");
+        System.out.println(" ");
+        System.out.println("            " + ChatColor.GREEN + "Resource World " + ChatColor.UNDERLINE + "v1.1.0");
+        System.out.println(" ");
         System.out.println("                   " + ChatColor.WHITE + "Author: " + ChatColor.UNDERLINE + "Nik");
-        System.out.println("                                   ");
+        System.out.println(" ");
         System.out.println("     " + ChatColor.GREEN + "Running on " + ChatColor.WHITE + ServerVersion);
-        System.out.println("                                   ");
+        System.out.println(" ");
 
         //Load Commands
         getCommand("Resource").setExecutor(new CommandManager());
+
+        //Implement Events
+        getServer().getPluginManager().registerEvents(new DisabledCmds(), this);
 
         //Create World
         //Start Interval
@@ -53,7 +57,6 @@ public final class ResourceWorld extends JavaPlugin {
             new WorldGenerator().createWorld();
         }
     }
-
     @Override
     public void onDisable() {
         //Delete World

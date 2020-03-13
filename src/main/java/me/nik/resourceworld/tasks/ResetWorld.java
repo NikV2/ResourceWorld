@@ -9,11 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ResetWorld extends BukkitRunnable {
     ResourceWorld plugin;
-
     public ResetWorld(ResourceWorld plugin) {
         this.plugin = plugin;
     }
-
     @Override
     public void run() {
         new ResetTeleport().resetTP();
