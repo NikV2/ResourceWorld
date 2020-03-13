@@ -1,4 +1,5 @@
 package me.nik.resourceworld.utils;
+
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Lang;
 import org.apache.commons.io.FileUtils;

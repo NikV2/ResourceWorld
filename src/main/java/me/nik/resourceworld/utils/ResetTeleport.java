@@ -14,6 +14,5 @@ public class ResetTeleport {
                 p.teleport(loc);
             }
         }
-
     }
 }

@@ -1,5 +1,4 @@
 package me.nik.resourceworld.tasks;
-
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.utils.ColourUtils;

@@ -1,4 +1,5 @@
 package me.nik.resourceworld;
+
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.tasks.ResetWorld;
@@ -44,7 +45,7 @@ public final class ResourceWorld extends JavaPlugin {
             System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Automated Resets Disabled")));
             new ResetTeleport().resetTP();
             new WorldGenerator().createWorld();
-         }else{
+        } else {
             System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Automated Resets Enabled")));
             int interval = getConfig().getInt("Interval") * 72000;
             BukkitTask ResetWorld = new ResetWorld(this).runTaskTimer(this, interval, interval);
@@ -52,6 +53,7 @@ public final class ResourceWorld extends JavaPlugin {
             new WorldGenerator().createWorld();
         }
     }
+
     @Override
     public void onDisable() {
         //Delete World

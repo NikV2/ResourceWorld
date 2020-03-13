@@ -1,5 +1,4 @@
 package me.nik.resourceworld.commands;
-
 import org.bukkit.entity.Player;
 
 public abstract class SubCommand {

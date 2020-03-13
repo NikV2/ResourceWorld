@@ -1,5 +1,4 @@
 package me.nik.resourceworld.commands.subcommands;
-
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Lang;
@@ -30,8 +29,6 @@ public class Reload extends SubCommand {
             player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("No Perm")));
         } else {
             if (args.length > 0) {
-                plugin.saveConfig();
-                Lang.save();
                 player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Reloading")));
                 plugin.getServer().getPluginManager().disablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
                 plugin.getServer().getPluginManager().enablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));

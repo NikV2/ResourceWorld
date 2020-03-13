@@ -1,5 +1,4 @@
 package me.nik.resourceworld.commands;
-
 import me.nik.resourceworld.commands.subcommands.Reload;
 import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.files.Lang;
