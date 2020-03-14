@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -45,14 +46,28 @@ public class Teleport extends SubCommand {
                 if(secondsleft >0){
                     player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Cooldown Message")) + secondsleft + " Seconds");
                 }else{
-                    World world = Bukkit.getWorld(plugin.getConfig().getString("World Name"));
-                    player.teleport(new TeleportUtils().generateLocation(world));
+                    player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("TeleportDelay")) + plugin.getConfig().getInt("Teleport Delay") + " Seconds");
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
+                    BukkitScheduler scheduler = plugin.getServer().getScheduler();
+                    scheduler.runTaskLater(ResourceWorld.getPlugin(ResourceWorld.class), new Runnable() {
+                        @Override
+                        public void run() {
+                            World world = Bukkit.getWorld(plugin.getConfig().getString("World Name"));
+                            player.teleport(new TeleportUtils().generateLocation(world));
+                        }
+                    }, plugin.getConfig().getInt("Teleport Delay") * 20);
                 }
             }else{
-                World world = Bukkit.getWorld(plugin.getConfig().getString("World Name"));
-                player.teleport(new TeleportUtils().generateLocation(world));
+                player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("TeleportDelay")) + plugin.getConfig().getInt("Teleport Delay") + " Seconds");
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis());
+                BukkitScheduler scheduler = plugin.getServer().getScheduler();
+                scheduler.runTaskLater(ResourceWorld.getPlugin(ResourceWorld.class), new Runnable() {
+                    @Override
+                    public void run() {
+                        World world = Bukkit.getWorld(plugin.getConfig().getString("World Name"));
+                        player.teleport(new TeleportUtils().generateLocation(world));
+                    }
+                }, plugin.getConfig().getInt("Teleport Delay") * 20);
             }
         }
     }

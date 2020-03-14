@@ -55,5 +55,6 @@ public class Lang {
         Lang.get().addDefault("Reloaded", "&fYou have successfully reloaded the plugin!");
         Lang.get().addDefault("Reloading", "&fReloading... This may cause lag!");
         Lang.get().addDefault("DisabledCommand", "&cSorry, You can't use that Command in this World!");
+        Lang.get().addDefault("TeleportDelay", "&aTeleporting to the Resource World in ");
     }
 }
