@@ -1,4 +1,4 @@
-package me.nik.resourceworld.events;
+package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Lang;
@@ -15,12 +15,12 @@ public class DisabledCmds implements Listener {
     @EventHandler
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
-        if (e.getPlayer().getWorld().getName().equals(plugin.getConfig().getString("World Name"))) {
-            for (String cmd : plugin.getConfig().getStringList("Disabled Commands")) {
+        if (e.getPlayer().getWorld().getName().equals(plugin.getConfig().getString("world_name"))) {
+            for (String cmd : plugin.getConfig().getStringList("disabled_commands")) {
                 if (p.hasPermission("rw.admin")) return;
                 if (cmd.contains(e.getMessage())) {
                     e.setCancelled(true);
-                    p.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("DisabledCommand")));
+                    p.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("disabled_command")));
                 }
             }
         }

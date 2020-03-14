@@ -15,10 +15,10 @@ public class ResetWorld extends BukkitRunnable {
     @Override
     public void run() {
         new ResetTeleport().resetTP();
-        plugin.getServer().broadcastMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Resetting The World")));
+        plugin.getServer().broadcastMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("resetting_the_world")));
         new WorldDeleter().deleteWorld();
         new WorldGenerator().createWorld();
         System.gc();
-        plugin.getServer().broadcastMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("World Has Been Reset")));
+        plugin.getServer().broadcastMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("world_has_been_reset")));
     }
 }

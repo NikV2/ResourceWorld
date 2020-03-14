@@ -39,22 +39,22 @@ public class Lang {
 
     public static void addDefaults() {
         //lang.yml
-        Lang.get().addDefault("Prefix", "&a&l[&2Resource World&a&l]&f&l: ");
-        Lang.get().addDefault("Not Enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml");
-        Lang.get().addDefault("Generating", "&f&lGenerating a Resource World!");
-        Lang.get().addDefault("Deleting", "&f&lCleaning up the old Resource World");
-        Lang.get().addDefault("Generated", "&f&lA New Resource World has been Generated!");
-        Lang.get().addDefault("Automated Resets Disabled", "&f&lAutomated Resets are Disabled, Skipping");
-        Lang.get().addDefault("Automated Resets Enabled", "&f&lAutomated Resets are Enabled, Starting tasks");
-        Lang.get().addDefault("Resetting The World", "&fCleaning up the Resource World, This may cause Lag!");
-        Lang.get().addDefault("World Has Been Reset", "&fThe Resource World has been Reset!");
-        Lang.get().addDefault("Unsafe Location", "&fDid not find a safe location to teleport, Please try again!");
-        Lang.get().addDefault("Console Message", "&f&lYou cannot execute Resource World commands through the console:(");
-        Lang.get().addDefault("No Perm", "&cYou do not have permission to execute this command!");
-        Lang.get().addDefault("Cooldown Message", "&cYou can teleport to the Resource World again in ");
-        Lang.get().addDefault("Reloaded", "&fYou have successfully reloaded the plugin!");
-        Lang.get().addDefault("Reloading", "&fReloading... This may cause lag!");
-        Lang.get().addDefault("DisabledCommand", "&cSorry, You can't use that Command in this World!");
-        Lang.get().addDefault("TeleportDelay", "&aTeleporting to the Resource World in ");
+        Lang.get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
+        Lang.get().addDefault("not_enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml");
+        Lang.get().addDefault("generating", "&f&lGenerating a Resource World!");
+        Lang.get().addDefault("deleting", "&f&lCleaning up the old Resource World");
+        Lang.get().addDefault("generated", "&f&lA New Resource World has been Generated!");
+        Lang.get().addDefault("automated_resets_disabled", "&f&lAutomated Resets are Disabled, Skipping");
+        Lang.get().addDefault("automated_resets_enabled", "&f&lAutomated Resets are Enabled, Starting tasks");
+        Lang.get().addDefault("resetting_the_world", "&fCleaning up the Resource World, This may cause Lag!");
+        Lang.get().addDefault("world_has_been_reset", "&fThe Resource World has been Reset!");
+        Lang.get().addDefault("unsafe_location", "&fDid not find a safe location to teleport, Please try again!");
+        Lang.get().addDefault("console_message", "&f&lYou cannot execute Resource World commands through the console:(");
+        Lang.get().addDefault("no_perm", "&cYou do not have permission to execute this command!");
+        Lang.get().addDefault("cooldown_message", "&cYou can teleport to the Resource World again in ");
+        Lang.get().addDefault("reloaded", "&fYou have successfully reloaded the plugin!");
+        Lang.get().addDefault("reloading", "&fReloading... This may cause lag!");
+        Lang.get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
+        Lang.get().addDefault("teleport_delay", "&aTeleporting to the Resource World in ");
     }
 }

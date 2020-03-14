@@ -9,46 +9,46 @@
 # +----------------------------------------------------------------------------------------------+ #
 
 # Would you like to enable the plugin?
-Enabled: false
+enabled: false
 
 # World Settings.
 # World Name must NOT be: world , world_nether , world_the_end
-World Name: 'Resource'
-Generate Structures: true
+world_name: 'Resource'
+generate_structures: true
 
 # Available World Types: NORMAL , FLAT , LARGE_BIOMES , AMPLIFIED , BUFFET.
-World Type: 'NORMAL'
+world_type: 'NORMAL'
 
 # Would you like the Resource World to use a Seed of your choice?
-Use Custom Seed: false
-Seed: -686298914
+use_custom_seed: false
+seed: -686298914
 
 # Would you like the Resource World to Automatically Reset?
-Automated Resets: false
+automated_resets: false
 
 # The Interval between Resource World Resets. (In Hours)
-Interval: 6
+interval: 6
 
 # Would you like the Resource World to have a Custom World Border?
-World Border: true
-Size: 3500
+world_border: true
+size: 3500
 
 # When a Resource World Reset happens, The plugin will Automatically Teleport all players
 # To the Spawn point of the World below. (Use the World where your Server's Spawn is)
-Fallback World: 'World'
+fallback_world: 'World'
 
 # Teleport Settings
 # The maximum X, Z The player will be teleported, DO NOT Set this value higher than your World Border.
-Max Teleport Range: 1500
+max_teleport_range: 1500
 
 # When a player uses the Teleport command, The plugin automatically checks and ensures that the player
 # Is going to get Teleported to a Safe Location, I would suggest putting a Medium - High Cooldown interval.
 # (Interval is in Seconds, So by default: 1 Minute)
-Teleport Cooldown: 60
-Teleport Delay: 3
+teleport_cooldown: 60
+teleport_delay: 3
 
 # Commands listed below will be Disabled if they're executed inside the Resource World.
-Disabled Commands:
+disabled_commands:
   - /sethome
   - /claim
   - /setwarp

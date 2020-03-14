@@ -8,20 +8,20 @@ public class WorldGenerator {
     World world;
     Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     public void createWorld() {
-        System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Generating")));
-        WorldCreator wc = new WorldCreator(plugin.getConfig().getString("World Name"));
-        wc.type(WorldType.valueOf(plugin.getConfig().getString("World Type")));
-        wc.generateStructures(plugin.getConfig().getBoolean("Generate Structures"));
-        if (plugin.getConfig().getBoolean("Use Custom Seed")) {
-            wc.seed(plugin.getConfig().getInt("Seed"));
+        System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("generating")));
+        WorldCreator wc = new WorldCreator(plugin.getConfig().getString("world_name"));
+        wc.type(WorldType.valueOf(plugin.getConfig().getString("world_type")));
+        wc.generateStructures(plugin.getConfig().getBoolean("generate_structures"));
+        if (plugin.getConfig().getBoolean("use_custom_seed")) {
+            wc.seed(plugin.getConfig().getInt("seed"));
         }
-            world = wc.createWorld();
-        if (plugin.getConfig().getBoolean("World Border")) {
-            WorldBorder wb = Bukkit.getWorld(plugin.getConfig().getString("World Name")).getWorldBorder();
+        world = wc.createWorld();
+        if (plugin.getConfig().getBoolean("world_border")) {
+            WorldBorder wb = Bukkit.getWorld(plugin.getConfig().getString("world_name")).getWorldBorder();
             wb.setCenter(0, 0);
-            wb.setSize(plugin.getConfig().getInt("Size"));
+            wb.setSize(plugin.getConfig().getInt("size"));
         }
         System.gc();
-        System.out.println(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Generated")));
+        System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("generated")));
     }
 }

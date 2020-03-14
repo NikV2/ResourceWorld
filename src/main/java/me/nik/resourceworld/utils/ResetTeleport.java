@@ -9,8 +9,8 @@ public class ResetTeleport {
     Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     public void resetTP(){
         for(Player p : Bukkit.getOnlinePlayers()){
-            if(p.getWorld().getName().equals(plugin.getConfig().getString("World Name"))){
-                Location loc = Bukkit.getWorld(plugin.getConfig().getString("Fallback World")).getSpawnLocation();
+            if (p.getWorld().getName().equals(plugin.getConfig().getString("world_name"))) {
+                Location loc = Bukkit.getWorld(plugin.getConfig().getString("fallback_world")).getSpawnLocation();
                 p.teleport(loc);
             }
         }

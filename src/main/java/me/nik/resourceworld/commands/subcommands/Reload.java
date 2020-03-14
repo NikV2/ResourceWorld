@@ -26,13 +26,13 @@ public class Reload extends SubCommand {
     public void perform(Player player, String[] args) {
         Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         if (!player.hasPermission("rw.admin")) {
-            player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("No Perm")));
+            player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
         } else {
             if (args.length > 0) {
-                player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Reloading")));
+                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("reloading")));
                 plugin.getServer().getPluginManager().disablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
                 plugin.getServer().getPluginManager().enablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
-                player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Reloaded")));
+                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("reloaded")));
                 System.gc();
                 }
             }

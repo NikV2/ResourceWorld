@@ -17,9 +17,9 @@ import java.util.UUID;
 public class Teleport extends SubCommand {
     Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
-    private int cdtime = plugin.getConfig().getInt("Teleport Cooldown");
+    private int cdtime = plugin.getConfig().getInt("teleport_cooldown");
     private HashMap<UUID, Long> delay = new HashMap<UUID, Long>();
-    private int delaytime = plugin.getConfig().getInt("Teleport Delay");
+    private int delaytime = plugin.getConfig().getInt("teleport_delay");
 
     @Override
     public String getName() {
@@ -40,34 +40,34 @@ public class Teleport extends SubCommand {
     public void perform(Player player, String[] args) {
         if (args.length > 0){
             if (!player.hasPermission("rw.tp")){
-                player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("No Perm")));
+                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
             }else if(cooldown.containsKey(player.getUniqueId())){
                 long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
                 if(secondsleft >0){
-                    player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("Cooldown Message")) + secondsleft + " Seconds");
+                    player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("cooldown_message")) + secondsleft + " Seconds");
                 }else{
-                    player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("TeleportDelay")) + plugin.getConfig().getInt("Teleport Delay") + " Seconds");
+                    player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + plugin.getConfig().getInt("teleport_delay") + " Seconds");
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     BukkitScheduler scheduler = plugin.getServer().getScheduler();
                     scheduler.runTaskLater(ResourceWorld.getPlugin(ResourceWorld.class), new Runnable() {
                         @Override
                         public void run() {
-                            World world = Bukkit.getWorld(plugin.getConfig().getString("World Name"));
+                            World world = Bukkit.getWorld(plugin.getConfig().getString("world_name"));
                             player.teleport(new TeleportUtils().generateLocation(world));
                         }
-                    }, plugin.getConfig().getInt("Teleport Delay") * 20);
+                    }, plugin.getConfig().getInt("teleport_delay") * 20);
                 }
             }else{
-                player.sendMessage(ColourUtils.format(Lang.get().getString("Prefix")) + ColourUtils.format(Lang.get().getString("TeleportDelay")) + plugin.getConfig().getInt("Teleport Delay") + " Seconds");
+                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + plugin.getConfig().getInt("teleport_delay") + " Seconds");
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                 BukkitScheduler scheduler = plugin.getServer().getScheduler();
                 scheduler.runTaskLater(ResourceWorld.getPlugin(ResourceWorld.class), new Runnable() {
                     @Override
                     public void run() {
-                        World world = Bukkit.getWorld(plugin.getConfig().getString("World Name"));
+                        World world = Bukkit.getWorld(plugin.getConfig().getString("world_name"));
                         player.teleport(new TeleportUtils().generateLocation(world));
                     }
-                }, plugin.getConfig().getInt("Teleport Delay") * 20);
+                }, plugin.getConfig().getInt("teleport_delay") * 20);
             }
         }
     }

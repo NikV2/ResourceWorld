@@ -23,11 +23,11 @@ public class TeleportUtils {
         Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         Random random = new Random();
 
-        int x = random.nextInt(plugin.getConfig().getInt("Max Teleport Range"));
+        int x = random.nextInt(plugin.getConfig().getInt("max_teleport_range"));
         int y = 150;
-        int z = random.nextInt(plugin.getConfig().getInt("Max Teleport Range"));
+        int z = random.nextInt(plugin.getConfig().getInt("max_teleport_range"));
 
-        Location randomLocation = new Location(Bukkit.getWorld(plugin.getConfig().getString("World Name")), x, y, z);
+        Location randomLocation = new Location(Bukkit.getWorld(plugin.getConfig().getString("world_name")), x, y, z);
 
         y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
         randomLocation.setY(y + 2);
