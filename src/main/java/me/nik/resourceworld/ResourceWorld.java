@@ -27,7 +27,7 @@ public final class ResourceWorld extends JavaPlugin{
         //Startup Message
         String ServerVersion = getServer().getVersion();
         System.out.println(" ");
-        System.out.println("            " + ChatColor.GREEN + "Resource World " + ChatColor.UNDERLINE + "v1.1.2");
+        System.out.println("            " + ChatColor.GREEN + "Resource World " + ChatColor.UNDERLINE + "v1.1.3");
         System.out.println(" ");
         System.out.println("                   " + ChatColor.WHITE + "Author: " + ChatColor.UNDERLINE + "Nik");
         System.out.println(" ");

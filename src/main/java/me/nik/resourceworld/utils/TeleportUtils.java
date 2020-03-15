@@ -15,9 +15,7 @@ public class TeleportUtils {
     public static HashSet<Material> unsafeBlocks = new HashSet<>();
     static{
         unsafeBlocks.add(Material.LAVA);
-        unsafeBlocks.add(Material.FIRE);
         unsafeBlocks.add(Material.WATER);
-        unsafeBlocks.add(Material.CACTUS);
     }
     public static Location generateLocation(World world) {
         Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
@@ -30,7 +28,7 @@ public class TeleportUtils {
         Location randomLocation = new Location(Bukkit.getWorld(plugin.getConfig().getString("world_name")), x, y, z);
 
         y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
-        randomLocation.setY(y + 2);
+        randomLocation.setY(y + 3);
 
         while (!isLocationSafe(randomLocation)) {
             randomLocation = generateLocation(world);
@@ -42,7 +40,7 @@ public class TeleportUtils {
         int y = location.getBlockY();
         int z = location.getBlockZ();
         Block block = location.getWorld().getBlockAt(x, y, z);
-        Block below = location.getWorld().getBlockAt(x, y - 5, z);
+        Block below = location.getWorld().getBlockAt(x, y - 8, z);
         Block above = location.getWorld().getBlockAt(x, y + 5, z);
 
         return !(unsafeBlocks.contains(below.getType()) || (block.getType().isSolid()) || (above.getType().isSolid()));
