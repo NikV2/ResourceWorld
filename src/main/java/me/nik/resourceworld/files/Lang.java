@@ -58,5 +58,6 @@ public class Lang {
         Lang.get().addDefault("teleport_delay", "&aTeleporting to the Resource World in ");
         Lang.get().addDefault("gui_name", "&2&lResource World Menu");
         Lang.get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");
+        Lang.get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
     }
 }

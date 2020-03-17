@@ -40,10 +40,49 @@ public class Menu extends SubCommand {
             player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
         } else {
             if (args.length > 0) {
-                Inventory gui = Bukkit.createInventory(player, 9, ColourUtils.format(Lang.get().getString("gui_name")));
+                Inventory gui = Bukkit.createInventory(player, 36, ColourUtils.format(Lang.get().getString("gui_name")));
 
                 //Items Here
+                ItemStack teleport = new ItemStack(Material.ENDER_PEARL);
+                ItemStack reload = new ItemStack(Material.REDSTONE);
+                ItemStack close = new ItemStack(Material.BARRIER);
+                ItemStack support = new ItemStack(Material.DIAMOND);
 
+                //Item Data
+                ItemMeta teleport_meta = teleport.getItemMeta();
+                teleport_meta.setDisplayName(ChatColor.GREEN + "Teleport All");
+                ArrayList<String> teleport_lore = new ArrayList<>();
+                teleport_lore.add(" ");
+                teleport_lore.add(ChatColor.GRAY + "Teleport all the");
+                teleport_lore.add(ChatColor.GRAY + "Players that are in");
+                teleport_lore.add(ChatColor.GRAY + "The Resource World");
+                teleport_lore.add(ChatColor.GRAY + "Back to spawn.");
+                teleport_meta.setLore(teleport_lore);
+                teleport.setItemMeta(teleport_meta);
+
+                ItemMeta reload_meta = reload.getItemMeta();
+                reload_meta.setDisplayName(ChatColor.GREEN + "Reload");
+                ArrayList<String> reload_lore = new ArrayList<>();
+                reload_lore.add(" ");
+                reload_lore.add(ChatColor.GRAY + "WARNING!");
+                reload_lore.add(" ");
+                reload_lore.add(ChatColor.GRAY + "This may cause Lag.");
+                reload_meta.setLore(reload_lore);
+                reload.setItemMeta(reload_meta);
+
+                ItemMeta support_meta = support.getItemMeta();
+                support_meta.setDisplayName(ChatColor.GREEN + "Looking for Support?");
+                support.setItemMeta(support_meta);
+
+                ItemMeta close_meta = close.getItemMeta();
+                close_meta.setDisplayName(ChatColor.RED + "Exit");
+                close.setItemMeta(close_meta);
+
+                //Add the Items
+                gui.setItem(31, close);
+                gui.setItem(16, support);
+                gui.setItem(14, reload);
+                gui.setItem(12, teleport);
                 player.openInventory(gui);
                 final Player pAnonymous = player;
                 new BukkitRunnable() {
@@ -66,7 +105,7 @@ public class Menu extends SubCommand {
                         server_lore.add(ChatColor.GRAY + "Memory: " + Runtime.getRuntime().maxMemory() / 1024L / 1024L + "/" + Runtime.getRuntime().freeMemory() / 1024L / 1024L);
                         server_meta.setLore(server_lore);
                         server.setItemMeta(server_meta);
-                        gui.setItem(2, server);
+                        gui.setItem(10, server);
                         pAnonymous.updateInventory();
                     }
                 }.runTaskTimer(ResourceWorld.getPlugin(ResourceWorld.class), 1, 10);
