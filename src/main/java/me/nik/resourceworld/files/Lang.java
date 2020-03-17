@@ -40,7 +40,7 @@ public class Lang {
     public static void addDefaults() {
         //lang.yml
         Lang.get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
-        Lang.get().addDefault("not_enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml");
+        Lang.get().addDefault("not_enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml&f&l Then use /Resource Reload.");
         Lang.get().addDefault("generating", "&f&lGenerating a Resource World!");
         Lang.get().addDefault("deleting", "&f&lCleaning up the old Resource World");
         Lang.get().addDefault("generated", "&f&lA New Resource World has been Generated!");
@@ -56,5 +56,7 @@ public class Lang {
         Lang.get().addDefault("reloading", "&fReloading... This may cause lag!");
         Lang.get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
         Lang.get().addDefault("teleport_delay", "&aTeleporting to the Resource World in ");
+        Lang.get().addDefault("gui_name", "&2&lResource World Menu");
+        Lang.get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");
     }
 }

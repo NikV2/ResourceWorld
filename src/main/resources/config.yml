@@ -16,7 +16,7 @@ enabled: false
 world_name: 'Resource'
 generate_structures: true
 
-# Available World Types: NORMAL , FLAT , LARGE_BIOMES , AMPLIFIED , BUFFET.
+# Available World Types: NORMAL , FLAT , LARGE_BIOMES , AMPLIFIED.
 world_type: 'NORMAL'
 
 # Would you like the Resource World to use a Seed of your choice?

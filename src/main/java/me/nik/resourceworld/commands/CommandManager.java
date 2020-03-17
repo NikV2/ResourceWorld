@@ -1,4 +1,5 @@
 package me.nik.resourceworld.commands;
+import me.nik.resourceworld.commands.subcommands.Menu;
 import me.nik.resourceworld.commands.subcommands.Reload;
 import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.files.Lang;
@@ -17,6 +18,7 @@ public class CommandManager implements CommandExecutor {
     public CommandManager(){
         subcommands.add(new Teleport());
         subcommands.add(new Reload());
+        subcommands.add(new Menu());
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

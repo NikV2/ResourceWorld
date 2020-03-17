@@ -3,6 +3,7 @@ package me.nik.resourceworld;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.listeners.DisabledCmds;
+import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.utils.ColourUtils;
 import me.nik.resourceworld.utils.ResetTeleport;
@@ -21,30 +22,29 @@ public final class ResourceWorld extends JavaPlugin{
         Lang.addDefaults();
         Lang.get().options().copyDefaults(true);
         Lang.save();
-        getConfig().options().copyDefaults();
+        getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
         //Startup Message
-        String ServerVersion = getServer().getVersion();
         System.out.println(" ");
-        System.out.println("            " + ChatColor.GREEN + "Resource World " + ChatColor.UNDERLINE + "v1.1.3");
+        System.out.println("            " + ChatColor.GREEN + "Resource World " + ChatColor.UNDERLINE + "v1.1.4");
         System.out.println(" ");
         System.out.println("                   " + ChatColor.WHITE + "Author: " + ChatColor.UNDERLINE + "Nik");
         System.out.println(" ");
-        System.out.println("     " + ChatColor.GREEN + "Running on " + ChatColor.WHITE + ServerVersion);
+        System.out.println("     " + ChatColor.GREEN + "Running on " + ChatColor.WHITE + getServer().getVersion());
         System.out.println(" ");
 
         //Load Commands
         getCommand("Resource").setExecutor(new CommandManager());
 
         //Implement Events
+        getServer().getPluginManager().registerEvents(new MenuHandler(), this);
         getServer().getPluginManager().registerEvents(new DisabledCmds(), this);
 
         //Create World
         //Start Interval
         if (!getConfig().getBoolean("enabled")) {
             System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("not_enabled")));
-            getServer().getPluginManager().disablePlugin(this);
         } else if (!getConfig().getBoolean("automated_resets")) {
             System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("automated_resets_disabled")));
             new ResetTeleport().resetTP();
@@ -64,5 +64,7 @@ public final class ResourceWorld extends JavaPlugin{
             new ResetTeleport().resetTP();
             new WorldDeleter().deleteWorld();
         }
+        reloadConfig();
+        saveConfig();
     }
 }

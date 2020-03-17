@@ -39,13 +39,15 @@ public class Teleport extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if (args.length > 0){
-            if (!player.hasPermission("rw.tp")){
+            if (!plugin.getConfig().getBoolean("enabled")) {
+                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("not_exist")));
+            } else if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
-            }else if(cooldown.containsKey(player.getUniqueId())){
+            } else if (cooldown.containsKey(player.getUniqueId())) {
                 long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
-                if(secondsleft >0){
+                if (secondsleft > 0) {
                     player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("cooldown_message")) + secondsleft + " Seconds");
-                }else{
+                } else {
                     player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + plugin.getConfig().getInt("teleport_delay") + " Seconds");
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     BukkitScheduler scheduler = plugin.getServer().getScheduler();
