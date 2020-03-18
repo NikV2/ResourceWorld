@@ -84,19 +84,6 @@ public class Menu extends SubCommand {
                 gui.setItem(16, support);
                 gui.setItem(14, reload);
                 gui.setItem(12, teleport);
-                ItemStack background = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
-                ItemMeta background_meta = background.getItemMeta();
-                background_meta.setDisplayName(" ");
-                background.setItemMeta(background_meta);
-                int guiI = 0;
-                for (ItemStack guiIs : gui.getContents()) {
-                    if (null != guiIs && !guiIs.getType().equals(Material.AIR) && !guiIs.getType().equals(Material.VOID_AIR)) {
-                        ++guiI;
-                        continue;
-                    }
-                    gui.setItem(guiI, background);
-                    ++guiI;
-                }
                 player.openInventory(gui);
                 final Player pAnonymous = player;
                 new BukkitRunnable() {
