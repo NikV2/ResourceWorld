@@ -109,7 +109,7 @@ public class Menu extends SubCommand {
                         guiView.setItem(10, server);
                         pAnonymous.updateInventory();
                     }
-                }.runTaskTimer(ResourceWorld.getPlugin(ResourceWorld.class), 1, 10);
+                }.runTaskTimer(ResourceWorld.getPlugin(ResourceWorld.class), 0, 10);
             }
         }
     }
