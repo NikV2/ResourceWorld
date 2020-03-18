@@ -3,6 +3,7 @@ package me.nik.resourceworld.commands.subcommands;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Lang;
+import me.nik.resourceworld.holder.ResourceWorldHolder;
 import me.nik.resourceworld.utils.ColourUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,7 +41,7 @@ public class Menu extends SubCommand {
             player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
         } else {
             if (args.length > 0) {
-                Inventory gui = Bukkit.createInventory(player, 36, ColourUtils.format(Lang.get().getString("gui_name")));
+                Inventory gui = Bukkit.createInventory(new ResourceWorldHolder(), 36, ColourUtils.format(Lang.get().getString("gui_name")));
 
                 //Items Here
                 ItemStack teleport = new ItemStack(Material.ENDER_PEARL);
@@ -83,13 +84,26 @@ public class Menu extends SubCommand {
                 gui.setItem(16, support);
                 gui.setItem(14, reload);
                 gui.setItem(12, teleport);
+                ItemStack background = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+                ItemMeta background_meta = background.getItemMeta();
+                background_meta.setDisplayName(" ");
+                background.setItemMeta(background_meta);
+                int guiI = 0;
+                for (ItemStack guiIs : gui.getContents()) {
+                    if (null != guiIs && !guiIs.getType().equals(Material.AIR) && !guiIs.getType().equals(Material.VOID_AIR)) {
+                        ++guiI;
+                        continue;
+                    }
+                    gui.setItem(guiI, background);
+                    ++guiI;
+                }
                 player.openInventory(gui);
                 final Player pAnonymous = player;
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        InventoryView gui = pAnonymous.getOpenInventory();
-                        if (!gui.getTitle().equalsIgnoreCase(ColourUtils.format(Lang.get().getString("gui_name")))) {
+                        InventoryView guiView = pAnonymous.getOpenInventory();
+                        if (!(guiView.getTopInventory().getHolder() instanceof ResourceWorldHolder)) {
                             cancel();
                             return;
                         }
@@ -105,7 +119,7 @@ public class Menu extends SubCommand {
                         server_lore.add(ChatColor.GRAY + "Memory: " + Runtime.getRuntime().maxMemory() / 1024L / 1024L + "/" + Runtime.getRuntime().freeMemory() / 1024L / 1024L);
                         server_meta.setLore(server_lore);
                         server.setItemMeta(server_meta);
-                        gui.setItem(10, server);
+                        guiView.setItem(10, server);
                         pAnonymous.updateInventory();
                     }
                 }.runTaskTimer(ResourceWorld.getPlugin(ResourceWorld.class), 1, 10);
