@@ -3,6 +3,7 @@ package me.nik.resourceworld;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.listeners.DisabledCmds;
+import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.utils.ColourUtils;
@@ -14,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
-
     @Override
     public void onEnable() {
         //Load Built in Files
@@ -38,6 +38,7 @@ public final class ResourceWorld extends JavaPlugin {
         getCommand("Resource").setExecutor(new CommandManager());
 
         //Implement Events
+        getServer().getPluginManager().registerEvents(new LeaveInWorld(), this);
         getServer().getPluginManager().registerEvents(new MenuHandler(), this);
         getServer().getPluginManager().registerEvents(new DisabledCmds(), this);
 

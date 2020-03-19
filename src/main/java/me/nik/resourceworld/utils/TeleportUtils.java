@@ -16,33 +16,38 @@ public class TeleportUtils {
     static{
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.WATER);
+        unsafeBlocks.add(Material.FIRE);
     }
     public static Location generateLocation(World world) {
         Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         Random random = new Random();
 
         int x = random.nextInt(plugin.getConfig().getInt("max_teleport_range"));
-        int y = 150;
+        int y = 85;
         int z = random.nextInt(plugin.getConfig().getInt("max_teleport_range"));
 
         Location randomLocation = new Location(Bukkit.getWorld(plugin.getConfig().getString("world_name")), x, y, z);
 
-        y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
-        randomLocation.setY(y + 3);
+        if (!(randomLocation.getWorld().getEnvironment() == World.Environment.NETHER)) {
+            y = randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 2;
+        }
+        randomLocation.setY(y);
 
         while (!isLocationSafe(randomLocation)) {
             randomLocation = generateLocation(world);
         }
+        if (plugin.getConfig().getBoolean("load_chunk_before_teleporting")) {
+            randomLocation.getChunk().load(true);
+        }
         return randomLocation;
     }
-    public static boolean isLocationSafe(Location location){
+    public static boolean isLocationSafe(Location location) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
-        Block block = location.getWorld().getBlockAt(x, y, z);
-        Block below = location.getWorld().getBlockAt(x, y - 8, z);
-        Block above = location.getWorld().getBlockAt(x, y + 5, z);
-
-        return !(unsafeBlocks.contains(below.getType()) || (block.getType().isSolid()) || (above.getType().isSolid()));
+        Block block = location.getWorld().getBlockAt(x + 3, y, z + 3);
+        Block below = location.getWorld().getBlockAt(x - 5, y - 10, z - 5);
+        Block above = location.getWorld().getBlockAt(x + 5, y + 10, z + 5);
+        return !(unsafeBlocks.contains(below.getType()) || (block.getType().isSolid()) || (above.getType().isSolid()) || (below.isEmpty()));
     }
 }

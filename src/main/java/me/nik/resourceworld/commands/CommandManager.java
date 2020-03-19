@@ -26,16 +26,16 @@ public class CommandManager implements CommandExecutor {
             sender.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("console_message")));
         }else{
             Player p = (Player) sender;
-            if (args.length > 0){
-                for(int i = 0; i < getSubcommands().size(); i++){
-                    if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())){
+            if (args.length > 0) {
+                for (int i = 0; i < getSubcommands().size(); i++) {
+                    if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
                         getSubcommands().get(i).perform(p, args);
                     }
                 }
-            }else if(args.length == 0){
+            } else {
                 p.sendMessage(ChatColor.DARK_GREEN + "                        >> Resource World <<                  ");
                 p.sendMessage(ChatColor.GREEN + "----------------------------------------------------");
-                for (int i = 0; i < getSubcommands().size(); i++){
+                for (int i = 0; i < getSubcommands().size(); i++) {
                     p.sendMessage(getSubcommands().get(i).getSyntax() + " - " + getSubcommands().get(i).getDescription());
                 }
                 p.sendMessage(ChatColor.GREEN + "----------------------------------------------------");

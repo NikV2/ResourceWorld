@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
@@ -56,6 +58,7 @@ public class Teleport extends SubCommand {
                         public void run() {
                             World world = Bukkit.getWorld(plugin.getConfig().getString("world_name"));
                             player.teleport(new TeleportUtils().generateLocation(world));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(plugin.getConfig().getString("effect")), plugin.getConfig().getInt("duration") * 20, plugin.getConfig().getInt("amplifier")));
                         }
                     }, plugin.getConfig().getInt("teleport_delay") * 20);
                 }
@@ -68,6 +71,7 @@ public class Teleport extends SubCommand {
                     public void run() {
                         World world = Bukkit.getWorld(plugin.getConfig().getString("world_name"));
                         player.teleport(new TeleportUtils().generateLocation(world));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(plugin.getConfig().getString("effect")), plugin.getConfig().getInt("duration") * 20, plugin.getConfig().getInt("amplifier")));
                     }
                 }, plugin.getConfig().getInt("teleport_delay") * 20);
             }

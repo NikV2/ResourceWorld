@@ -13,11 +13,14 @@ enabled: false
 
 # World Settings.
 # World Name must NOT be: world , world_nether , world_the_end
-world_name: 'Resource'
+world_name: resource_world
 generate_structures: true
 
 # Available World Types: NORMAL , FLAT , LARGE_BIOMES , AMPLIFIED.
-world_type: 'NORMAL'
+world_type: NORMAL
+
+# Available Environments: NORMAL , NETHER , THE_END.
+environment: NORMAL
 
 # Would you like the Resource World to use a Seed of your choice?
 use_custom_seed: false
@@ -33,19 +36,44 @@ interval: 6
 world_border: true
 size: 3500
 
+# Choose whether or not you wan't PvP to be enabled inside the Resource World.
+pvp: true
+
+# Options: EASY , NORMAL , HARD , PEACEFUL.
+difficulty: NORMAL
+
+# Entity Spawning Settings, Higher values = More mobs. (Set to 0 for no Mob Spawning)
+max_animals: 45
+max_monsters: 35
+max_ambient_entities: 5
+
+# Should the Resource World auto Generate chunks around the main Spawn Area? (Not Recommended)
+keep_spawn_loaded: false
+
+# Would you like to allow Rain , Snow , Thunderstorms inside the Resource World?
+weather_storms: true
+
 # When a Resource World Reset happens, The plugin will Automatically Teleport all players
 # To the Spawn point of the World below. (Use the World where your Server's Spawn is)
-fallback_world: 'World'
+fallback_world: world
 
 # Teleport Settings
 # The maximum X, Z The player will be teleported, DO NOT Set this value higher than your World Border.
-max_teleport_range: 1500
+max_teleport_range: 800
 
 # When a player uses the Teleport command, The plugin automatically checks and ensures that the player
 # Is going to get Teleported to a Safe Location, I would suggest putting a Medium - High Cooldown interval.
 # (Interval is in Seconds, So by default: 1 Minute)
 teleport_cooldown: 60
 teleport_delay: 3
+load_chunk_before_teleporting: false
+
+# Teleport Effects
+# This effect will be given to the player right after teleporting, To ensure he's going to have a safe
+# Teleportation. Available Effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html
+effect: ABSORPTION
+duration: 7
+amplifier: 2
 
 # Commands listed below will be Disabled if they're executed inside the Resource World.
 disabled_commands:
