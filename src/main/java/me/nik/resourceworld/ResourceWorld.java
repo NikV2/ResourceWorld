@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitTask;
 public final class ResourceWorld extends JavaPlugin {
     @Override
     public void onEnable() {
-        //Load Built in Files
+        //Load Files
         Lang.setup();
         Lang.addDefaults();
         Lang.get().options().copyDefaults(true);
@@ -66,6 +66,8 @@ public final class ResourceWorld extends JavaPlugin {
             new ResetTeleport().resetTP();
             new WorldDeleter().deleteWorld();
         }
+        Lang.reload();
+        Lang.save();
         reloadConfig();
         saveConfig();
     }
