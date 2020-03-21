@@ -65,7 +65,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (Config.get().getBoolean("settings.check_for_updates")) {
             BukkitTask UpdateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
-            System.out.println(ColourUtils.format(Lang.get().getString("update_disabled")));
+            System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("update_disabled")));
         }
     }
 

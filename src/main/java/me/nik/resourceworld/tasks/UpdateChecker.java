@@ -26,9 +26,9 @@ public class UpdateChecker extends BukkitRunnable {
             String version = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                System.out.println(ColourUtils.format(Lang.get().getString("update_found")));
+                System.out.println(ColourUtils.format(Lang.get().getString("prefix") + ColourUtils.format(Lang.get().getString("update_found"))));
             } else {
-                System.out.println(ColourUtils.format(Lang.get().getString("update_not_found")));
+                System.out.println(ColourUtils.format(Lang.get().getString("prefix") + ColourUtils.format(Lang.get().getString("update_disabled"))));
             }
         } catch (IOException ignored) {
         }
