@@ -2,6 +2,7 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.utils.ColourUtils;
 import me.nik.resourceworld.utils.TeleportUtils;
@@ -19,9 +20,9 @@ import java.util.UUID;
 public class Teleport extends SubCommand {
     Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
-    private int cdtime = plugin.getConfig().getInt("teleport_cooldown");
+    private int cdtime = Config.get().getInt("teleport.settings.cooldown");
     private HashMap<UUID, Long> delay = new HashMap<UUID, Long>();
-    private int delaytime = plugin.getConfig().getInt("teleport_delay");
+    private int delaytime = Config.get().getInt("teleport.settings.delay");
 
     @Override
     public String getName() {
@@ -41,7 +42,7 @@ public class Teleport extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if (args.length > 0){
-            if (!plugin.getConfig().getBoolean("enabled")) {
+            if (!Config.get().getBoolean("settings.enabled")) {
                 player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("not_exist")));
             } else if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
@@ -50,30 +51,30 @@ public class Teleport extends SubCommand {
                 if (secondsleft > 0) {
                     player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("cooldown_message")) + secondsleft + " Seconds");
                 } else {
-                    player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + plugin.getConfig().getInt("teleport_delay") + " Seconds");
+                    player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + Config.get().getInt("teleport.settings.delay") + " Seconds");
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     BukkitScheduler scheduler = plugin.getServer().getScheduler();
                     scheduler.runTaskLater(ResourceWorld.getPlugin(ResourceWorld.class), new Runnable() {
                         @Override
                         public void run() {
-                            World world = Bukkit.getWorld(plugin.getConfig().getString("world_name"));
+                            World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
                             player.teleport(new TeleportUtils().generateLocation(world));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(plugin.getConfig().getString("effect")), plugin.getConfig().getInt("duration") * 20, plugin.getConfig().getInt("amplifier")));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier")));
                         }
-                    }, plugin.getConfig().getInt("teleport_delay") * 20);
+                    }, Config.get().getInt("teleport.settings.delay") * 20);
                 }
             }else{
-                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + plugin.getConfig().getInt("teleport_delay") + " Seconds");
+                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleport_delay")) + Config.get().getInt("teleport.settings.delay") + " Seconds");
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                 BukkitScheduler scheduler = plugin.getServer().getScheduler();
                 scheduler.runTaskLater(ResourceWorld.getPlugin(ResourceWorld.class), new Runnable() {
                     @Override
                     public void run() {
-                        World world = Bukkit.getWorld(plugin.getConfig().getString("world_name"));
+                        World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
                         player.teleport(new TeleportUtils().generateLocation(world));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(plugin.getConfig().getString("effect")), plugin.getConfig().getInt("duration") * 20, plugin.getConfig().getInt("amplifier")));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier")));
                     }
-                }, plugin.getConfig().getInt("teleport_delay") * 20);
+                }, Config.get().getInt("teleport.settings.delay") * 20);
             }
         }
     }

@@ -6,9 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+
 public class Lang {
     private static File file;
     private static FileConfiguration lang;
+
     public static void setup() {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("ResourceWorld").getDataFolder(), "lang.yml");
         if (!file.exists()) {
@@ -39,6 +41,7 @@ public class Lang {
 
     public static void addDefaults() {
         //lang.yml
+        Lang.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Lang.get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
         Lang.get().addDefault("not_enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml&f&l Then use /Resource Reload.");
         Lang.get().addDefault("generating", "&f&lGenerating a Resource World!");
@@ -59,5 +62,8 @@ public class Lang {
         Lang.get().addDefault("gui_name", "&2&lResource World Menu");
         Lang.get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");
         Lang.get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
+        Lang.get().addDefault("update_found", "&f&lThere is a new version available on Spigot!");
+        Lang.get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
+        Lang.get().addDefault("update_disabled", "&f&lUpdate Checker is Disabled, Skipping");
     }
 }

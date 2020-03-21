@@ -1,12 +1,11 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -19,14 +18,13 @@ public class TeleportUtils {
         unsafeBlocks.add(Material.FIRE);
     }
     public static Location generateLocation(World world) {
-        Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         Random random = new Random();
 
-        int x = random.nextInt(plugin.getConfig().getInt("max_teleport_range"));
+        int x = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
         int y = 85;
-        int z = random.nextInt(plugin.getConfig().getInt("max_teleport_range"));
+        int z = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
 
-        Location randomLocation = new Location(Bukkit.getWorld(plugin.getConfig().getString("world_name")), x, y, z);
+        Location randomLocation = new Location(Bukkit.getWorld(Config.get().getString("world.settings.world_name")), x, y, z);
 
         if (!(randomLocation.getWorld().getEnvironment() == World.Environment.NETHER)) {
             y = randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 2;
@@ -36,7 +34,7 @@ public class TeleportUtils {
         while (!isLocationSafe(randomLocation)) {
             randomLocation = generateLocation(world);
         }
-        if (plugin.getConfig().getBoolean("load_chunk_before_teleporting")) {
+        if (Config.get().getBoolean("teleport.settings.load_chunk_before_teleporting")) {
             randomLocation.getChunk().load(true);
         }
         return randomLocation;
