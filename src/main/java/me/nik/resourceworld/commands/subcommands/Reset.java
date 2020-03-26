@@ -37,7 +37,7 @@ public class Reset extends SubCommand {
         if (args.length == 1) {
             if (!player.hasPermission("rw.admin")) {
                 player.sendMessage(Messenger.message("no_perm"));
-            } else if (Config.get().getBoolean("settings.enabled")) {
+            } else if (!Config.get().getBoolean("settings.enabled")) {
                 if (cooldown.containsKey(player.getUniqueId())) {
                     long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
                     player.sendMessage(Messenger.message("reset_cooldown") + secondsleft + " Seconds.");
