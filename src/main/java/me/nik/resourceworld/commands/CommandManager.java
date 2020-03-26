@@ -4,6 +4,7 @@ import me.nik.resourceworld.commands.subcommands.Menu;
 import me.nik.resourceworld.commands.subcommands.Reload;
 import me.nik.resourceworld.commands.subcommands.Reset;
 import me.nik.resourceworld.commands.subcommands.Teleport;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.ChatColor;
@@ -41,7 +42,11 @@ public class CommandManager implements TabExecutor {
             } else if (args[0].equalsIgnoreCase("help")) {
                 helpMessage(sender);
             } else if (args[0].equalsIgnoreCase("reset")) {
-                new ResetByCommand().executeReset();
+                if (Config.get().getBoolean("settings.enabled")) {
+                    new ResetByCommand().executeReset();
+                } else {
+                    sender.sendMessage(Messenger.message("not_exist"));
+                }
             } else {
                 sender.sendMessage(Messenger.message("console_message"));
             }
