@@ -1,14 +1,14 @@
 package me.nik.resourceworld.utils;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
-import me.nik.resourceworld.files.Lang;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WorldGenerator {
     World world;
+    ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     public void createWorld() {
-        System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("generating")));
+        System.out.println(Messenger.message("generating"));
         WorldCreator wc = new WorldCreator(Config.get().getString("world.settings.world_name"));
         wc.type(WorldType.valueOf(Config.get().getString("world.settings.world_type")));
         wc.generateStructures(Config.get().getBoolean("world.settings.generate_structures"));
@@ -30,11 +30,12 @@ public class WorldGenerator {
                 Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setAnimalSpawnLimit(Config.get().getInt("world.settings.entities.max_animals"));
                 Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setMonsterSpawnLimit(Config.get().getInt("world.settings.entities.max_monsters"));
                 Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setAmbientSpawnLimit(Config.get().getInt("world.settings.entities.max_ambient.entities"));
+                cancel();
             }
-        }.runTaskAsynchronously(ResourceWorld.getPlugin(ResourceWorld.class));
+        }.runTaskLaterAsynchronously(plugin, 30);
         Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setStorm(Config.get().getBoolean("world.settings.weather_storms"));
         Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setKeepSpawnInMemory(Config.get().getBoolean("world.settings.keep_spawn_loaded"));
         System.gc();
-        System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("generated")));
+        System.out.println(Messenger.message("generated"));
     }
 }

@@ -1,4 +1,5 @@
 package me.nik.resourceworld.tasks;
+
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.utils.Messenger;
@@ -11,15 +12,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
-public class ResetWorld extends BukkitRunnable {
-    ResourceWorld plugin;
-    public ResetWorld(ResourceWorld plugin) {
-        this.plugin = plugin;
-    }
-    @Override
-    public void run() {
+public class ResetByCommand {
+    ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+
+    public void executeReset() {
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetTP();
+        System.out.println(Messenger.message("deleting"));
         World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         new BukkitRunnable() {

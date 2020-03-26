@@ -11,6 +11,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(Config.get().getString("world.settings.world_name"))) {
                 Location loc = Bukkit.getWorld(Config.get().getString("world.settings.main_spawn_world")).getSpawnLocation();
                 p.teleport(loc);
+                p.sendMessage(Messenger.message("teleported_message"));
             }
         }
     }

@@ -1,8 +1,7 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.files.Config;
-import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.utils.ColourUtils;
+import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +17,7 @@ public class DisabledCmds implements Listener {
                 if (p.hasPermission("rw.admin")) return;
                 if (cmd.contains(e.getMessage())) {
                     e.setCancelled(true);
-                    p.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("disabled_command")));
+                    p.sendMessage(Messenger.message("disabled_command"));
                 }
             }
         }

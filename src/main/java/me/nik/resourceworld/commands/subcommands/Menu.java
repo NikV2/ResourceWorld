@@ -4,7 +4,7 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
-import me.nik.resourceworld.utils.ColourUtils;
+import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Menu extends SubCommand {
     @Override
@@ -37,11 +38,11 @@ public class Menu extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
-        if (!player.hasPermission("rw.admin")) {
-            player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("no_perm")));
-        } else {
-            if (args.length > 0) {
-                Inventory gui = Bukkit.createInventory(new ResourceWorldHolder(), 36, ColourUtils.format(Lang.get().getString("gui_name")));
+        if (args.length == 1) {
+            if (!player.hasPermission("rw.admin")) {
+                player.sendMessage(Messenger.message("no_perm"));
+            } else {
+                Inventory gui = Bukkit.createInventory(new ResourceWorldHolder(), 36, Messenger.format(Lang.get().getString("gui_name")));
 
                 //Items Here
                 ItemStack teleport = new ItemStack(Material.ENDER_PEARL);
@@ -112,5 +113,10 @@ public class Menu extends SubCommand {
                 }.runTaskTimer(ResourceWorld.getPlugin(ResourceWorld.class), 0, 10);
             }
         }
+    }
+
+    @Override
+    public List<String> getSubcommandArguments(Player player, String[] args) {
+        return null;
     }
 }

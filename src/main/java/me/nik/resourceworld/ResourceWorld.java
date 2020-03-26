@@ -8,7 +8,7 @@ import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
-import me.nik.resourceworld.utils.ColourUtils;
+import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldDeleter;
 import me.nik.resourceworld.utils.WorldGenerator;
@@ -49,13 +49,13 @@ public final class ResourceWorld extends JavaPlugin {
         //Create World
         //Start Interval
         if (!Config.get().getBoolean("settings.enabled")) {
-            System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("not_enabled")));
+            System.out.println(Messenger.message("not_enabled"));
         } else if (!Config.get().getBoolean("world.settings.automated_resets.enabled")) {
-            System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("automated_resets_disabled")));
+            System.out.println(Messenger.message("automated_resets_disabled"));
             new ResetTeleport().resetTP();
             new WorldGenerator().createWorld();
         } else {
-            System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("automated_resets_enabled")));
+            System.out.println(Messenger.message("automated_resets_enabled"));
             int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
             BukkitTask ResetWorld = new ResetWorld(this).runTaskTimer(this, interval, interval);
             new ResetTeleport().resetTP();
@@ -65,7 +65,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (Config.get().getBoolean("settings.check_for_updates")) {
             BukkitTask UpdateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
-            System.out.println(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("update_disabled")));
+            System.out.println(Messenger.message("update_disabled"));
         }
     }
 

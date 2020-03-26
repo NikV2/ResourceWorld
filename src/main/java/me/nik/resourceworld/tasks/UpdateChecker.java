@@ -1,8 +1,7 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.utils.ColourUtils;
+import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -26,9 +25,9 @@ public class UpdateChecker extends BukkitRunnable {
             String version = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                System.out.println(ColourUtils.format(Lang.get().getString("prefix") + ColourUtils.format(Lang.get().getString("update_found"))));
+                System.out.println(Messenger.message("update_found"));
             } else {
-                System.out.println(ColourUtils.format(Lang.get().getString("prefix") + ColourUtils.format(Lang.get().getString("update_disabled"))));
+                System.out.println(Messenger.message("update_disabled"));
             }
         } catch (IOException ignored) {
         }

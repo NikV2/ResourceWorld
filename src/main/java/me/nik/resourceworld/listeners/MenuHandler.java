@@ -1,9 +1,8 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
-import me.nik.resourceworld.utils.ColourUtils;
+import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,14 +27,14 @@ public class MenuHandler implements Listener {
         switch (event.getCurrentItem().getType()) {
             case ENDER_PEARL:
                 new ResetTeleport().resetTP();
-                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("teleported_players")));
+                player.sendMessage(Messenger.message("teleported_players"));
                 break;
             case REDSTONE:
                 player.closeInventory();
-                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("reloading")));
+                player.sendMessage(Messenger.message("reloading"));
                 plugin.getServer().getPluginManager().disablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
                 plugin.getServer().getPluginManager().enablePlugin(ResourceWorld.getPlugin(ResourceWorld.class));
-                player.sendMessage(ColourUtils.format(Lang.get().getString("prefix")) + ColourUtils.format(Lang.get().getString("reloaded")));
+                player.sendMessage(Messenger.message("reloaded"));
                 System.gc();
                 break;
             case DIAMOND:
