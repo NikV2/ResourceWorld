@@ -12,12 +12,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager implements TabExecutor {
-    ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+    public Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
 
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
 
@@ -39,16 +40,21 @@ public class CommandManager implements TabExecutor {
                 sender.getServer().getPluginManager().enablePlugin(plugin);
                 sender.sendMessage(Messenger.message("reloaded"));
                 System.gc();
+                return true;
             } else if (args[0].equalsIgnoreCase("help")) {
                 helpMessage(sender);
+                return true;
             } else if (args[0].equalsIgnoreCase("reset")) {
                 if (Config.get().getBoolean("settings.enabled")) {
                     new ResetByCommand().executeReset();
+                    return true;
                 } else {
                     sender.sendMessage(Messenger.message("not_exist"));
                 }
+                return true;
             } else {
                 sender.sendMessage(Messenger.message("console_message"));
+                return true;
             }
         } else {
             Player p = (Player) sender;
@@ -56,12 +62,15 @@ public class CommandManager implements TabExecutor {
                 for (int i = 0; i < getSubcommands().size(); i++) {
                     if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
                         getSubcommands().get(i).perform(p, args);
+                        return true;
                     } else if (args[0].equalsIgnoreCase("help")) {
                         helpMessage(p);
+                        return true;
                     }
                 }
             } else {
                 pluginInfo(p);
+                return true;
             }
         }
         return true;

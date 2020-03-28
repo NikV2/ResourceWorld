@@ -1,41 +1,39 @@
 package me.nik.resourceworld.utils;
-import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
+
+import me.nik.resourceworld.api.Manager;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class WorldGenerator {
+public class WorldGenerator extends Manager {
     World world;
-    ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+
     public void createWorld() {
         System.out.println(Messenger.message("generating"));
-        WorldCreator wc = new WorldCreator(Config.get().getString("world.settings.world_name"));
-        wc.type(WorldType.valueOf(Config.get().getString("world.settings.world_type")));
-        wc.generateStructures(Config.get().getBoolean("world.settings.generate_structures"));
-        wc.environment(World.Environment.valueOf(Config.get().getString("world.settings.environment")));
-        if (Config.get().getBoolean("world.settings.custom_seed.enabled")) {
-            wc.seed(Config.get().getInt("world.settings.custom_seed.seed"));
+        WorldCreator wc = new WorldCreator(configString("world.settings.world_name"));
+        wc.type(WorldType.valueOf(configString("world.settings.world_type")));
+        wc.generateStructures(configBoolean("world.settings.generate_structures"));
+        wc.environment(World.Environment.valueOf(configString("world.settings.environment")));
+        if (configBoolean("world.settings.custom_seed.enabled")) {
+            wc.seed(configInt("world.settings.custom_seed.seed"));
         }
         world = wc.createWorld();
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (Config.get().getBoolean("world.settings.world_border.enabled")) {
-                    WorldBorder wb = Bukkit.getWorld(Config.get().getString("world.settings.world_name")).getWorldBorder();
+                if (configBoolean("world.settings.world_border.enabled")) {
+                    WorldBorder wb = Bukkit.getWorld(configString("world.settings.world_name")).getWorldBorder();
                     wb.setCenter(0, 0);
-                    wb.setSize(Config.get().getInt("world.settings.world_border.size"));
+                    wb.setSize(configInt("world.settings.world_border.size"));
                 }
-                Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setPVP(Config.get().getBoolean("world.settings.allow_pvp"));
-                Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setDifficulty(Difficulty.valueOf(Config.get().getString("world.settings.difficulty")));
-                Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setAnimalSpawnLimit(Config.get().getInt("world.settings.entities.max_animals"));
-                Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setMonsterSpawnLimit(Config.get().getInt("world.settings.entities.max_monsters"));
-                Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setAmbientSpawnLimit(Config.get().getInt("world.settings.entities.max_ambient.entities"));
-                cancel();
+                Bukkit.getWorld(configString("world.settings.world_name")).setPVP(configBoolean("world.settings.allow_pvp"));
+                Bukkit.getWorld(configString("world.settings.world_name")).setDifficulty(Difficulty.valueOf(configString("world.settings.difficulty")));
+                Bukkit.getWorld(configString("world.settings.world_name")).setAnimalSpawnLimit(configInt("world.settings.entities.max_animals"));
+                Bukkit.getWorld(configString("world.settings.world_name")).setMonsterSpawnLimit(configInt("world.settings.entities.max_monsters"));
+                Bukkit.getWorld(configString("world.settings.world_name")).setAmbientSpawnLimit(configInt("world.settings.entities.max_ambient.entities"));
             }
-        }.runTaskLaterAsynchronously(plugin, 30);
-        Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setStorm(Config.get().getBoolean("world.settings.weather_storms"));
-        Bukkit.getWorld(Config.get().getString("world.settings.world_name")).setKeepSpawnInMemory(Config.get().getBoolean("world.settings.keep_spawn_loaded"));
-        System.gc();
+        }.runTaskLaterAsynchronously(plugin, 40);
+        Bukkit.getWorld(configString("world.settings.world_name")).setStorm(configBoolean("world.settings.weather_storms"));
+        Bukkit.getWorld(configString("world.settings.world_name")).setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
         System.out.println(Messenger.message("generated"));
     }
 }

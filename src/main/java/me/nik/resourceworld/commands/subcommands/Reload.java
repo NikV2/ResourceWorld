@@ -34,7 +34,6 @@ public class Reload extends SubCommand {
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 plugin.getServer().getPluginManager().enablePlugin(plugin);
                 player.sendMessage(Messenger.message("reloaded"));
-                System.gc();
             }
         }
     }

@@ -41,17 +41,18 @@ public class Teleport extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
+        final UUID playerID = player.getUniqueId();
         if (args.length == 1) {
             if (!Config.get().getBoolean("settings.enabled")) {
                 player.sendMessage(Messenger.message("not_exist"));
             } else if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(Messenger.message("no_perm"));
-            } else if (cooldown.containsKey(player.getUniqueId())) {
-                long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
+            } else if (cooldown.containsKey(playerID)) {
+                long secondsleft = ((cooldown.get(playerID) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
                 if (secondsleft > 0) {
                     player.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("cooldown_message")) + secondsleft + " Seconds"));
                 } else {
-                    player.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("teleport_delay")) + Config.get().getInt("teleport.settings.delay") + " Seconds"));
+                    player.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("teleport_delay")) + delaytime + " Seconds"));
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     final Player p = player;
                     new BukkitRunnable() {
@@ -63,11 +64,11 @@ public class Teleport extends SubCommand {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier")));
                             cancel();
                         }
-                    }.runTaskLater(plugin, Config.get().getInt("teleport.settings.delay") * 20);
+                    }.runTaskLater(plugin, delaytime * 20);
                 }
             } else {
-                player.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("teleport_delay")) + Config.get().getInt("teleport.settings.delay") + " Seconds"));
-                cooldown.put(player.getUniqueId(), System.currentTimeMillis());
+                player.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("teleport_delay")) + delaytime + " Seconds"));
+                cooldown.put(playerID, System.currentTimeMillis());
                 final Player p = player;
                 new BukkitRunnable() {
 
@@ -78,7 +79,7 @@ public class Teleport extends SubCommand {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier")));
                         cancel();
                     }
-                }.runTaskLater(plugin, Config.get().getInt("teleport.settings.delay") * 20);
+                }.runTaskLater(plugin, delaytime * 20);
             }
         }
     }

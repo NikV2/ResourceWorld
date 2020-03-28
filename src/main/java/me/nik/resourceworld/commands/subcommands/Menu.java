@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class Menu extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         if (args.length == 1) {
             if (!player.hasPermission("rw.admin")) {
                 player.sendMessage(Messenger.message("no_perm"));

@@ -27,7 +27,6 @@ public class ResetWorld extends BukkitRunnable {
             @Override
             public void run() {
                 FileUtils.deleteQuietly(new File(world.getName()));
-                cancel();
             }
         }.runTaskAsynchronously(plugin);
         new BukkitRunnable() {
@@ -36,7 +35,6 @@ public class ResetWorld extends BukkitRunnable {
             public void run() {
                 new WorldGenerator().createWorld();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
-                cancel();
             }
         }.runTaskLater(plugin, 80);
     }
