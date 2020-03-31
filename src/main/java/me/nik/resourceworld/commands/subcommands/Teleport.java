@@ -47,6 +47,10 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("not_exist"));
             } else if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(Messenger.message("no_perm"));
+            } else if (Config.get().getInt("teleport.settings.delay") < 1) {
+                World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
+                player.teleport(new TeleportUtils().generateLocation(world));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier")));
             } else if (cooldown.containsKey(playerID)) {
                 long secondsleft = ((cooldown.get(playerID) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
                 if (secondsleft > 0) {
@@ -68,7 +72,7 @@ public class Teleport extends SubCommand {
                 }
             } else {
                 player.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("teleport_delay")) + delaytime + " Seconds"));
-                cooldown.put(playerID, System.currentTimeMillis());
+                cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                 final Player p = player;
                 new BukkitRunnable() {
 
