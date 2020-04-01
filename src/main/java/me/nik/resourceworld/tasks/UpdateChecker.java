@@ -27,7 +27,7 @@ public class UpdateChecker extends BukkitRunnable {
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
                 System.out.println(Messenger.message("update_found"));
             } else {
-                System.out.println(Messenger.message("update_disabled"));
+                System.out.println(Messenger.message("update_not_found"));
             }
         } catch (IOException ignored) {
         }
