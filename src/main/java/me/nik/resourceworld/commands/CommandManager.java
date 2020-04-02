@@ -1,9 +1,6 @@
 package me.nik.resourceworld.commands;
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.commands.subcommands.Menu;
-import me.nik.resourceworld.commands.subcommands.Reload;
-import me.nik.resourceworld.commands.subcommands.Reset;
-import me.nik.resourceworld.commands.subcommands.Teleport;
+import me.nik.resourceworld.commands.subcommands.*;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
@@ -27,6 +24,7 @@ public class CommandManager implements TabExecutor {
         subcommands.add(new Reload());
         subcommands.add(new Menu());
         subcommands.add(new Reset());
+        subcommands.add(new Spawn());
     }
 
     @Override
