@@ -64,6 +64,7 @@ public class Lang {
         Lang.get().addDefault("teleported_message", "&fYou have been Teleported back to spawn!");
         Lang.get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");
         Lang.get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
+        Lang.get().addDefault("main_world_error", "&cWe could not teleport you back to the main world, Please contact an Administrator.");
         Lang.get().addDefault("update_found", "&f&lThere is a new version available on Spigot!");
         Lang.get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
         Lang.get().addDefault("update_disabled", "&f&lUpdate Checker is Disabled, Skipping");
