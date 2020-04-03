@@ -12,6 +12,7 @@ import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldDeleter;
 import me.nik.resourceworld.utils.WorldGenerator;
+import org.bstats.bukkit.MetricsLite;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -67,6 +68,9 @@ public final class ResourceWorld extends JavaPlugin {
         } else {
             System.out.println(Messenger.message("update_disabled"));
         }
+        //Enable bStats
+        final int pluginId = 6981;
+        MetricsLite metricsLite = new MetricsLite(this, pluginId);
     }
 
     @Override
