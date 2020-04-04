@@ -2,6 +2,7 @@ package me.nik.resourceworld.api;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
@@ -29,5 +30,9 @@ public abstract class Manager implements Listener {
 
     public List<String> configStringList(String stringList) {
         return Config.get().getStringList(stringList);
+    }
+
+    public boolean isVersionSupported() {
+        return Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16");
     }
 }

@@ -17,6 +17,7 @@ public class WorldGenerator extends Manager {
             wc.seed(configInt("world.settings.custom_seed.seed"));
         }
         world = wc.createWorld();
+        final World resourceWorld = Bukkit.getWorld(configString("world.settings.world_name"));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -25,15 +26,23 @@ public class WorldGenerator extends Manager {
                     wb.setCenter(0, 0);
                     wb.setSize(configInt("world.settings.world_border.size"));
                 }
-                Bukkit.getWorld(configString("world.settings.world_name")).setPVP(configBoolean("world.settings.allow_pvp"));
-                Bukkit.getWorld(configString("world.settings.world_name")).setDifficulty(Difficulty.valueOf(configString("world.settings.difficulty")));
-                Bukkit.getWorld(configString("world.settings.world_name")).setAnimalSpawnLimit(configInt("world.settings.entities.max_animals"));
-                Bukkit.getWorld(configString("world.settings.world_name")).setMonsterSpawnLimit(configInt("world.settings.entities.max_monsters"));
-                Bukkit.getWorld(configString("world.settings.world_name")).setAmbientSpawnLimit(configInt("world.settings.entities.max_ambient.entities"));
+                if (isVersionSupported()) {
+                    resourceWorld.setGameRule(GameRule.DO_MOB_SPAWNING, configBoolean("world.settings.gamerules.can_mobs_spawn"));
+                    resourceWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, configBoolean("world.settings.gamerules.not_always_day"));
+                    resourceWorld.setGameRule(GameRule.DO_FIRE_TICK, configBoolean("world.settings.gamerules.can_fire_spread"));
+                    resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, configBoolean("world.settings.gamerules.keep_inventory_on_death"));
+                    resourceWorld.setGameRule(GameRule.MOB_GRIEFING, configBoolean("world.settings.gamerules.mob_griefing"));
+                    resourceWorld.setGameRule(GameRule.SHOW_DEATH_MESSAGES, configBoolean("world.settings.gamerules.show_death_messages"));
+                }
+                resourceWorld.setPVP(configBoolean("world.settings.allow_pvp"));
+                resourceWorld.setDifficulty(Difficulty.valueOf(configString("world.settings.difficulty")));
+                resourceWorld.setAnimalSpawnLimit(configInt("world.settings.entities.max_animals"));
+                resourceWorld.setMonsterSpawnLimit(configInt("world.settings.entities.max_monsters"));
+                resourceWorld.setAmbientSpawnLimit(configInt("world.settings.entities.max_ambient.entities"));
             }
-        }.runTaskLaterAsynchronously(plugin, 40);
-        Bukkit.getWorld(configString("world.settings.world_name")).setStorm(configBoolean("world.settings.weather_storms"));
-        Bukkit.getWorld(configString("world.settings.world_name")).setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
+        }.runTaskLaterAsynchronously(plugin, 30);
+        resourceWorld.setStorm(configBoolean("world.settings.weather_storms"));
+        resourceWorld.setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
         System.out.println(Messenger.message("generated"));
     }
 }

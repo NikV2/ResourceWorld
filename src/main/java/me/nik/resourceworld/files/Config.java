@@ -68,6 +68,12 @@ public class Config {
         Config.get().addDefault("world.settings.entities.max_monsters", 35);
         Config.get().addDefault("world.settings.entities.max_ambient_entities", 5);
         Config.get().addDefault("world.settings.main_spawn_world", "world");
+        Config.get().addDefault("world.settings.gamerules.can_mobs_spawn", true);
+        Config.get().addDefault("world.settings.gamerules.not_always_day", true);
+        Config.get().addDefault("world.settings.gamerules.can_fire_spread", true);
+        Config.get().addDefault("world.settings.gamerules.keep_inventory_on_death", false);
+        Config.get().addDefault("world.settings.gamerules.mob_griefing", true);
+        Config.get().addDefault("world.settings.gamerules.show_death_messages", true);
         Config.get().addDefault("teleport.settings.cooldown", 60);
         Config.get().addDefault("teleport.settings.delay", 3);
         Config.get().addDefault("teleport.settings.max_teleport_range", 800);
