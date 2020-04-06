@@ -43,8 +43,12 @@ public class MenuHandler extends Manager {
                 player.closeInventory();
                 break;
             case "§aReset":
-                new ResetByCommand().executeReset();
-                player.closeInventory();
+                if (!configBoolean("settings.enabled")) {
+                    player.sendMessage(Messenger.message("not_exist"));
+                } else {
+                    new ResetByCommand().executeReset();
+                    player.closeInventory();
+                }
                 break;
             case "§aGamerules":
                 player.closeInventory();

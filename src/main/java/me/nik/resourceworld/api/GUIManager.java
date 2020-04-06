@@ -26,7 +26,7 @@ public class GUIManager {
 
     public static void openMainGUI(Player p) {
 
-        Inventory mainGUI = Bukkit.createInventory(new ResourceWorldHolder(), 45, Messenger.format(Lang.get().getString("gui_name")));
+        Inventory mainGUI = Bukkit.createInventory(new ResourceWorldHolder(), 54, Messenger.format(Lang.get().getString("gui_name")));
 
         //Items Here
         ItemStack teleport = new ItemStack(Material.ENDER_PEARL);
@@ -77,15 +77,20 @@ public class GUIManager {
 
         ItemMeta gamerules_meta = gamerules.getItemMeta();
         gamerules_meta.setDisplayName("§aGamerules");
+        ArrayList<String> gamerules_lore = new ArrayList<>();
+        gamerules_lore.add("");
+        gamerules_lore.add(ChatColor.GRAY + "Modify the Resource World's");
+        gamerules_lore.add(ChatColor.GRAY + "Gamerules!");
+        gamerules_meta.setLore(gamerules_lore);
         gamerules.setItemMeta(gamerules_meta);
 
         //Add the Items
-        mainGUI.setItem(40, close);
-        mainGUI.setItem(24, gamerules);
-        mainGUI.setItem(20, reset);
-        mainGUI.setItem(16, support);
-        mainGUI.setItem(14, reload);
-        mainGUI.setItem(12, teleport);
+        mainGUI.setItem(49, close);
+        mainGUI.setItem(33, gamerules);
+        mainGUI.setItem(31, reset);
+        mainGUI.setItem(29, support);
+        mainGUI.setItem(15, reload);
+        mainGUI.setItem(13, teleport);
         p.openInventory(mainGUI);
         final Player pAnonymous = p;
         new BukkitRunnable() {
@@ -108,8 +113,7 @@ public class GUIManager {
                 server_lore.add(ChatColor.GRAY + "Memory: " + Runtime.getRuntime().maxMemory() / 1024L / 1024L + "/" + Runtime.getRuntime().freeMemory() / 1024L / 1024L);
                 server_meta.setLore(server_lore);
                 server.setItemMeta(server_meta);
-                guiView.setItem(10, server);
-                pAnonymous.updateInventory();
+                mainGUI.setItem(11, server);
             }
         }.runTaskTimer(plugin, 1, 10);
     }
@@ -122,7 +126,11 @@ public class GUIManager {
 
             @Override
             public void run() {
-
+                InventoryView guiView = pNon.getOpenInventory();
+                if (!(guiView.getTopInventory().getHolder() instanceof ResourceWorldHolder)) {
+                    cancel();
+                    return;
+                }
                 //not always day gamerule
                 ItemStack day = new ItemStack(Material.PAPER, 1);
                 ItemMeta day_meta = day.getItemMeta();
