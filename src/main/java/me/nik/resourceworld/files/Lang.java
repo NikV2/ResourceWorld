@@ -61,6 +61,7 @@ public class Lang {
         Lang.get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
         Lang.get().addDefault("teleport_delay", "&aTeleporting to the Resource World in ");
         Lang.get().addDefault("gui_name", "&2&lResource World Menu");
+        Lang.get().addDefault("gamerules_gui_name", "&2&lResource World Gamerules");
         Lang.get().addDefault("teleported_message", "&fYou have been Teleported back to spawn!");
         Lang.get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");
         Lang.get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");

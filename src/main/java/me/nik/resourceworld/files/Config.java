@@ -68,8 +68,8 @@ public class Config {
         Config.get().addDefault("world.settings.entities.max_monsters", 35);
         Config.get().addDefault("world.settings.entities.max_ambient_entities", 5);
         Config.get().addDefault("world.settings.main_spawn_world", "world");
-        Config.get().addDefault("world.settings.gamerules.can_mobs_spawn", true);
         Config.get().addDefault("world.settings.gamerules.not_always_day", true);
+        Config.get().addDefault("world.settings.gamerules.can_mobs_spawn", true);
         Config.get().addDefault("world.settings.gamerules.can_fire_spread", true);
         Config.get().addDefault("world.settings.gamerules.keep_inventory_on_death", false);
         Config.get().addDefault("world.settings.gamerules.mob_griefing", true);
@@ -81,6 +81,10 @@ public class Config {
         Config.get().addDefault("teleport.settings.effects.effect", "ABSORPTION");
         Config.get().addDefault("teleport.settings.effects.duration", 7);
         Config.get().addDefault("teleport.settings.effects.amplifier", 2);
+        Config.get().addDefault("teleport.settings.sounds.enabled", true);
+        Config.get().addDefault("teleport.settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT");
+        Config.get().addDefault("teleport.settings.sounds.volume", 1);
+        Config.get().addDefault("teleport.settings.sounds.pitch", 1);
         Config.get().addDefault("disabled.commands", list);
     }
 }
