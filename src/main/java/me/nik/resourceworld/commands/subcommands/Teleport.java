@@ -19,14 +19,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class Teleport extends SubCommand {
-    ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+    private ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
     final private int cdtime = Config.get().getInt("teleport.settings.cooldown");
     private HashMap<UUID, Long> delay = new HashMap<UUID, Long>();
     final private int delaytime = Config.get().getInt("teleport.settings.delay");
     final private PotionEffect effect = new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier"));
     final private World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
-    final private Sound sound = Sound.valueOf(Config.get().getString("teleport.settings.sounds.sound"));
     final private int volume = Config.get().getInt("teleport.settings.sounds.volume");
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
 
@@ -57,7 +56,11 @@ public class Teleport extends SubCommand {
                 player.teleport(new TeleportUtils().generateLocation(world));
                 player.addPotionEffect(effect);
                 if (isSoundsEnabled()) {
-                    player.playSound(player.getLocation(), sound, volume, pitch);
+                    try {
+                        player.playSound(player.getLocation(), Sound.valueOf(Config.get().getString("teleport.settings.sounds.sound")), volume, pitch);
+                    } catch (IllegalArgumentException ignored) {
+                        System.out.println(Messenger.prefix(Messenger.format("Your current Teleportation sound does not exist on your Server Version! Please try setting a valid Sound Effect.")));
+                    }
                 }
             } else if (cooldown.containsKey(playerID)) {
                 long secondsleft = ((cooldown.get(playerID) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
@@ -74,7 +77,11 @@ public class Teleport extends SubCommand {
                             p.teleport(new TeleportUtils().generateLocation(world));
                             p.addPotionEffect(effect);
                             if (isSoundsEnabled()) {
-                                player.playSound(player.getLocation(), sound, volume, pitch);
+                                try {
+                                    player.playSound(player.getLocation(), Sound.valueOf(Config.get().getString("teleport.settings.sounds.sound")), volume, pitch);
+                                } catch (IllegalArgumentException ignored) {
+                                    System.out.println(Messenger.prefix(Messenger.format("Your current Teleportation sound does not exist on your Server Version! Please try setting a valid Sound Effect.")));
+                                }
                             }
                             cancel();
                         }
@@ -91,7 +98,11 @@ public class Teleport extends SubCommand {
                         p.teleport(new TeleportUtils().generateLocation(world));
                         p.addPotionEffect(effect);
                         if (isSoundsEnabled()) {
-                            player.playSound(player.getLocation(), sound, volume, pitch);
+                            try {
+                                player.playSound(player.getLocation(), Sound.valueOf(Config.get().getString("teleport.settings.sounds.sound")), volume, pitch);
+                            } catch (IllegalArgumentException ignored) {
+                                System.out.println(Messenger.prefix(Messenger.format("Your current Teleportation sound does not exist on your Server Version! Please try setting a valid Sound Effect.")));
+                            }
                         }
                         cancel();
                     }

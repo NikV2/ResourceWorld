@@ -26,7 +26,11 @@ public class ResetWorld extends BukkitRunnable {
 
             @Override
             public void run() {
-                FileUtils.deleteQuietly(new File(world.getName()));
+                try {
+                    FileUtils.deleteQuietly(new File(world.getName()));
+                } catch (NullPointerException ignored) {
+                    System.out.println(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
+                }
             }
         }.runTaskAsynchronously(plugin);
         new BukkitRunnable() {

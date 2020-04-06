@@ -17,7 +17,7 @@ public class Config {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
                 //Does not exist
             }
         }
@@ -31,7 +31,7 @@ public class Config {
     public static void save() {
         try {
             config.save(file);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
             //Cannot save file
         }
     }

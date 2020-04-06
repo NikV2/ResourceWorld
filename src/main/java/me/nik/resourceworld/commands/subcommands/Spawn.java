@@ -1,6 +1,5 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.utils.Messenger;
@@ -28,7 +27,6 @@ public class Spawn extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         if (args.length == 1) {
             if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(Messenger.message("no_perm"));

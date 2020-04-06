@@ -24,7 +24,7 @@ public class GUIManager {
     private static Inventory gamerulesGUI;
     private static Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
 
-    public static void openMainGUI(Player p) {
+    public void openMainGUI(Player p) {
 
         Inventory mainGUI = Bukkit.createInventory(new ResourceWorldHolder(), 54, Messenger.format(Lang.get().getString("gui_name")));
 
@@ -33,7 +33,7 @@ public class GUIManager {
         ItemStack reload = new ItemStack(Material.REDSTONE);
         ItemStack close = new ItemStack(Material.BARRIER);
         ItemStack support = new ItemStack(Material.DIAMOND);
-        ItemStack reset = new ItemStack(Material.REDSTONE_TORCH);
+        ItemStack reset = new ItemStack(Material.EMERALD);
         ItemStack gamerules = new ItemStack(Material.BOOK);
 
         //Item Data
@@ -118,7 +118,7 @@ public class GUIManager {
         }.runTaskTimer(plugin, 1, 10);
     }
 
-    public static void openGamerulesGUI(Player p) {
+    public void openGamerulesGUI(Player p) {
         Inventory gamerulesGUI = Bukkit.createInventory(new ResourceWorldHolder(), 54, Messenger.format(Lang.get().getString("gamerules_gui_name")));
         p.openInventory(gamerulesGUI);
         final Player pNon = p;

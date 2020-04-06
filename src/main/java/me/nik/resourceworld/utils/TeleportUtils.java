@@ -17,7 +17,7 @@ public class TeleportUtils {
         unsafeBlocks.add(Material.WATER);
         unsafeBlocks.add(Material.FIRE);
     }
-    public static Location generateLocation(World world) {
+    public Location generateLocation(World world) {
         Random random = new Random();
 
         int x = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
@@ -39,7 +39,8 @@ public class TeleportUtils {
         }
         return randomLocation;
     }
-    public static boolean isLocationSafe(Location location) {
+
+    private boolean isLocationSafe(Location location) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();

@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class Reset extends SubCommand {
+    private ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
-    private int cdtime = 60;
+    private final int cdtime = 60;
 
     @Override
     public String getName() {
@@ -33,7 +34,6 @@ public class Reset extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         if (args.length == 1) {
             if (!player.hasPermission("rw.admin")) {
                 player.sendMessage(Messenger.message("no_perm"));

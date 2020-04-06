@@ -52,7 +52,7 @@ public class MenuHandler extends Manager {
                 break;
             case "§aGamerules":
                 player.closeInventory();
-                GUIManager.openGamerulesGUI(player);
+                new GUIManager().openGamerulesGUI(player);
                 break;
             case "§eNot Always Day":
                 if (configBoolean("world.settings.gamerules.not_always_day")) {
@@ -104,7 +104,7 @@ public class MenuHandler extends Manager {
                 break;
             case "§cBack":
                 player.closeInventory();
-                GUIManager.openMainGUI(player);
+                new GUIManager().openMainGUI(player);
                 break;
         }
         event.setCancelled(true);

@@ -13,6 +13,7 @@ import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldDeleter;
 import me.nik.resourceworld.utils.WorldGenerator;
 import org.bstats.bukkit.MetricsLite;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -75,6 +76,8 @@ public final class ResourceWorld extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //Cancel all tasks
+        Bukkit.getScheduler().cancelTasks(this);
         //Delete World
         if (Config.get().getBoolean("settings.enabled")) {
             new ResetTeleport().resetTP();

@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class Reload extends SubCommand {
+    private ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+
     @Override
     public String getName() {
         return "Reload";
@@ -25,7 +27,6 @@ public class Reload extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
         if (args.length == 1) {
             if (!player.hasPermission("rw.admin")) {
                 player.sendMessage(Messenger.message("no_perm"));

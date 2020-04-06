@@ -29,7 +29,7 @@ public class Menu extends SubCommand {
             if (!player.hasPermission("rw.admin")) {
                 player.sendMessage(Messenger.message("no_perm"));
             } else {
-                GUIManager.openMainGUI(player);
+               new GUIManager().openMainGUI(player);
             }
         }
     }

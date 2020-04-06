@@ -30,6 +30,7 @@ public class UpdateChecker extends BukkitRunnable {
                 System.out.println(Messenger.message("update_not_found"));
             }
         } catch (IOException ignored) {
+            System.out.println(Messenger.prefix(Messenger.format("&cError while checking for updates, Is your server connected to the internet?")));
         }
     }
 }
