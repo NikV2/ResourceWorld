@@ -81,7 +81,7 @@ public class Config {
         Config.get().addDefault("teleport.settings.effects.effect", "ABSORPTION");
         Config.get().addDefault("teleport.settings.effects.duration", 7);
         Config.get().addDefault("teleport.settings.effects.amplifier", 2);
-        Config.get().addDefault("teleport.settings.sounds.enabled", true);
+        Config.get().addDefault("teleport.settings.sounds.enabled", false);
         Config.get().addDefault("teleport.settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT");
         Config.get().addDefault("teleport.settings.sounds.volume", 1);
         Config.get().addDefault("teleport.settings.sounds.pitch", 1);
