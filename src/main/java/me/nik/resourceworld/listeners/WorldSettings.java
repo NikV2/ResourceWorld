@@ -8,8 +8,8 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WorldSettings extends Manager {
@@ -29,7 +29,7 @@ public class WorldSettings extends Manager {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEntitySpawn(EntitySpawnEvent e) {
+    public void onEntitySpawn(CreatureSpawnEvent e) {
         if (e.getEntity() instanceof Player) return;
         if (e.getEntity() instanceof Mob) {
             if (!e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
