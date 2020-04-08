@@ -7,6 +7,7 @@ import me.nik.resourceworld.holder.ResourceWorldHolder;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,14 +49,14 @@ public class MenuHandler extends Manager {
                 player.closeInventory();
                 break;
             case "§aReset":
-                if (!configBoolean("settings.enabled")) {
+                if (!new WorldUtils().worldExists()) {
                     player.sendMessage(Messenger.message("not_exist"));
                 } else {
                     new ResetByCommand(plugin).executeReset();
                     player.closeInventory();
                 }
                 break;
-            case "§aGamerules":
+            case "§aSettings":
                 player.closeInventory();
                 new GUIManager(plugin).openSettingsGUI(player);
                 break;
