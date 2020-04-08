@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -22,7 +21,11 @@ public class GUIManager {
 
     private static Inventory mainGUI;
     private static Inventory gamerulesGUI;
-    private static Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+    public ResourceWorld plugin;
+
+    public GUIManager(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     public void openMainGUI(Player p) {
 

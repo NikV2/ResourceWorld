@@ -1,11 +1,16 @@
 package me.nik.resourceworld.utils;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WorldGenerator extends Manager {
     World world;
+
+    public WorldGenerator(ResourceWorld plugin) {
+        super(plugin);
+    }
 
     public void createWorld() {
         System.out.println(Messenger.message("generating"));
@@ -27,14 +32,6 @@ public class WorldGenerator extends Manager {
                         wb.setCenter(0, 0);
                         wb.setSize(configInt("world.settings.world_border.size"));
                     }
-                    if (isVersionSupported()) {
-                        resourceWorld.setGameRule(GameRule.DO_MOB_SPAWNING, configBoolean("world.settings.gamerules.can_mobs_spawn"));
-                        resourceWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, configBoolean("world.settings.gamerules.not_always_day"));
-                        resourceWorld.setGameRule(GameRule.DO_FIRE_TICK, configBoolean("world.settings.gamerules.can_fire_spread"));
-                        resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, configBoolean("world.settings.gamerules.keep_inventory_on_death"));
-                        resourceWorld.setGameRule(GameRule.MOB_GRIEFING, configBoolean("world.settings.gamerules.mob_griefing"));
-                        resourceWorld.setGameRule(GameRule.SHOW_DEATH_MESSAGES, configBoolean("world.settings.gamerules.show_death_messages"));
-                    }
                     resourceWorld.setPVP(configBoolean("world.settings.allow_pvp"));
                     resourceWorld.setDifficulty(Difficulty.valueOf(configString("world.settings.difficulty")));
                     resourceWorld.setAnimalSpawnLimit(configInt("world.settings.entities.max_animals"));
@@ -44,6 +41,7 @@ public class WorldGenerator extends Manager {
             }.runTaskLaterAsynchronously(plugin, 30);
             resourceWorld.setStorm(configBoolean("world.settings.weather_storms"));
             resourceWorld.setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
+            Bukkit.getWorlds().add(resourceWorld);
             System.out.println(Messenger.message("generated"));
         } catch (NullPointerException | IllegalArgumentException | IllegalStateException ignored) {
             System.out.println(Messenger.prefix(Messenger.format("&cSomething went wrong while generating your world, Please try restarting your Server and resetting your config.yml!")));

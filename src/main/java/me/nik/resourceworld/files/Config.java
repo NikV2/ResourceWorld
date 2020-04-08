@@ -42,13 +42,20 @@ public class Config {
 
     public static void addDefaults() {
         //config.yml
-        List<String> list = Config.get().getStringList("disabled.commands");
+        List<String> list = Config.get().getStringList("disabled_commands.commands");
         list.add("/sethome");
         list.add("/claim");
         list.add("/setwarp");
         list.add("/tpahere");
+        List<String> blocks = Config.get().getStringList("world.settings.block_regeneration.blocks");
+        blocks.add("DIAMOND_ORE");
+        blocks.add("GOLD_ORE");
+        blocks.add("EMERALD_ORE");
+        blocks.add("COAL_ORE");
+        blocks.add("IRON_ORE");
+        blocks.add("LAPIS_ORE");
+        blocks.add("NETHER_QUARTZ_ORE");
         Config.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
-        Config.get().addDefault("settings.enabled", false);
         Config.get().addDefault("settings.check_for_updates", true);
         Config.get().addDefault("world.settings.world_name", "resource_world");
         Config.get().addDefault("world.settings.generate_structures", true);
@@ -57,23 +64,24 @@ public class Config {
         Config.get().addDefault("world.settings.custom_seed.enabled", false);
         Config.get().addDefault("world.settings.custom_seed.seed", -686298914);
         Config.get().addDefault("world.settings.world_border.enabled", true);
-        Config.get().addDefault("world.settings.world_border.size", 3500);
+        Config.get().addDefault("world.settings.world_border.size", 4500);
         Config.get().addDefault("world.settings.allow_pvp", true);
+        Config.get().addDefault("world.settings.always_day", true);
+        Config.get().addDefault("world.settings.disable_suffocation_damage", true);
+        Config.get().addDefault("world.settings.disable_drowning_damage", true);
         Config.get().addDefault("world.settings.difficulty", "NORMAL");
         Config.get().addDefault("world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("world.settings.weather_storms", true);
         Config.get().addDefault("world.settings.automated_resets.enabled", false);
         Config.get().addDefault("world.settings.automated_resets.interval", 6);
+        Config.get().addDefault("world.settings.disable_entity_spawning", false);
         Config.get().addDefault("world.settings.entities.max_animals", 45);
         Config.get().addDefault("world.settings.entities.max_monsters", 35);
         Config.get().addDefault("world.settings.entities.max_ambient_entities", 5);
         Config.get().addDefault("world.settings.main_spawn_world", "world");
-        Config.get().addDefault("world.settings.gamerules.not_always_day", true);
-        Config.get().addDefault("world.settings.gamerules.can_mobs_spawn", true);
-        Config.get().addDefault("world.settings.gamerules.can_fire_spread", true);
-        Config.get().addDefault("world.settings.gamerules.keep_inventory_on_death", false);
-        Config.get().addDefault("world.settings.gamerules.mob_griefing", true);
-        Config.get().addDefault("world.settings.gamerules.show_death_messages", true);
+        Config.get().addDefault("world.settings.block_regeneration.enabled", true);
+        Config.get().addDefault("world.settings.block_regeneration.regeneration_delay", 30);
+        Config.get().addDefault("world.settings.block_regeneration.blocks", blocks);
         Config.get().addDefault("teleport.settings.cooldown", 60);
         Config.get().addDefault("teleport.settings.delay", 3);
         Config.get().addDefault("teleport.settings.max_teleport_range", 800);
@@ -85,6 +93,7 @@ public class Config {
         Config.get().addDefault("teleport.settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT");
         Config.get().addDefault("teleport.settings.sounds.volume", 1);
         Config.get().addDefault("teleport.settings.sounds.pitch", 1);
-        Config.get().addDefault("disabled.commands", list);
+        Config.get().addDefault("disabled_commands.enabled", false);
+        Config.get().addDefault("disabled_commands.commands", list);
     }
 }

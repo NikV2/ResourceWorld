@@ -4,13 +4,18 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.util.List;
 
 public abstract class Manager implements Listener {
 
-    public Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+
+    protected ResourceWorld plugin;
+
+    public Manager(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     public boolean configBoolean(String booleans) {
         return Config.get().getBoolean(booleans);
@@ -18,10 +23,6 @@ public abstract class Manager implements Listener {
 
     public int configInt(String ints) {
         return Config.get().getInt(ints);
-    }
-
-    public double configDouble(String doubles) {
-        return Config.get().getDouble(doubles);
     }
 
     public String configString(String string) {
@@ -32,10 +33,6 @@ public abstract class Manager implements Listener {
         return Config.get().getStringList(stringList);
     }
 
-    public boolean isVersionSupported() {
-        return Bukkit.getVersion().contains("1.13") || Bukkit.getVersion().contains("1.14") || Bukkit.getVersion().contains("1.15") || Bukkit.getVersion().contains("1.16");
-    }
-
     public void booleanSet(String path, boolean value) {
         Config.get().set(path, value);
     }
@@ -43,5 +40,28 @@ public abstract class Manager implements Listener {
     public void saveAndReload() {
         Config.save();
         Config.reload();
+    }
+
+    public void registerEvent(Listener listener) {
+        Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
+    }
+
+    public boolean deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (files != null)
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        deleteDirectory(files[i]);
+                    } else {
+                        files[i].delete();
+                    }
+                }
+        }
+        return directory.delete();
+    }
+
+    public boolean worldExists() {
+        return Bukkit.getWorld(configString("world.settings.world_name")) != null;
     }
 }

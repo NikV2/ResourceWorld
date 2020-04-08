@@ -2,9 +2,9 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,9 +13,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class Reset extends SubCommand {
-    private ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
     private final int cdtime = 60;
+
+    private ResourceWorld plugin;
+
+    public Reset(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {
@@ -37,13 +42,13 @@ public class Reset extends SubCommand {
         if (args.length == 1) {
             if (!player.hasPermission("rw.admin")) {
                 player.sendMessage(Messenger.message("no_perm"));
-            } else if (Config.get().getBoolean("settings.enabled")) {
+            } else if (new WorldUtils().worldExists()) {
                 if (cooldown.containsKey(player.getUniqueId())) {
                     long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
                     player.sendMessage(Messenger.message("reset_cooldown") + secondsleft + " Seconds.");
                 } else {
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-                    new ResetByCommand().executeReset();
+                    new ResetByCommand(plugin).executeReset();
                     new BukkitRunnable() {
 
                         @Override

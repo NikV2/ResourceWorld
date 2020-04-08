@@ -1,5 +1,6 @@
 package me.nik.resourceworld.listeners;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.GUIManager;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
@@ -16,6 +17,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuHandler extends Manager {
 
+    public MenuHandler(ResourceWorld plugin) {
+        super(plugin);
+    }
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onMenuClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -25,7 +30,7 @@ public class MenuHandler extends Manager {
         if (clickedItem.getType().equals(Material.AIR)) return;
         switch (clickedItem.getItemMeta().getDisplayName()) {
             case "§aTeleport All":
-                new ResetTeleport().resetTP();
+                new ResetTeleport(plugin).resetTP();
                 player.sendMessage(Messenger.message("teleported_players"));
                 break;
             case "§aReload":
@@ -46,13 +51,13 @@ public class MenuHandler extends Manager {
                 if (!configBoolean("settings.enabled")) {
                     player.sendMessage(Messenger.message("not_exist"));
                 } else {
-                    new ResetByCommand().executeReset();
+                    new ResetByCommand(plugin).executeReset();
                     player.closeInventory();
                 }
                 break;
             case "§aGamerules":
                 player.closeInventory();
-                new GUIManager().openGamerulesGUI(player);
+                new GUIManager(plugin).openGamerulesGUI(player);
                 break;
             case "§eNot Always Day":
                 if (configBoolean("world.settings.gamerules.not_always_day")) {
@@ -104,7 +109,7 @@ public class MenuHandler extends Manager {
                 break;
             case "§cBack":
                 player.closeInventory();
-                new GUIManager().openMainGUI(player);
+                new GUIManager(plugin).openMainGUI(player);
                 break;
         }
         event.setCancelled(true);

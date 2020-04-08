@@ -3,15 +3,11 @@ package me.nik.resourceworld;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.listeners.DisabledCmds;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
-import me.nik.resourceworld.utils.Messenger;
-import me.nik.resourceworld.utils.ResetTeleport;
-import me.nik.resourceworld.utils.WorldDeleter;
-import me.nik.resourceworld.utils.WorldGenerator;
+import me.nik.resourceworld.utils.*;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,34 +37,35 @@ public final class ResourceWorld extends JavaPlugin {
         System.out.println(" ");
 
         //Load Commands
-        getCommand("Resource").setExecutor(new CommandManager());
+        getCommand("Resource").setExecutor(new CommandManager(this));
 
         //Implement Events
-        getServer().getPluginManager().registerEvents(new LeaveInWorld(), this);
-        getServer().getPluginManager().registerEvents(new MenuHandler(), this);
-        getServer().getPluginManager().registerEvents(new DisabledCmds(), this);
+        getServer().getPluginManager().registerEvents(new LeaveInWorld(this), this);
+        getServer().getPluginManager().registerEvents(new MenuHandler(this), this);
+        new Initializer(this).initialize();
 
         //Create World
-        //Start Interval
-        if (!Config.get().getBoolean("settings.enabled")) {
-            System.out.println(Messenger.message("not_enabled"));
-        } else if (!Config.get().getBoolean("world.settings.automated_resets.enabled")) {
-            System.out.println(Messenger.message("automated_resets_disabled"));
-            new ResetTeleport().resetTP();
-            new WorldGenerator().createWorld();
+        if (!new WorldUtils().worldExists()) {
+            new ResetTeleport(this).resetTP();
+            new WorldGenerator(ResourceWorld.getPlugin(ResourceWorld.class)).createWorld();
         } else {
+            System.out.println(Messenger.message("world_found"));
+        }
+
+        //Start Interval
+        if (Config.get().getBoolean("world.settings.automated_resets.enabled")) {
             System.out.println(Messenger.message("automated_resets_enabled"));
             int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
-            BukkitTask ResetWorld = new ResetWorld(this).runTaskTimer(this, interval, interval);
-            new ResetTeleport().resetTP();
-            new WorldGenerator().createWorld();
+            BukkitTask resetWorld = new ResetWorld(this).runTaskTimer(this, interval, interval);
         }
+
         //Check for updates
         if (Config.get().getBoolean("settings.check_for_updates")) {
-            BukkitTask UpdateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
+            BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
             System.out.println(Messenger.message("update_disabled"));
         }
+
         //Enable bStats
         final int pluginId = 6981;
         MetricsLite metricsLite = new MetricsLite(this, pluginId);
@@ -76,13 +73,10 @@ public final class ResourceWorld extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
         //Cancel all tasks
         Bukkit.getScheduler().cancelTasks(this);
-        //Delete World
-        if (Config.get().getBoolean("settings.enabled")) {
-            new ResetTeleport().resetTP();
-            new WorldDeleter().deleteWorld();
-        }
+
         //Reload Files
         Config.reload();
         Config.save();

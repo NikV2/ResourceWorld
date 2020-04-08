@@ -8,7 +8,12 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class Reload extends SubCommand {
-    private ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+
+    private ResourceWorld plugin;
+
+    public Reload(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {

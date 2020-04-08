@@ -9,21 +9,21 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager implements TabExecutor {
-    public Plugin plugin = ResourceWorld.getPlugin(ResourceWorld.class);
+    private ResourceWorld plugin;
 
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
 
-    public CommandManager() {
-        subcommands.add(new Teleport());
-        subcommands.add(new Reload());
-        subcommands.add(new Menu());
-        subcommands.add(new Reset());
+    public CommandManager(ResourceWorld plugin) {
+        this.plugin = plugin;
+        subcommands.add(new Teleport(plugin));
+        subcommands.add(new Reload(plugin));
+        subcommands.add(new Menu(plugin));
+        subcommands.add(new Reset(plugin));
         subcommands.add(new Spawn());
     }
 
@@ -44,7 +44,7 @@ public class CommandManager implements TabExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("reset")) {
                 if (Config.get().getBoolean("settings.enabled")) {
-                    new ResetByCommand().executeReset();
+                    new ResetByCommand(plugin).executeReset();
                     return true;
                 } else {
                     sender.sendMessage(Messenger.message("not_exist"));

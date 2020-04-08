@@ -43,16 +43,15 @@ public class Lang {
         //lang.yml
         Lang.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Lang.get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
-        Lang.get().addDefault("not_enabled", "&f&lResource World is Disabled, Enable it from the &f&l&nconfig.yml&f&l Then use /Resource Reload.");
-        Lang.get().addDefault("generating", "&f&lGenerating a Resource World!");
+        Lang.get().addDefault("world_found", "&f&lA Resource World has been found, Skipping World Generation.");
+        Lang.get().addDefault("generating", "&f&lGenerating - Loading a Resource World!");
         Lang.get().addDefault("deleting", "&f&lCleaning up the old Resource World");
         Lang.get().addDefault("reset_cooldown", "&cWARNING! You cannot reset the Resource World yet, You must wait ");
-        Lang.get().addDefault("generated", "&f&lA New Resource World has been Generated!");
-        Lang.get().addDefault("automated_resets_disabled", "&f&lAutomated Resets are Disabled, Skipping");
-        Lang.get().addDefault("automated_resets_enabled", "&f&lAutomated Resets are Enabled, Starting tasks");
+        Lang.get().addDefault("generated", "&f&lA Resource World has been Generated - Loaded!");
+        Lang.get().addDefault("automated_resets_disabled", "&f&lAutomated Resets are Disabled, Skipping.");
+        Lang.get().addDefault("automated_resets_enabled", "&f&lAutomated Resets are Enabled, Initializing.");
         Lang.get().addDefault("resetting_the_world", "&fCleaning up the Resource World, This may cause Lag!");
         Lang.get().addDefault("world_has_been_reset", "&fThe Resource World has been Reset!");
-        Lang.get().addDefault("unsafe_location", "&fDid not find a safe location to teleport, Please try again!");
         Lang.get().addDefault("console_message", "&f&lThis command cannot be executed through the Console :(");
         Lang.get().addDefault("no_perm", "&cYou do not have permission to execute this command!");
         Lang.get().addDefault("cooldown_message", "&cYou can teleport to the Resource World again in ");

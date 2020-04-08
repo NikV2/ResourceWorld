@@ -6,6 +6,7 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.TeleportUtils;
+import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Teleport extends SubCommand {
-    private ResourceWorld plugin = ResourceWorld.getPlugin(ResourceWorld.class);
     private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
     final private int cdtime = Config.get().getInt("teleport.settings.cooldown");
     private HashMap<UUID, Long> delay = new HashMap<UUID, Long>();
@@ -28,6 +28,12 @@ public class Teleport extends SubCommand {
     final private World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
     final private int volume = Config.get().getInt("teleport.settings.sounds.volume");
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
+
+    private ResourceWorld plugin;
+
+    public Teleport(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {
@@ -48,7 +54,7 @@ public class Teleport extends SubCommand {
     public void perform(Player player, String[] args) {
         final UUID playerID = player.getUniqueId();
         if (args.length == 1) {
-            if (!Config.get().getBoolean("settings.enabled")) {
+            if (!new WorldUtils().worldExists()) {
                 player.sendMessage(Messenger.message("not_exist"));
             } else if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(Messenger.message("no_perm"));
