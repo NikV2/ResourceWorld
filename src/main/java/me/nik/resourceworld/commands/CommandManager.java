@@ -1,9 +1,9 @@
 package me.nik.resourceworld.commands;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.*;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,7 +43,7 @@ public class CommandManager implements TabExecutor {
                 helpMessage(sender);
                 return true;
             } else if (args[0].equalsIgnoreCase("reset")) {
-                if (Config.get().getBoolean("settings.enabled")) {
+                if (new WorldUtils().worldExists()) {
                     new ResetByCommand(plugin).executeReset();
                     return true;
                 } else {

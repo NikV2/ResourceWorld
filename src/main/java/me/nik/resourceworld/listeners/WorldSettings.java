@@ -4,8 +4,7 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Mob;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -30,12 +29,14 @@ public class WorldSettings extends Manager {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntitySpawn(CreatureSpawnEvent e) {
+        if (e.getEntity() instanceof Item) return;
         if (e.getEntity() instanceof Player) return;
-        if (e.getEntity() instanceof Mob) {
-            if (!e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
-            if (!configBoolean("world.settings.disable_entity_spawning")) return;
-            e.setCancelled(true);
-        }
+        if (e.getEntity() instanceof ArmorStand) return;
+        if (e.getEntity() instanceof Projectile) return;
+        if (e.getEntity() instanceof ItemFrame) return;
+        if (!e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
+        if (!configBoolean("world.settings.disable_entity_spawning")) return;
+        e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
