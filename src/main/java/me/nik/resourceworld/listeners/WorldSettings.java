@@ -4,7 +4,10 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,13 +28,17 @@ public class WorldSettings extends Manager {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntitySpawn(EntitySpawnEvent e) {
         if (e.getEntity() instanceof Player) return;
-        if (!e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
-        if (!configBoolean("world.settings.disable_entity_spawning")) return;
-        e.setCancelled(true);
+        if (e.getEntity() instanceof Mob) {
+            if (!e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
+            if (!configBoolean("world.settings.disable_entity_spawning")) return;
+            e.setCancelled(true);
+        }
     }
 
+    @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
