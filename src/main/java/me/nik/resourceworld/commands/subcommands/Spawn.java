@@ -12,7 +12,7 @@ import java.util.List;
 public class Spawn extends SubCommand {
     @Override
     public String getName() {
-        return "Spawn";
+        return "spawn";
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Spawn extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/Resource Spawn";
+        return "/resource spawn";
     }
 
     @Override

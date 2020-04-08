@@ -57,53 +57,53 @@ public class MenuHandler extends Manager {
                 break;
             case "§aGamerules":
                 player.closeInventory();
-                new GUIManager(plugin).openGamerulesGUI(player);
+                new GUIManager(plugin).openSettingsGUI(player);
                 break;
-            case "§eNot Always Day":
-                if (configBoolean("world.settings.gamerules.not_always_day")) {
-                    booleanSet("world.settings.gamerules.not_always_day", false);
+            case "§eAlways Day":
+                if (configBoolean("world.settings.always_day")) {
+                    booleanSet("world.settings.always_day", false);
                 } else {
-                    booleanSet("world.settings.gamerules.not_always_day", true);
+                    booleanSet("world.settings.always_day", true);
                 }
                 saveAndReload();
                 break;
-            case "§eCan Mobs Spawn?":
-                if (configBoolean("world.settings.gamerules.can_mobs_spawn")) {
-                    booleanSet("world.settings.gamerules.can_mobs_spawn", false);
+            case "§eDisable Entity Spawning":
+                if (configBoolean("world.settings.disable_entity_spawning")) {
+                    booleanSet("world.settings.disable_entity_spawning", false);
                 } else {
-                    booleanSet("world.settings.gamerules.can_mobs_spawn", true);
+                    booleanSet("world.settings.disable_entity_spawning", true);
                 }
                 saveAndReload();
                 break;
-            case "§eCan Fire Spread?":
-                if (configBoolean("world.settings.gamerules.can_fire_spread")) {
-                    booleanSet("world.settings.gamerules.can_fire_spread", false);
+            case "§eCheck for Updates":
+                if (configBoolean("settings.check_for_updates")) {
+                    booleanSet("settings.check_for_updates", false);
                 } else {
-                    booleanSet("world.settings.gamerules.can_fire_spread", true);
+                    booleanSet("settings.check_for_updates", true);
                 }
                 saveAndReload();
                 break;
-            case "§eKeep Inventory On Death":
-                if (configBoolean("world.settings.gamerules.keep_inventory_on_death")) {
-                    booleanSet("world.settings.gamerules.keep_inventory_on_death", false);
+            case "§eBlock Generation":
+                if (configBoolean("world.settings.block_regeneration.enabled")) {
+                    booleanSet("world.settings.block_regeneration.enabled", false);
                 } else {
-                    booleanSet("world.settings.gamerules.keep_inventory_on_death", true);
+                    booleanSet("world.settings.block_regeneration.enabled", true);
                 }
                 saveAndReload();
                 break;
-            case "§eMob Griefing":
-                if (configBoolean("world.settings.gamerules.mob_griefing")) {
-                    booleanSet("world.settings.gamerules.mob_griefing", false);
+            case "§eDisabled Commands":
+                if (configBoolean("disabled_commands.enabled")) {
+                    booleanSet("disabled_commands.enabled", false);
                 } else {
-                    booleanSet("world.settings.gamerules.mob_griefing", true);
+                    booleanSet("disabled_commands.enabled", true);
                 }
                 saveAndReload();
                 break;
-            case "§eShow Death Messages":
-                if (configBoolean("world.settings.gamerules.show_death_messages")) {
-                    booleanSet("world.settings.gamerules.show_death_messages", false);
+            case "§eAutomated Resets":
+                if (configBoolean("world.settings.automated_resets.enabled")) {
+                    booleanSet("world.settings.automated_resets.enabled", false);
                 } else {
-                    booleanSet("world.settings.gamerules.show_death_messages", true);
+                    booleanSet("world.settings.automated_resets.enabled", true);
                 }
                 saveAndReload();
                 break;

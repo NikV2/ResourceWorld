@@ -17,7 +17,7 @@ public class Reload extends SubCommand {
 
     @Override
     public String getName() {
-        return "Reload";
+        return "reload";
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Reload extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/Resource Reload";
+        return "/resource reload";
     }
 
     @Override

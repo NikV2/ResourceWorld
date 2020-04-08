@@ -37,7 +37,7 @@ public final class ResourceWorld extends JavaPlugin {
         System.out.println(" ");
 
         //Load Commands
-        getCommand("Resource").setExecutor(new CommandManager(this));
+        getCommand("resource").setExecutor(new CommandManager(this));
 
         //Implement Events
         getServer().getPluginManager().registerEvents(new LeaveInWorld(this), this);

@@ -37,7 +37,7 @@ public class Teleport extends SubCommand {
 
     @Override
     public String getName() {
-        return "TP";
+        return "tp";
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Teleport extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/Resource TP";
+        return "/resource tp";
     }
 
     @Override

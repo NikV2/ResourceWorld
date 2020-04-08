@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class GUIManager {
 
     private static Inventory mainGUI;
-    private static Inventory gamerulesGUI;
+    private static Inventory settingsGUI;
     public ResourceWorld plugin;
 
     public GUIManager(ResourceWorld plugin) {
@@ -37,7 +37,7 @@ public class GUIManager {
         ItemStack close = new ItemStack(Material.BARRIER);
         ItemStack support = new ItemStack(Material.DIAMOND);
         ItemStack reset = new ItemStack(Material.EMERALD);
-        ItemStack gamerules = new ItemStack(Material.BOOK);
+        ItemStack settings = new ItemStack(Material.BOOK);
 
         //Item Data
         ItemMeta teleport_meta = teleport.getItemMeta();
@@ -78,18 +78,13 @@ public class GUIManager {
         reset_meta.setLore(reset_lore);
         reset.setItemMeta(reset_meta);
 
-        ItemMeta gamerules_meta = gamerules.getItemMeta();
-        gamerules_meta.setDisplayName("§aGamerules");
-        ArrayList<String> gamerules_lore = new ArrayList<>();
-        gamerules_lore.add("");
-        gamerules_lore.add(ChatColor.GRAY + "Modify the Resource World's");
-        gamerules_lore.add(ChatColor.GRAY + "Gamerules!");
-        gamerules_meta.setLore(gamerules_lore);
-        gamerules.setItemMeta(gamerules_meta);
+        ItemMeta settings_meta = settings.getItemMeta();
+        settings_meta.setDisplayName("§aSettings");
+        settings.setItemMeta(settings_meta);
 
         //Add the Items
         mainGUI.setItem(49, close);
-        mainGUI.setItem(33, gamerules);
+        mainGUI.setItem(33, settings);
         mainGUI.setItem(31, reset);
         mainGUI.setItem(29, support);
         mainGUI.setItem(15, reload);
@@ -121,9 +116,9 @@ public class GUIManager {
         }.runTaskTimer(plugin, 1, 10);
     }
 
-    public void openGamerulesGUI(Player p) {
-        Inventory gamerulesGUI = Bukkit.createInventory(new ResourceWorldHolder(), 54, Messenger.format(Lang.get().getString("gamerules_gui_name")));
-        p.openInventory(gamerulesGUI);
+    public void openSettingsGUI(Player p) {
+        Inventory settingsGUI = Bukkit.createInventory(new ResourceWorldHolder(), 54, Messenger.format(Lang.get().getString("settings_gui_name")));
+        p.openInventory(settingsGUI);
         final Player pNon = p;
         new BukkitRunnable() {
 
@@ -134,81 +129,81 @@ public class GUIManager {
                     cancel();
                     return;
                 }
-                //not always day gamerule
+                //always day
                 ItemStack day = new ItemStack(Material.PAPER, 1);
                 ItemMeta day_meta = day.getItemMeta();
-                day_meta.setDisplayName("§eNot Always Day");
+                day_meta.setDisplayName("§eAlways Day");
                 ArrayList<String> dayLore = new ArrayList<>();
                 dayLore.add("");
-                dayLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.gamerules.not_always_day"));
+                dayLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.always_day"));
                 dayLore.add("");
                 dayLore.add(ChatColor.WHITE + "Would you like it to");
                 dayLore.add(ChatColor.WHITE + "Always be day in the Resource World?");
                 day_meta.setLore(dayLore);
                 day.setItemMeta(day_meta);
 
-                //can mobs spawn gamerule
+                //disable entity spawn
                 ItemStack mobspawn = new ItemStack(Material.PAPER, 1);
                 ItemMeta mobspawn_meta = mobspawn.getItemMeta();
-                mobspawn_meta.setDisplayName("§eCan Mobs Spawn?");
+                mobspawn_meta.setDisplayName("§eDisable Entity Spawning");
                 ArrayList<String> moblore = new ArrayList<>();
                 moblore.add("");
-                moblore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.gamerules.can_mobs_spawn"));
+                moblore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.disable_entity_spawning"));
                 moblore.add("");
                 moblore.add(ChatColor.WHITE + "Would you like Mobs to");
-                moblore.add(ChatColor.WHITE + "Spawn in the Resource World?");
+                moblore.add(ChatColor.WHITE + "Not spawn in the Resource World?");
                 mobspawn_meta.setLore(moblore);
                 mobspawn.setItemMeta(mobspawn_meta);
 
-                //can fire spread gamerule
-                ItemStack fire = new ItemStack(Material.PAPER, 1);
-                ItemMeta fire_meta = fire.getItemMeta();
-                fire_meta.setDisplayName("§eCan Fire Spread?");
-                ArrayList<String> fireLore = new ArrayList<>();
-                fireLore.add("");
-                fireLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.gamerules.can_fire_spread"));
-                fireLore.add("");
-                fireLore.add(ChatColor.WHITE + "Would you like fire to spread");
-                fireLore.add(ChatColor.WHITE + "In the Resource World?");
-                fire_meta.setLore(fireLore);
-                fire.setItemMeta(fire_meta);
+                //check for updates
+                ItemStack updates = new ItemStack(Material.PAPER, 1);
+                ItemMeta updates_meta = updates.getItemMeta();
+                updates_meta.setDisplayName("§eCheck for Updates");
+                ArrayList<String> updatesLore = new ArrayList<>();
+                updatesLore.add("");
+                updatesLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("settings.check_for_updates"));
+                updatesLore.add("");
+                updatesLore.add(ChatColor.WHITE + "Would you like to check for");
+                updatesLore.add(ChatColor.WHITE + "Updates on Server Restarts?");
+                updates_meta.setLore(updatesLore);
+                updates.setItemMeta(updates_meta);
 
-                //keep inventory gamerule
-                ItemStack ki = new ItemStack(Material.PAPER, 1);
-                ItemMeta ki_meta = ki.getItemMeta();
-                ki_meta.setDisplayName("§eKeep Inventory On Death");
-                ArrayList<String> kiLore = new ArrayList<>();
-                kiLore.add("");
-                kiLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.gamerules.keep_inventory_on_death"));
-                kiLore.add("");
-                kiLore.add(ChatColor.WHITE + "Would you like players to keep their");
-                kiLore.add(ChatColor.WHITE + "Items if they die in the Resource World?");
-                ki_meta.setLore(kiLore);
-                ki.setItemMeta(ki_meta);
+                //ore regeneration
+                ItemStack orere = new ItemStack(Material.PAPER, 1);
+                ItemMeta orere_meta = orere.getItemMeta();
+                orere_meta.setDisplayName("§eBlock Generation");
+                ArrayList<String> orereLore = new ArrayList<>();
+                orereLore.add("");
+                orereLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.block_regeneration.enabled"));
+                orereLore.add("");
+                orereLore.add(ChatColor.WHITE + "Would you like certain blocks to");
+                orereLore.add(ChatColor.WHITE + "Regenerate after a certain amount of time?");
+                orere_meta.setLore(orereLore);
+                orere.setItemMeta(orere_meta);
 
-                //mob griefing gamerule
-                ItemStack mg = new ItemStack(Material.PAPER, 1);
-                ItemMeta mg_meta = mg.getItemMeta();
-                mg_meta.setDisplayName("§eMob Griefing");
-                ArrayList<String> mgLore = new ArrayList<>();
-                mgLore.add("");
-                mgLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.gamerules.mob_griefing"));
-                mgLore.add("");
-                mgLore.add(ChatColor.WHITE + "Would you like Mobs to be able");
-                mgLore.add(ChatColor.WHITE + "To modify Blocks inside the Resource World?");
-                mg_meta.setLore(mgLore);
-                mg.setItemMeta(mg_meta);
+                //disabled commands
+                ItemStack discmd = new ItemStack(Material.PAPER, 1);
+                ItemMeta discmd_meta = discmd.getItemMeta();
+                discmd_meta.setDisplayName("§eDisabled Commands");
+                ArrayList<String> discmdLore = new ArrayList<>();
+                discmdLore.add("");
+                discmdLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("disabled_commands.enabled"));
+                discmdLore.add("");
+                discmdLore.add(ChatColor.WHITE + "Would you like certain commands to");
+                discmdLore.add(ChatColor.WHITE + "Be Disabled inside the Resource World?");
+                discmd_meta.setLore(discmdLore);
+                discmd.setItemMeta(discmd_meta);
 
-                //death messages gamerule
+                //automated resets
                 ItemStack dm = new ItemStack(Material.PAPER, 1);
                 ItemMeta dm_meta = dm.getItemMeta();
-                dm_meta.setDisplayName("§eShow Death Messages");
+                dm_meta.setDisplayName("§eAutomated Resets");
                 ArrayList<String> dmLore = new ArrayList<>();
                 dmLore.add("");
-                dmLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.gamerules.show_death_messages"));
+                dmLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.automated_resets.enabled"));
                 dmLore.add("");
-                dmLore.add(ChatColor.WHITE + "Would you like players to see Death Messages");
-                dmLore.add(ChatColor.WHITE + "If they die inside the Resource World?");
+                dmLore.add(ChatColor.WHITE + "Would you like to Reset the");
+                dmLore.add(ChatColor.WHITE + "Resource World Automatically?");
                 dm_meta.setLore(dmLore);
                 dm.setItemMeta(dm_meta);
 
@@ -217,13 +212,13 @@ public class GUIManager {
                 back_meta.setDisplayName("§cBack");
                 back.setItemMeta(back_meta);
 
-                gamerulesGUI.setItem(11, day);
-                gamerulesGUI.setItem(13, mobspawn);
-                gamerulesGUI.setItem(15, fire);
-                gamerulesGUI.setItem(29, ki);
-                gamerulesGUI.setItem(31, mg);
-                gamerulesGUI.setItem(33, dm);
-                gamerulesGUI.setItem(49, back);
+                settingsGUI.setItem(11, day);
+                settingsGUI.setItem(13, mobspawn);
+                settingsGUI.setItem(15, updates);
+                settingsGUI.setItem(29, orere);
+                settingsGUI.setItem(31, discmd);
+                settingsGUI.setItem(33, dm);
+                settingsGUI.setItem(49, back);
             }
         }.runTaskTimer(plugin, 1, 5);
     }

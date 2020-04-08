@@ -17,7 +17,7 @@ public class Menu extends SubCommand {
 
     @Override
     public String getName() {
-        return "Menu";
+        return "menu";
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Menu extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/Resource Menu";
+        return "/resource menu";
     }
 
     @Override

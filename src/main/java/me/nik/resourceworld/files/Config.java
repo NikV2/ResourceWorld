@@ -54,7 +54,6 @@ public class Config {
         blocks.add("COAL_ORE");
         blocks.add("IRON_ORE");
         blocks.add("LAPIS_ORE");
-        blocks.add("NETHER_QUARTZ_ORE");
         Config.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Config.get().addDefault("settings.check_for_updates", true);
         Config.get().addDefault("world.settings.world_name", "resource_world");
