@@ -1,5 +1,5 @@
 name: ResourceWorld
-version: 1.4.0
+version: 1.4.1
 main: me.nik.resourceworld.ResourceWorld
 api-version: 1.13
 load: POSTWORLD
