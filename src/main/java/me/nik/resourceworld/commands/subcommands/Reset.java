@@ -1,6 +1,5 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
@@ -13,14 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class Reset extends SubCommand {
-    private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
+    private final HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
     private final int cdtime = 60;
-
-    private ResourceWorld plugin;
-
-    public Reset(ResourceWorld plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public String getName() {
@@ -48,7 +41,7 @@ public class Reset extends SubCommand {
                     player.sendMessage(Messenger.message("reset_cooldown") + secondsleft + " Seconds.");
                 } else {
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-                    new ResetByCommand(plugin).executeReset();
+                    new ResetByCommand().executeReset();
                     new BukkitRunnable() {
 
                         @Override

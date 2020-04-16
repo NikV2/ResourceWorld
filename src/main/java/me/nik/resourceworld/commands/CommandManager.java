@@ -14,16 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager implements TabExecutor {
-    private ResourceWorld plugin;
+    private final ResourceWorld plugin = ResourceWorld.getInstance();
 
-    private ArrayList<SubCommand> subcommands = new ArrayList<>();
+    private final ArrayList<SubCommand> subcommands = new ArrayList<>();
 
-    public CommandManager(ResourceWorld plugin) {
-        this.plugin = plugin;
-        subcommands.add(new Teleport(plugin));
-        subcommands.add(new Reload(plugin));
-        subcommands.add(new Menu(plugin));
-        subcommands.add(new Reset(plugin));
+    public CommandManager() {
+        subcommands.add(new Teleport());
+        subcommands.add(new Reload());
+        subcommands.add(new Menu());
+        subcommands.add(new Reset());
         subcommands.add(new Spawn());
     }
 
@@ -37,14 +36,13 @@ public class CommandManager implements TabExecutor {
                 sender.getServer().getPluginManager().disablePlugin(plugin);
                 sender.getServer().getPluginManager().enablePlugin(plugin);
                 sender.sendMessage(Messenger.message("reloaded"));
-                System.gc();
                 return true;
             } else if (args[0].equalsIgnoreCase("help")) {
                 helpMessage(sender);
                 return true;
             } else if (args[0].equalsIgnoreCase("reset")) {
                 if (new WorldUtils().worldExists()) {
-                    new ResetByCommand(plugin).executeReset();
+                    new ResetByCommand().executeReset();
                     return true;
                 } else {
                     sender.sendMessage(Messenger.message("not_exist"));

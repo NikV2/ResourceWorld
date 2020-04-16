@@ -1,16 +1,11 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import org.bukkit.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WorldGenerator extends Manager {
     World world;
-
-    public WorldGenerator(ResourceWorld plugin) {
-        super(plugin);
-    }
 
     public void createWorld() {
         System.out.println(Messenger.message("generating"));

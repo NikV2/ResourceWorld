@@ -21,11 +21,7 @@ public class GUIManager {
 
     private static Inventory mainGUI;
     private static Inventory settingsGUI;
-    public ResourceWorld plugin;
-
-    public GUIManager(ResourceWorld plugin) {
-        this.plugin = plugin;
-    }
+    private final ResourceWorld plugin = ResourceWorld.getInstance();
 
     public void openMainGUI(Player p) {
 

@@ -1,6 +1,5 @@
 package me.nik.resourceworld.listeners;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
@@ -8,10 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class DisabledCmds extends Manager {
-
-    public DisabledCmds(ResourceWorld plugin) {
-        super(plugin);
-    }
 
     @EventHandler
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {

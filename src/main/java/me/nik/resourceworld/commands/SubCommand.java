@@ -1,10 +1,14 @@
 package me.nik.resourceworld.commands;
 
+import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public abstract class SubCommand {
+
+    protected ResourceWorld plugin = ResourceWorld.getInstance();
+
     public abstract String getName();
 
     public abstract String getDescription();

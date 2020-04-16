@@ -8,14 +8,10 @@ import org.bukkit.event.Listener;
 import java.io.File;
 import java.util.List;
 
-public abstract class Manager implements Listener {
+public class Manager implements Listener {
 
 
-    protected ResourceWorld plugin;
-
-    public Manager(ResourceWorld plugin) {
-        this.plugin = plugin;
-    }
+    protected ResourceWorld plugin = ResourceWorld.getInstance();
 
     public boolean configBoolean(String booleans) {
         return Config.get().getBoolean(booleans);

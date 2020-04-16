@@ -1,6 +1,5 @@
 package me.nik.resourceworld.listeners;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.GUIManager;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
@@ -18,10 +17,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuHandler extends Manager {
 
-    public MenuHandler(ResourceWorld plugin) {
-        super(plugin);
-    }
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onMenuClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -31,7 +26,7 @@ public class MenuHandler extends Manager {
         if (clickedItem.getType().equals(Material.AIR)) return;
         switch (clickedItem.getItemMeta().getDisplayName()) {
             case "§aTeleport All":
-                new ResetTeleport(plugin).resetTP();
+                new ResetTeleport().resetTP();
                 player.sendMessage(Messenger.message("teleported_players"));
                 break;
             case "§aReload":
@@ -52,65 +47,41 @@ public class MenuHandler extends Manager {
                 if (!new WorldUtils().worldExists()) {
                     player.sendMessage(Messenger.message("not_exist"));
                 } else {
-                    new ResetByCommand(plugin).executeReset();
+                    new ResetByCommand().executeReset();
                     player.closeInventory();
                 }
                 break;
             case "§aSettings":
                 player.closeInventory();
-                new GUIManager(plugin).openSettingsGUI(player);
+                new GUIManager().openSettingsGUI(player);
                 break;
             case "§eAlways Day":
-                if (configBoolean("world.settings.always_day")) {
-                    booleanSet("world.settings.always_day", false);
-                } else {
-                    booleanSet("world.settings.always_day", true);
-                }
+                booleanSet("world.settings.always_day", !configBoolean("world.settings.always_day"));
                 saveAndReload();
                 break;
             case "§eDisable Entity Spawning":
-                if (configBoolean("world.settings.disable_entity_spawning")) {
-                    booleanSet("world.settings.disable_entity_spawning", false);
-                } else {
-                    booleanSet("world.settings.disable_entity_spawning", true);
-                }
+                booleanSet("world.settings.disable_entity_spawning", !configBoolean("world.settings.disable_entity_spawning"));
                 saveAndReload();
                 break;
             case "§eCheck for Updates":
-                if (configBoolean("settings.check_for_updates")) {
-                    booleanSet("settings.check_for_updates", false);
-                } else {
-                    booleanSet("settings.check_for_updates", true);
-                }
+                booleanSet("settings.check_for_updates", !configBoolean("settings.check_for_updates"));
                 saveAndReload();
                 break;
             case "§eBlock Generation":
-                if (configBoolean("world.settings.block_regeneration.enabled")) {
-                    booleanSet("world.settings.block_regeneration.enabled", false);
-                } else {
-                    booleanSet("world.settings.block_regeneration.enabled", true);
-                }
+                booleanSet("world.settings.block_regeneration.enabled", !configBoolean("world.settings.block_regeneration.enabled"));
                 saveAndReload();
                 break;
             case "§eDisabled Commands":
-                if (configBoolean("disabled_commands.enabled")) {
-                    booleanSet("disabled_commands.enabled", false);
-                } else {
-                    booleanSet("disabled_commands.enabled", true);
-                }
+                booleanSet("disabled_commands.enabled", !configBoolean("disabled_commands.enabled"));
                 saveAndReload();
                 break;
             case "§eAutomated Resets":
-                if (configBoolean("world.settings.automated_resets.enabled")) {
-                    booleanSet("world.settings.automated_resets.enabled", false);
-                } else {
-                    booleanSet("world.settings.automated_resets.enabled", true);
-                }
+                booleanSet("world.settings.automated_resets.enabled", !configBoolean("world.settings.automated_resets.enabled"));
                 saveAndReload();
                 break;
             case "§cBack":
                 player.closeInventory();
-                new GUIManager(plugin).openMainGUI(player);
+                new GUIManager().openMainGUI(player);
                 break;
         }
         event.setCancelled(true);

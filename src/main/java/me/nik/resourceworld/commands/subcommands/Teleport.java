@@ -1,6 +1,5 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
@@ -20,20 +19,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class Teleport extends SubCommand {
-    private HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
-    final private int cdtime = Config.get().getInt("teleport.settings.cooldown");
-    private HashMap<UUID, Long> delay = new HashMap<UUID, Long>();
+    private final HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
+    private final int cdtime = Config.get().getInt("teleport.settings.cooldown");
+    private final HashMap<UUID, Long> delay = new HashMap<UUID, Long>();
     final private int delaytime = Config.get().getInt("teleport.settings.delay");
     final private PotionEffect effect = new PotionEffect(PotionEffectType.getByName(Config.get().getString("teleport.settings.effects.effect")), Config.get().getInt("teleport.settings.effects.duration") * 20, Config.get().getInt("teleport.settings.effects.amplifier"));
     final private World world = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
     final private int volume = Config.get().getInt("teleport.settings.sounds.volume");
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
-
-    private ResourceWorld plugin;
-
-    public Teleport(ResourceWorld plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public String getName() {

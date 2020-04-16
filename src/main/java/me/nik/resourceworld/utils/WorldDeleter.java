@@ -1,15 +1,10 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class WorldDeleter extends Manager {
-
-    public WorldDeleter(ResourceWorld plugin) {
-        super(plugin);
-    }
 
     public void deleteWorld() {
         if (!worldExists()) return;
