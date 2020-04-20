@@ -8,7 +8,6 @@ public class WorldGenerator extends Manager {
     World world;
 
     public void createWorld() {
-        System.out.println(Messenger.message("generating"));
         try {
             WorldCreator wc = new WorldCreator(configString("world.settings.world_name"));
             wc.type(WorldType.valueOf(configString("world.settings.world_type")));

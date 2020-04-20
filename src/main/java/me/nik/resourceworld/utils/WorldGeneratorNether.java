@@ -8,7 +8,6 @@ public class WorldGeneratorNether extends Manager {
     World world;
 
     public void createWorld() {
-        System.out.println(Messenger.message("generating"));
         try {
             WorldCreator wc = new WorldCreator(configString("nether_world.settings.world_name"));
             wc.type(WorldType.NORMAL);
