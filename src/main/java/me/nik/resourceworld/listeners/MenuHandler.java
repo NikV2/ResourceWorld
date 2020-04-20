@@ -6,7 +6,6 @@ import me.nik.resourceworld.holder.ResourceWorldHolder;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
-import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,12 +43,8 @@ public class MenuHandler extends Manager {
                 player.closeInventory();
                 break;
             case "§aReset":
-                if (!new WorldUtils().worldExists()) {
-                    player.sendMessage(Messenger.message("not_exist"));
-                } else {
-                    new ResetByCommand().executeReset();
-                    player.closeInventory();
-                }
+                player.closeInventory();
+                new GUIManager().openWorldsGUI(player);
                 break;
             case "§aSettings":
                 player.closeInventory();
@@ -78,6 +73,24 @@ public class MenuHandler extends Manager {
             case "§eAutomated Resets":
                 booleanSet("world.settings.automated_resets.enabled", !configBoolean("world.settings.automated_resets.enabled"));
                 saveAndReload();
+                break;
+            case "§aResource World":
+                if (worldExists()) {
+                    player.closeInventory();
+                    new ResetByCommand().executeReset();
+                }
+                break;
+            case "§cNether World":
+                if (configBoolean("nether_world.settings.enabled")) {
+                    player.closeInventory();
+                    new ResetByCommand().executeNetherReset();
+                }
+                break;
+            case "§9End World":
+                if (configBoolean("end_world.settings.enabled")) {
+                    player.closeInventory();
+                    new ResetByCommand().executeEndReset();
+                }
                 break;
             case "§cBack":
                 player.closeInventory();

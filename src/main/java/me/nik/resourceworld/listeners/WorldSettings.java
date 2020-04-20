@@ -1,7 +1,6 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.api.Manager;
-import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -17,7 +16,7 @@ public class WorldSettings extends Manager {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (new WorldUtils().worldExists()) {
+                    if (worldExists()) {
                         Bukkit.getWorld(configString("world.settings.world_name")).setTime(1000);
                     } else cancel();
                 }

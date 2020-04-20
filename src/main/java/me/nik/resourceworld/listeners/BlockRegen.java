@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class OreRegen extends Manager {
+public class BlockRegen extends Manager {
     private final int delay = configInt("world.settings.block_regeneration.regeneration_delay") * 1200;
 
     @EventHandler(priority = EventPriority.HIGHEST)

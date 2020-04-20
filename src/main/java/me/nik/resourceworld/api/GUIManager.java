@@ -19,8 +19,9 @@ import java.util.ArrayList;
 
 public class GUIManager {
 
-    private static Inventory mainGUI;
-    private static Inventory settingsGUI;
+    private Inventory mainGUI;
+    private Inventory worldsGUI;
+    private Inventory settingsGUI;
     private final ResourceWorld plugin = ResourceWorld.getInstance();
 
     public void openMainGUI(Player p) {
@@ -217,5 +218,37 @@ public class GUIManager {
                 settingsGUI.setItem(49, back);
             }
         }.runTaskTimer(plugin, 1, 5);
+    }
+
+    public void openWorldsGUI(Player p) {
+        Inventory worldsGUI = Bukkit.createInventory(new ResourceWorldHolder(), 36, Messenger.format(Lang.get().getString("worlds_gui_name")));
+
+        ItemStack rw = new ItemStack(Material.DIRT, 1);
+        ItemStack nether = new ItemStack(Material.NETHERRACK, 1);
+        ItemStack end = new ItemStack(Material.OBSIDIAN, 1);
+        ItemStack back = new ItemStack(Material.BARRIER, 1);
+
+        ItemMeta rw_meta = rw.getItemMeta();
+        rw_meta.setDisplayName("§aResource World");
+        rw.setItemMeta(rw_meta);
+
+        ItemMeta nether_meta = nether.getItemMeta();
+        nether_meta.setDisplayName("§cNether World");
+        nether.setItemMeta(nether_meta);
+
+        ItemMeta end_meta = end.getItemMeta();
+        end_meta.setDisplayName("§9End World");
+        end.setItemMeta(end_meta);
+
+        ItemMeta back_meta = back.getItemMeta();
+        back_meta.setDisplayName("§cBack");
+        back.setItemMeta(back_meta);
+
+        worldsGUI.setItem(11, nether);
+        worldsGUI.setItem(13, rw);
+        worldsGUI.setItem(15, end);
+        worldsGUI.setItem(31, back);
+
+        p.openInventory(worldsGUI);
     }
 }

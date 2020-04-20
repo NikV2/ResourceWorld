@@ -1,19 +1,24 @@
 package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
-import me.nik.resourceworld.utils.WorldUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 public class Reset extends SubCommand {
     private final HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
-    private final int cdtime = 60;
+    private final int cdtime = 10;
+    private final String world = Config.get().getString("world.settings.world_name");
+    private final String nether = Config.get().getString("nether_world.settings.world_name");
+    private final String end = Config.get().getString("end_world.settings.world_name");
 
     @Override
     public String getName() {
@@ -27,21 +32,63 @@ public class Reset extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/resource reset";
+        return "/resource reset <nether, end>";
     }
 
     @Override
     public void perform(Player player, String[] args) {
+        if (!player.hasPermission("rw.admin")) {
+            player.sendMessage(Messenger.message("no_perm"));
+            return;
+        }
         if (args.length == 1) {
-            if (!player.hasPermission("rw.admin")) {
-                player.sendMessage(Messenger.message("no_perm"));
-            } else if (new WorldUtils().worldExists()) {
+            if (worldExists(world)) {
                 if (cooldown.containsKey(player.getUniqueId())) {
                     long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
-                    player.sendMessage(Messenger.message("reset_cooldown") + secondsleft + " Seconds.");
+                    player.sendMessage(Messenger.message("reset_cooldown").replaceAll("%seconds%", String.valueOf(secondsleft)));
                 } else {
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     new ResetByCommand().executeReset();
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            cooldown.remove(player.getUniqueId());
+                            cancel();
+                        }
+                    }.runTaskLaterAsynchronously(plugin, cdtime * 20);
+                }
+            } else {
+                player.sendMessage(Messenger.message("not_exist"));
+            }
+        } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
+            if (worldExists(nether)) {
+                if (cooldown.containsKey(player.getUniqueId())) {
+                    long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
+                    player.sendMessage(Messenger.message("reset_cooldown").replaceAll("%seconds%", String.valueOf(secondsleft)));
+                } else {
+                    cooldown.put(player.getUniqueId(), System.currentTimeMillis());
+                    new ResetByCommand().executeNetherReset();
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            cooldown.remove(player.getUniqueId());
+                            cancel();
+                        }
+                    }.runTaskLaterAsynchronously(plugin, cdtime * 20);
+                }
+            } else {
+                player.sendMessage(Messenger.message("not_exist"));
+            }
+        } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
+            if (worldExists(end)) {
+                if (cooldown.containsKey(player.getUniqueId())) {
+                    long secondsleft = ((cooldown.get(player.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
+                    player.sendMessage(Messenger.message("reset_cooldown").replaceAll("%seconds%", String.valueOf(secondsleft)));
+                } else {
+                    cooldown.put(player.getUniqueId(), System.currentTimeMillis());
+                    new ResetByCommand().executeEndReset();
                     new BukkitRunnable() {
 
                         @Override
@@ -59,6 +106,22 @@ public class Reset extends SubCommand {
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
+
+        if (args.length == 2) {
+            List<String> worlds = new ArrayList<>();
+            if (worldExists(nether)) {
+                worlds.add("nether");
+            }
+            if (worldExists(end)) {
+                worlds.add("end");
+            }
+            return worlds;
+        }
+
         return null;
+    }
+
+    private boolean worldExists(String world) {
+        return Bukkit.getWorld(world) != null;
     }
 }

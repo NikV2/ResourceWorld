@@ -1,9 +1,7 @@
 package me.nik.resourceworld.commands;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.*;
-import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
-import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -39,14 +37,6 @@ public class CommandManager implements TabExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("help")) {
                 helpMessage(sender);
-                return true;
-            } else if (args[0].equalsIgnoreCase("reset")) {
-                if (new WorldUtils().worldExists()) {
-                    new ResetByCommand().executeReset();
-                    return true;
-                } else {
-                    sender.sendMessage(Messenger.message("not_exist"));
-                }
                 return true;
             } else {
                 sender.sendMessage(Messenger.message("console_message"));
@@ -84,6 +74,12 @@ public class CommandManager implements TabExecutor {
                 subcommandsArgs.add(getSubcommands().get(i).getName());
             }
             return subcommandsArgs;
+        } else if (args.length == 2) {
+            for (int i = 0; i < getSubcommands().size(); i++) {
+                if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
+                    return getSubcommands().get(i).getSubcommandArguments((Player) sender, args);
+                }
+            }
         }
         return null;
     }

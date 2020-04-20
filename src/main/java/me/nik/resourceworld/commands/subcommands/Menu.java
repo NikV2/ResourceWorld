@@ -26,12 +26,12 @@ public class Menu extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
+        if (!player.hasPermission("rw.admin")) {
+            player.sendMessage(Messenger.message("no_perm"));
+            return;
+        }
         if (args.length == 1) {
-            if (!player.hasPermission("rw.admin")) {
-                player.sendMessage(Messenger.message("no_perm"));
-            } else {
-                new GUIManager().openMainGUI(player);
-            }
+            new GUIManager().openMainGUI(player);
         }
     }
 

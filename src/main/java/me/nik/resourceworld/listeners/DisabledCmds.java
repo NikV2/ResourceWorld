@@ -11,9 +11,9 @@ public class DisabledCmds extends Manager {
     @EventHandler
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
-        if (e.getPlayer().getWorld().getName().equals(configString("world.settings.world_name"))) {
+        if (p.hasPermission("rw.admin")) return;
+        if (isInWorld(p)) {
             for (String cmd : configStringList("disabled_commands.commands")) {
-                if (p.hasPermission("rw.admin")) return;
                 if (cmd.contains(e.getMessage())) {
                     e.setCancelled(true);
                     p.sendMessage(Messenger.message("disabled_command"));

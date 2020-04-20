@@ -37,7 +37,6 @@ public class WorldGenerator extends Manager {
             resourceWorld.setStorm(configBoolean("world.settings.weather_storms"));
             resourceWorld.setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
             Bukkit.getWorlds().add(resourceWorld);
-            System.out.println(Messenger.message("generated"));
         } catch (NullPointerException | IllegalArgumentException | IllegalStateException ignored) {
             System.out.println(Messenger.prefix(Messenger.format("&cSomething went wrong while generating your world, Please try restarting your Server and resetting your config.yml!")));
         }

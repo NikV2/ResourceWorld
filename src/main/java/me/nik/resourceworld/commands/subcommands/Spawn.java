@@ -30,10 +30,10 @@ public class Spawn extends SubCommand {
         if (args.length == 1) {
             if (!player.hasPermission("rw.tp")) {
                 player.sendMessage(Messenger.message("no_perm"));
-            } else if (Bukkit.getWorld(Config.get().getString("world.settings.main_spawn_world")) == null) {
+            } else if (Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")) == null) {
                 player.sendMessage(Messenger.message("main_world_error"));
             } else {
-                final Location loc = Bukkit.getWorld(Config.get().getString("world.settings.main_spawn_world")).getSpawnLocation();
+                final Location loc = Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")).getSpawnLocation();
                 player.teleport(loc);
                 player.sendMessage(Messenger.message("teleported_message"));
             }

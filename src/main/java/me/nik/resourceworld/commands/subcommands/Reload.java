@@ -25,15 +25,15 @@ public class Reload extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
+        if (!player.hasPermission("rw.admin")) {
+            player.sendMessage(Messenger.message("no_perm"));
+            return;
+        }
         if (args.length == 1) {
-            if (!player.hasPermission("rw.admin")) {
-                player.sendMessage(Messenger.message("no_perm"));
-            } else {
-                player.sendMessage(Messenger.message("reloading"));
-                plugin.getServer().getPluginManager().disablePlugin(plugin);
-                plugin.getServer().getPluginManager().enablePlugin(plugin);
-                player.sendMessage(Messenger.message("reloaded"));
-            }
+            player.sendMessage(Messenger.message("reloading"));
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            plugin.getServer().getPluginManager().enablePlugin(plugin);
+            player.sendMessage(Messenger.message("reloaded"));
         }
     }
 

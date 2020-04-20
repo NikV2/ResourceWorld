@@ -3,13 +3,13 @@ package me.nik.resourceworld.api;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.io.File;
 import java.util.List;
 
 public class Manager implements Listener {
-
 
     protected ResourceWorld plugin = ResourceWorld.getInstance();
 
@@ -38,10 +38,6 @@ public class Manager implements Listener {
         Config.reload();
     }
 
-    public void registerEvent(Listener listener) {
-        Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-    }
-
     public boolean deleteDirectory(File directory) {
         if (directory.exists()) {
             File[] files = directory.listFiles();
@@ -59,5 +55,21 @@ public class Manager implements Listener {
 
     public boolean worldExists() {
         return Bukkit.getWorld(configString("world.settings.world_name")) != null;
+    }
+
+    public boolean netherExists() {
+        return Bukkit.getWorld(configString("nether_world.settings.world_name")) != null;
+    }
+
+    public boolean endExists() {
+        return Bukkit.getWorld(configString("end_world.settings.world_name")) != null;
+    }
+
+    public boolean isInWorld(Player player) {
+        if (player.getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) {
+            return true;
+        } else if (player.getWorld().getName().equalsIgnoreCase(configString("nether_world.settings.world_name"))) {
+            return true;
+        } else return player.getWorld().getName().equalsIgnoreCase(configString("end_world.settings.world_name"));
     }
 }

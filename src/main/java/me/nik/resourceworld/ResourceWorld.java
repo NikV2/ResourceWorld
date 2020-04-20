@@ -3,14 +3,19 @@ package me.nik.resourceworld;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.listeners.LeaveInWorld;
-import me.nik.resourceworld.listeners.MenuHandler;
+import me.nik.resourceworld.listeners.*;
+import me.nik.resourceworld.tasks.ResetEndWorld;
+import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
-import me.nik.resourceworld.utils.*;
+import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.WorldGenerator;
+import me.nik.resourceworld.utils.WorldGeneratorEnd;
+import me.nik.resourceworld.utils.WorldGeneratorNether;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -22,14 +27,7 @@ public final class ResourceWorld extends JavaPlugin {
     public void onEnable() {
         instance = this;
         //Load Files
-        Config.setup();
-        Config.addDefaults();
-        Config.get().options().copyDefaults(true);
-        Config.save();
-        Lang.setup();
-        Lang.addDefaults();
-        Lang.get().options().copyDefaults(true);
-        Lang.save();
+        loadFiles();
 
         //Startup Message
         System.out.println();
@@ -43,25 +41,11 @@ public final class ResourceWorld extends JavaPlugin {
         //Load Commands
         getCommand("resource").setExecutor(new CommandManager());
 
-        //Implement Events
-        getServer().getPluginManager().registerEvents(new LeaveInWorld(), this);
-        getServer().getPluginManager().registerEvents(new MenuHandler(), this);
-        new Initializer().initialize();
+        initialize();
 
-        //Create World
-        if (!new WorldUtils().worldExists()) {
-            new ResetTeleport().resetTP();
-            new WorldGenerator().createWorld();
-        } else {
-            System.out.println(Messenger.message("world_found"));
-        }
+        generateWorlds();
 
-        //Start Interval
-        if (Config.get().getBoolean("world.settings.automated_resets.enabled")) {
-            System.out.println(Messenger.message("automated_resets_enabled"));
-            int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetWorld = new ResetWorld().runTaskTimer(this, interval, interval);
-        }
+        startIntervals();
 
         //Check for updates
         if (Config.get().getBoolean("settings.check_for_updates")) {
@@ -86,9 +70,67 @@ public final class ResourceWorld extends JavaPlugin {
         Config.save();
         Lang.reload();
         Lang.save();
+
+        //Unload Instance
+        instance = null;
     }
 
     public static ResourceWorld getInstance() {
         return instance;
+    }
+
+    private void loadFiles() {
+        Config.setup();
+        Config.addDefaults();
+        Config.get().options().copyDefaults(true);
+        Config.save();
+        Lang.setup();
+        Lang.addDefaults();
+        Lang.get().options().copyDefaults(true);
+        Lang.save();
+    }
+
+    private void initialize() {
+        registerEvent(new LeaveInWorld());
+        registerEvent(new MenuHandler());
+        if (Config.get().getBoolean("world.settings.block_regeneration.enabled")) {
+            registerEvent(new BlockRegen());
+        }
+        if (Config.get().getBoolean("world.settings.disable_suffocation_damage") || Config.get().getBoolean("world.settings.disable_drowning_damage") || Config.get().getBoolean("world.settings.disable_entity_spawning")) {
+            registerEvent(new WorldSettings());
+        }
+        if (Config.get().getBoolean("disabled_commands.enabled")) {
+            registerEvent(new DisabledCmds());
+        }
+    }
+
+    private void registerEvent(Listener listener) {
+        Bukkit.getServer().getPluginManager().registerEvents(listener, this);
+    }
+
+    private void startIntervals() {
+        if (Config.get().getBoolean("world.settings.automated_resets.enabled")) {
+            System.out.println(Messenger.message("automated_resets_enabled"));
+            int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
+            BukkitTask resetWorld = new ResetWorld().runTaskTimer(this, interval, interval);
+        }
+        if (Config.get().getBoolean("nether_world.settings.enabled") && Config.get().getBoolean("nether_world.settings.automated_resets.enabled")) {
+            int interval = Config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
+            BukkitTask resetNether = new ResetNetherWorld().runTaskTimer(this, interval, interval);
+        }
+        if (Config.get().getBoolean("end_world.settings.enabled") && Config.get().getBoolean("end_world.settings.automated_resets.enabled")) {
+            int interval = Config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
+            BukkitTask resetEnd = new ResetEndWorld().runTaskTimer(this, interval, interval);
+        }
+    }
+
+    private void generateWorlds() {
+        new WorldGenerator().createWorld();
+        if (Config.get().getBoolean("nether_world.settings.enabled")) {
+            new WorldGeneratorNether().createWorld();
+        }
+        if (Config.get().getBoolean("end_world.settings.enabled")) {
+            new WorldGeneratorEnd().createWorld();
+        }
     }
 }

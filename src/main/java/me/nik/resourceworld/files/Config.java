@@ -42,11 +42,6 @@ public class Config {
 
     public static void addDefaults() {
         //config.yml
-        List<String> list = Config.get().getStringList("disabled_commands.commands");
-        list.add("/sethome");
-        list.add("/claim");
-        list.add("/setwarp");
-        list.add("/tpahere");
         List<String> blocks = Config.get().getStringList("world.settings.block_regeneration.blocks");
         blocks.add("DIAMOND_ORE");
         blocks.add("GOLD_ORE");
@@ -54,8 +49,14 @@ public class Config {
         blocks.add("COAL_ORE");
         blocks.add("IRON_ORE");
         blocks.add("LAPIS_ORE");
+        List<String> list = Config.get().getStringList("disabled_commands.commands");
+        list.add("/sethome");
+        list.add("/claim");
+        list.add("/setwarp");
+        list.add("/tpahere");
         Config.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Config.get().addDefault("settings.check_for_updates", true);
+        Config.get().addDefault("settings.main_spawn_world", "world");
         Config.get().addDefault("world.settings.world_name", "resource_world");
         Config.get().addDefault("world.settings.generate_structures", true);
         Config.get().addDefault("world.settings.world_type", "NORMAL");
@@ -72,15 +73,41 @@ public class Config {
         Config.get().addDefault("world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("world.settings.weather_storms", true);
         Config.get().addDefault("world.settings.automated_resets.enabled", false);
-        Config.get().addDefault("world.settings.automated_resets.interval", 6);
+        Config.get().addDefault("world.settings.automated_resets.interval", 8);
         Config.get().addDefault("world.settings.disable_entity_spawning", false);
         Config.get().addDefault("world.settings.entities.max_animals", 45);
         Config.get().addDefault("world.settings.entities.max_monsters", 35);
         Config.get().addDefault("world.settings.entities.max_ambient_entities", 5);
-        Config.get().addDefault("world.settings.main_spawn_world", "world");
         Config.get().addDefault("world.settings.block_regeneration.enabled", true);
         Config.get().addDefault("world.settings.block_regeneration.regeneration_delay", 30);
         Config.get().addDefault("world.settings.block_regeneration.blocks", blocks);
+        //Nether World
+        Config.get().addDefault("nether_world.settings.enabled", false);
+        Config.get().addDefault("nether_world.settings.world_name", "resource_nether");
+        Config.get().addDefault("nether_world.settings.world_border.enabled", true);
+        Config.get().addDefault("nether_world.settings.world_border.size", 4500);
+        Config.get().addDefault("nether_world.settings.allow_pvp", true);
+        Config.get().addDefault("nether_world.settings.difficulty", "NORMAL");
+        Config.get().addDefault("nether_world.settings.keep_spawn_loaded", false);
+        Config.get().addDefault("nether_world.settings.automated_resets.enabled", false);
+        Config.get().addDefault("nether_world.settings.automated_resets.interval", 4);
+        Config.get().addDefault("nether_world.settings.entities.max_animals", 45);
+        Config.get().addDefault("nether_world.settings.entities.max_monsters", 35);
+        Config.get().addDefault("nether_world.settings.entities.max_ambient_entities", 5);
+        //End World
+        Config.get().addDefault("end_world.settings.enabled", false);
+        Config.get().addDefault("end_world.settings.world_name", "resource_end");
+        Config.get().addDefault("end_world.settings.world_border.enabled", true);
+        Config.get().addDefault("end_world.settings.world_border.size", 4500);
+        Config.get().addDefault("end_world.settings.allow_pvp", true);
+        Config.get().addDefault("end_world.settings.difficulty", "NORMAL");
+        Config.get().addDefault("end_world.settings.keep_spawn_loaded", false);
+        Config.get().addDefault("end_world.settings.automated_resets.enabled", false);
+        Config.get().addDefault("end_world.settings.automated_resets.interval", 6);
+        Config.get().addDefault("end_world.settings.entities.max_animals", 45);
+        Config.get().addDefault("end_world.settings.entities.max_monsters", 35);
+        Config.get().addDefault("end_world.settings.entities.max_ambient_entities", 5);
+        //Other Settings
         Config.get().addDefault("teleport.settings.cooldown", 60);
         Config.get().addDefault("teleport.settings.delay", 3);
         Config.get().addDefault("teleport.settings.max_teleport_range", 800);
