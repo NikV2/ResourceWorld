@@ -10,14 +10,14 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class TeleportUtils {
-    private final HashSet<Material> unsafeBlocks = new HashSet<>();
+    private static final HashSet<Material> unsafeBlocks = new HashSet<>();
 
-    {
+    static {
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.WATER);
     }
 
-    public Location generateLocation(World world) {
+    public static Location generateLocation(World world) {
         Random random = new Random();
         World.Environment environment = world.getEnvironment();
         Location randomLocation = null;
@@ -50,7 +50,7 @@ public class TeleportUtils {
         return randomLocation;
     }
 
-    private boolean isLocationSafe(Location location) {
+    private static boolean isLocationSafe(Location location) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
