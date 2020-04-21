@@ -111,7 +111,7 @@ public class Config {
         Config.get().addDefault("teleport.settings.cooldown", 60);
         Config.get().addDefault("teleport.settings.delay", 3);
         Config.get().addDefault("teleport.settings.max_teleport_range", 800);
-        Config.get().addDefault("teleport.settings.load_chunk_before_teleporting", false);
+        Config.get().addDefault("teleport.settings.load_chunk_before_teleporting", true);
         Config.get().addDefault("teleport.settings.effects.effect", "ABSORPTION");
         Config.get().addDefault("teleport.settings.effects.duration", 7);
         Config.get().addDefault("teleport.settings.effects.amplifier", 2);
