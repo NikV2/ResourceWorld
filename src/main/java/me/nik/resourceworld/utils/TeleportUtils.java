@@ -10,31 +10,41 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class TeleportUtils {
-    private static final HashSet<Material> unsafeBlocks = new HashSet<>();
-    static{
+    private final HashSet<Material> unsafeBlocks = new HashSet<>();
+
+    {
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.WATER);
-        unsafeBlocks.add(Material.FIRE);
     }
+
     public Location generateLocation(World world) {
         Random random = new Random();
         World.Environment environment = world.getEnvironment();
+        Location randomLocation = null;
 
         int x = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
-        int y = 85;
+        int y = 100;
         int z = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
 
-        Location randomLocation = new Location(world, x, y, z);
-
-        if (!(environment == World.Environment.NETHER)) {
-            y = randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 2;
+        if (environment == World.Environment.THE_END) {
+            randomLocation = new Location(world, x, y, z);
+            y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
+        } else {
+            boolean isSafe = false;
+            while (!isSafe) {
+                randomLocation = new Location(world, x, y, z);
+                if (!randomLocation.getBlock().isEmpty()) {
+                    isSafe = true;
+                } else y--;
+            }
         }
-        randomLocation.setY(y);
+        randomLocation.setY(y + 1);
 
         while (!isLocationSafe(randomLocation)) {
             randomLocation = generateLocation(world);
         }
-        if (Config.get().getBoolean("teleport.settings.load_chunk_before_teleporting")) {
+
+        if (Config.get().getBoolean("teleport.settings.load_chunk_before_teleporting") && !randomLocation.getChunk().isLoaded()) {
             randomLocation.getChunk().load(true);
         }
         return randomLocation;
@@ -44,9 +54,10 @@ public class TeleportUtils {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
-        Block block = location.getWorld().getBlockAt(x + 3, y, z + 3);
-        Block below = location.getWorld().getBlockAt(x - 5, y - 10, z - 5);
-        Block above = location.getWorld().getBlockAt(x + 5, y + 10, z + 5);
-        return !(unsafeBlocks.contains(below.getType()) || (block.getType().isSolid()) || (above.getType().isSolid()) || (below.isEmpty()));
+        Block below = location.getWorld().getBlockAt(x, y - 2, z);
+        Block above = location.getWorld().getBlockAt(x, y + 1, z);
+        Block blockN = location.getWorld().getBlockAt(x - 1, y, z - 1);
+        Block blockP = location.getWorld().getBlockAt(x + 1, y + 1, z + 1);
+        return !(unsafeBlocks.contains(below.getType()) || (unsafeBlocks.contains(blockP.getType())) || below.isEmpty() || above.getType().isSolid() || blockN.getType().isSolid() || blockP.getType().isSolid());
     }
 }
