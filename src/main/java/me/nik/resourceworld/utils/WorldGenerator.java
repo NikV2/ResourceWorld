@@ -36,11 +36,11 @@ public class WorldGenerator extends Manager {
             resourceWorld.setStorm(configBoolean("world.settings.weather_storms"));
             resourceWorld.setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
             if (configBoolean("world.settings.keep_inventory_on_death") &&
-                    !Bukkit.getVersion().contains("1.8") ||
-                    !Bukkit.getVersion().contains("1.9") ||
-                    !Bukkit.getVersion().contains("1.10") ||
-                    !Bukkit.getVersion().contains("1.11") ||
-                    !Bukkit.getVersion().contains("1.12")) {
+                    (!(Bukkit.getVersion().contains("1.8") ||
+                            Bukkit.getVersion().contains("1.9") ||
+                            Bukkit.getVersion().contains("1.10") ||
+                            Bukkit.getVersion().contains("1.11") ||
+                            Bukkit.getVersion().contains("1.12")))) {
                 resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
             }
             Bukkit.getWorlds().add(resourceWorld);
