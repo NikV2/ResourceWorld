@@ -85,7 +85,7 @@ public class Config {
         Config.get().addDefault("world.settings.block_regeneration.blocks", blocks);
         //Nether World
         Config.get().addDefault("nether_world.settings.enabled", false);
-        Config.get().addDefault("nether_world.settings.override_portals", true);
+        Config.get().addDefault("nether_world.settings.override_portals", false);
         Config.get().addDefault("nether_world.settings.world_name", "resource_nether");
         Config.get().addDefault("nether_world.settings.world_border.enabled", true);
         Config.get().addDefault("nether_world.settings.world_border.size", 4500);
@@ -100,7 +100,7 @@ public class Config {
         Config.get().addDefault("nether_world.settings.entities.max_ambient_entities", 5);
         //End World
         Config.get().addDefault("end_world.settings.enabled", false);
-        Config.get().addDefault("end_world.settings.override_portals", true);
+        Config.get().addDefault("end_world.settings.override_portals", false);
         Config.get().addDefault("end_world.settings.world_name", "resource_end");
         Config.get().addDefault("end_world.settings.world_border.enabled", true);
         Config.get().addDefault("end_world.settings.world_border.size", 4500);
