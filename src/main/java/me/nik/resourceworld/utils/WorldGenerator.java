@@ -35,15 +35,12 @@ public class WorldGenerator extends Manager {
             }.runTaskLaterAsynchronously(plugin, 30);
             resourceWorld.setStorm(configBoolean("world.settings.weather_storms"));
             resourceWorld.setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
-            if (configBoolean("world.settings.keep_inventory_on_death") &&
-                    (!(Bukkit.getVersion().contains("1.8") ||
-                            Bukkit.getVersion().contains("1.9") ||
-                            Bukkit.getVersion().contains("1.10") ||
-                            Bukkit.getVersion().contains("1.11") ||
-                            Bukkit.getVersion().contains("1.12")))) {
+            Bukkit.getWorlds().add(resourceWorld);
+            if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
+                return;
+            if (configBoolean("world.settings.keep_inventory_on_death")) {
                 resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
             }
-            Bukkit.getWorlds().add(resourceWorld);
         } catch (Exception ignored) {
             System.out.println(Messenger.prefix(Messenger.format("&cSomething went wrong while generating your world, Please try restarting your Server and resetting your config.yml!")));
         }
