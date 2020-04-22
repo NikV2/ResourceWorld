@@ -13,12 +13,10 @@ public class Portals extends Manager {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPortalNether(PlayerPortalEvent e) {
-        if (!configBoolean("nether_world.settings.portals.override")) return;
         if (!configBoolean("nether_world.settings.enabled")) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
         if (e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL || e.getFrom().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) {
             e.setTo(new Location(Bukkit.getWorld(configString("nether_world.settings.world_name")), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
-            e.getPlayer().sendMessage(e.getTo().getWorld().getName());
         } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER) {
             if (isSupported()) {
                 e.setTo(e.getTo());
@@ -30,7 +28,6 @@ public class Portals extends Manager {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPortalEnd(PlayerPortalEvent e) {
-        if (!configBoolean("end_world.settings.portals.override")) return;
         if (!configBoolean("end_world.settings.enabled")) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL) return;
         if (!(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END)) {
