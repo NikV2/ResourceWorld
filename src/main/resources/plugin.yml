@@ -1,5 +1,5 @@
 name: ResourceWorld
-version: 1.4.4
+version: 1.4.5
 main: me.nik.resourceworld.ResourceWorld
 api-version: 1.13
 load: POSTWORLD
@@ -16,6 +16,12 @@ permissions:
   rw.tp:
     description: Randomly Teleport To The Resource World!
     default: true
+  rw.tp.nether:
+    description: Randomly Teleport To The Nether Resource World!
+    default: false
+  rw.tp.end:
+    description: Randomly Teleport To The End Resource World!
+    default: false
   rw.admin:
     description: Access to the Resource World admin commands!
     default: op

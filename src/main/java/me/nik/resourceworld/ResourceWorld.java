@@ -46,6 +46,7 @@ public final class ResourceWorld extends JavaPlugin {
         generateWorlds();
 
         startIntervals();
+        registerEvent(new Portals());
 
         //Check for updates
         if (Config.get().getBoolean("settings.check_for_updates")) {
@@ -102,6 +103,9 @@ public final class ResourceWorld extends JavaPlugin {
         if (Config.get().getBoolean("disabled_commands.enabled")) {
             registerEvent(new DisabledCmds());
         }
+        if (Config.get().getBoolean("nether_world.settings.override_portals") || Config.get().getBoolean("end_world.settings.override_portals")) {
+            registerEvent(new Portals());
+        }
     }
 
     private void registerEvent(Listener listener) {
@@ -109,7 +113,7 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void startIntervals() {
-        if (Config.get().getBoolean("world.settings.automated_resets.enabled")) {
+        if (Config.get().getBoolean("world.settings.enabled") && Config.get().getBoolean("world.settings.automated_resets.enabled")) {
             System.out.println(Messenger.message("automated_resets_enabled"));
             int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
             BukkitTask resetWorld = new ResetWorld().runTaskTimer(this, interval, interval);
@@ -125,7 +129,9 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void generateWorlds() {
-        new WorldGenerator().createWorld();
+        if (Config.get().getBoolean("world.settings.enabled")) {
+            new WorldGenerator().createWorld();
+        }
         if (Config.get().getBoolean("nether_world.settings.enabled")) {
             new WorldGeneratorNether().createWorld();
         }

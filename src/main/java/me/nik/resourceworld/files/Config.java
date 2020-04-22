@@ -57,6 +57,7 @@ public class Config {
         Config.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Config.get().addDefault("settings.check_for_updates", true);
         Config.get().addDefault("settings.main_spawn_world", "world");
+        Config.get().addDefault("world.settings.enabled", true);
         Config.get().addDefault("world.settings.world_name", "resource_world");
         Config.get().addDefault("world.settings.generate_structures", true);
         Config.get().addDefault("world.settings.world_type", "NORMAL");
@@ -70,6 +71,7 @@ public class Config {
         Config.get().addDefault("world.settings.disable_suffocation_damage", true);
         Config.get().addDefault("world.settings.disable_drowning_damage", true);
         Config.get().addDefault("world.settings.difficulty", "NORMAL");
+        Config.get().addDefault("world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("world.settings.weather_storms", true);
         Config.get().addDefault("world.settings.automated_resets.enabled", false);
@@ -83,11 +85,13 @@ public class Config {
         Config.get().addDefault("world.settings.block_regeneration.blocks", blocks);
         //Nether World
         Config.get().addDefault("nether_world.settings.enabled", false);
+        Config.get().addDefault("nether_world.settings.override_portals", true);
         Config.get().addDefault("nether_world.settings.world_name", "resource_nether");
         Config.get().addDefault("nether_world.settings.world_border.enabled", true);
         Config.get().addDefault("nether_world.settings.world_border.size", 4500);
         Config.get().addDefault("nether_world.settings.allow_pvp", true);
         Config.get().addDefault("nether_world.settings.difficulty", "NORMAL");
+        Config.get().addDefault("nether_world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("nether_world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("nether_world.settings.automated_resets.enabled", false);
         Config.get().addDefault("nether_world.settings.automated_resets.interval", 4);
@@ -96,11 +100,13 @@ public class Config {
         Config.get().addDefault("nether_world.settings.entities.max_ambient_entities", 5);
         //End World
         Config.get().addDefault("end_world.settings.enabled", false);
+        Config.get().addDefault("end_world.settings.override_portals", true);
         Config.get().addDefault("end_world.settings.world_name", "resource_end");
         Config.get().addDefault("end_world.settings.world_border.enabled", true);
         Config.get().addDefault("end_world.settings.world_border.size", 4500);
         Config.get().addDefault("end_world.settings.allow_pvp", true);
         Config.get().addDefault("end_world.settings.difficulty", "NORMAL");
+        Config.get().addDefault("end_world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("end_world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("end_world.settings.automated_resets.enabled", false);
         Config.get().addDefault("end_world.settings.automated_resets.interval", 6);

@@ -30,6 +30,9 @@ public class WorldGeneratorEnd extends Manager {
                 }
             }.runTaskLaterAsynchronously(plugin, 30);
             resourceEnd.setKeepSpawnInMemory(configBoolean("end_world.settings.keep_spawn_loaded"));
+            if (configBoolean("end_world.settings.keep_inventory_on_death")) {
+                resourceEnd.setGameRule(GameRule.KEEP_INVENTORY, true);
+            }
             Bukkit.getWorlds().add(resourceEnd);
         } catch (NullPointerException | IllegalArgumentException | IllegalStateException ignored) {
             System.out.println(Messenger.prefix(Messenger.format("&cSomething went wrong while generating your world, Please try restarting your Server and resetting your config.yml!")));

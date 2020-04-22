@@ -46,11 +46,12 @@ public class Teleport extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        if (!player.hasPermission("rw.tp")) {
-            player.sendMessage(Messenger.message("no_perm"));
-            return;
-        }
+
         if (args.length == 1) {
+            if (!player.hasPermission("rw.tp")) {
+                player.sendMessage(Messenger.message("no_perm"));
+                return;
+            }
             if (!manager.worldExists()) {
                 player.sendMessage(Messenger.message("not_exist"));
                 return;
@@ -58,6 +59,10 @@ public class Teleport extends SubCommand {
             World worldResource = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
             teleport(player, worldResource);
         } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
+            if (!player.hasPermission("rw.tp.nether")) {
+                player.sendMessage(Messenger.message("no_perm"));
+                return;
+            }
             if (Config.get().getBoolean("nether_world.settings.enabled") && manager.netherExists()) {
                 World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
                 teleport(player, worldNether);
@@ -65,6 +70,10 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("not_exist"));
             }
         } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
+            if (!player.hasPermission("rw.tp.end")) {
+                player.sendMessage(Messenger.message("no_perm"));
+                return;
+            }
             if (Config.get().getBoolean("end_world.settings.enabled") && manager.endExists()) {
                 World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
                 teleport(player, worldEnd);
@@ -80,7 +89,7 @@ public class Teleport extends SubCommand {
             if (secondsleft > 0) {
                 p.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("cooldown_message").replaceAll("%seconds%", String.valueOf(secondsleft)))));
                 return;
-            } else return;
+            }
         }
         if (Config.get().getInt("teleport.settings.delay") < 1) {
             if (!p.hasPermission("rw.admin")) {
