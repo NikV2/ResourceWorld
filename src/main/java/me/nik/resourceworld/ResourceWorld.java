@@ -46,7 +46,6 @@ public final class ResourceWorld extends JavaPlugin {
         generateWorlds();
 
         startIntervals();
-        registerEvent(new Portals());
 
         //Check for updates
         if (Config.get().getBoolean("settings.check_for_updates")) {
@@ -103,7 +102,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (Config.get().getBoolean("disabled_commands.enabled")) {
             registerEvent(new DisabledCmds());
         }
-        if (Config.get().getBoolean("nether_world.settings.override_portals") || Config.get().getBoolean("end_world.settings.override_portals")) {
+        if (Config.get().getBoolean("nether_world.settings.portals.override") || Config.get().getBoolean("end_world.settings.portals.override")) {
             registerEvent(new Portals());
         }
     }
