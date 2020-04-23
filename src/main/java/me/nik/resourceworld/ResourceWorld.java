@@ -73,6 +73,7 @@ public final class ResourceWorld extends JavaPlugin {
 
         //Unload Instance
         instance = null;
+        getCommand("resource").setExecutor(null);
     }
 
     public static ResourceWorld getInstance() {
