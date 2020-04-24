@@ -24,9 +24,7 @@ public class WorldGeneratorNether extends Manager {
                     }
                     resourceNether.setPVP(configBoolean("nether_world.settings.allow_pvp"));
                     resourceNether.setDifficulty(Difficulty.valueOf(configString("nether_world.settings.difficulty")));
-                    resourceNether.setAnimalSpawnLimit(configInt("nether_world.settings.entities.max_animals"));
                     resourceNether.setMonsterSpawnLimit(configInt("nether_world.settings.entities.max_monsters"));
-                    resourceNether.setAmbientSpawnLimit(configInt("nether_world.settings.entities.max_ambient.entities"));
                 }
             }.runTaskLaterAsynchronously(plugin, 30);
             resourceNether.setKeepSpawnInMemory(configBoolean("nether_world.settings.keep_spawn_loaded"));

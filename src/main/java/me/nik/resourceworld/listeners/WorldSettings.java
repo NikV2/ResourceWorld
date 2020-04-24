@@ -31,25 +31,33 @@ public class WorldSettings extends Manager {
         if (e.getEntity() instanceof ArmorStand) return;
         if (e.getEntity() instanceof Projectile) return;
         if (e.getEntity() instanceof ItemFrame) return;
-        if (!e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
-        if (!configBoolean("world.settings.disable_entity_spawning")) return;
-        e.setCancelled(true);
+        if (configBoolean("world.settings.disable_entity_spawning") && e.getEntity().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) {
+            e.setCancelled(true);
+        }
+        if (configBoolean("nether_world.settings.disable_entity_spawning") && e.getEntity().getWorld().getName().equalsIgnoreCase(configString("nether_world.settings.world_name"))) {
+            e.setCancelled(true);
+        }
+        if (configBoolean("end_world.settings.disable_entity_spawning") && e.getEntity().getWorld().getName().equalsIgnoreCase("end_world.settings.world_name")) {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
-        if (!p.getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
-        if (configBoolean("world.settings.disable_suffocation_damage")) {
-            if (e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
-                e.setCancelled(true);
-            }
+        String world = p.getWorld().getName();
+        if (configBoolean("world.settings.disable_suffocation_damage") && world.equalsIgnoreCase(configString("world.settings.world_name")) && e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
+            e.setCancelled(true);
         }
-        if (configBoolean("world.settings.disable_drowning_damage")) {
-            if (e.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
-                e.setCancelled(true);
-            }
+        if (configBoolean("world.settings.disable_drowning_damage") && world.equalsIgnoreCase(configString("world.settings.world_name")) && e.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
+            e.setCancelled(true);
+        }
+        if (configBoolean("nether_world.settings.disable_suffocation_damage") && world.equalsIgnoreCase(configString("nether_world.settings.world_name")) && e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
+            e.setCancelled(true);
+        }
+        if (configBoolean("end_world.settings.disable_suffocation_damage") && world.equalsIgnoreCase(configString("end_world.settings.world_name")) && e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
+            e.setCancelled(true);
         }
     }
 }

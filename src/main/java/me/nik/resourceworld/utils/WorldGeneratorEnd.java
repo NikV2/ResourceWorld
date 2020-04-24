@@ -24,9 +24,7 @@ public class WorldGeneratorEnd extends Manager {
                     }
                     resourceEnd.setPVP(configBoolean("end_world.settings.allow_pvp"));
                     resourceEnd.setDifficulty(Difficulty.valueOf(configString("end_world.settings.difficulty")));
-                    resourceEnd.setAnimalSpawnLimit(configInt("end_world.settings.entities.max_animals"));
                     resourceEnd.setMonsterSpawnLimit(configInt("end_world.settings.entities.max_monsters"));
-                    resourceEnd.setAmbientSpawnLimit(configInt("end_world.settings.entities.max_ambient.entities"));
                 }
             }.runTaskLaterAsynchronously(plugin, 30);
             resourceEnd.setKeepSpawnInMemory(configBoolean("end_world.settings.keep_spawn_loaded"));

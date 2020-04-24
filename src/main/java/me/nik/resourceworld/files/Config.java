@@ -90,14 +90,14 @@ public class Config {
         Config.get().addDefault("nether_world.settings.world_border.enabled", true);
         Config.get().addDefault("nether_world.settings.world_border.size", 4500);
         Config.get().addDefault("nether_world.settings.allow_pvp", true);
+        Config.get().addDefault("nether_world.settings.disable_suffocation_damage", true);
         Config.get().addDefault("nether_world.settings.difficulty", "NORMAL");
         Config.get().addDefault("nether_world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("nether_world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("nether_world.settings.automated_resets.enabled", false);
         Config.get().addDefault("nether_world.settings.automated_resets.interval", 4);
-        Config.get().addDefault("nether_world.settings.entities.max_animals", 45);
+        Config.get().addDefault("nether_world.settings.disable_entity_spawning", false);
         Config.get().addDefault("nether_world.settings.entities.max_monsters", 35);
-        Config.get().addDefault("nether_world.settings.entities.max_ambient_entities", 5);
         //End World
         Config.get().addDefault("end_world.settings.enabled", false);
         Config.get().addDefault("end_world.settings.portals.override", false);
@@ -106,14 +106,14 @@ public class Config {
         Config.get().addDefault("end_world.settings.world_border.enabled", true);
         Config.get().addDefault("end_world.settings.world_border.size", 4500);
         Config.get().addDefault("end_world.settings.allow_pvp", true);
+        Config.get().addDefault("end_world.settings.disable_suffocation_damage", true);
         Config.get().addDefault("end_world.settings.difficulty", "NORMAL");
         Config.get().addDefault("end_world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("end_world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("end_world.settings.automated_resets.enabled", false);
         Config.get().addDefault("end_world.settings.automated_resets.interval", 6);
-        Config.get().addDefault("end_world.settings.entities.max_animals", 45);
+        Config.get().addDefault("end_world.settings.disable_entity_spawning", false);
         Config.get().addDefault("end_world.settings.entities.max_monsters", 35);
-        Config.get().addDefault("end_world.settings.entities.max_ambient_entities", 5);
         //Other Settings
         Config.get().addDefault("teleport.settings.cooldown", 60);
         Config.get().addDefault("teleport.settings.delay", 3);
