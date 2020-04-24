@@ -16,8 +16,7 @@ public class Lang {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                //Does not exist
+            } catch (IOException ignored) {
             }
         }
         lang = YamlConfiguration.loadConfiguration(file);
@@ -30,8 +29,7 @@ public class Lang {
     public static void save() {
         try {
             lang.save(file);
-        } catch (IOException e) {
-            //Cannot save file
+        } catch (IOException ignored) {
         }
     }
 

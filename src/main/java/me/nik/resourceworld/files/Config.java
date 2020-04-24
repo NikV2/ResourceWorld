@@ -18,7 +18,6 @@ public class Config {
             try {
                 file.createNewFile();
             } catch (IOException ignored) {
-                //Does not exist
             }
         }
         config = YamlConfiguration.loadConfiguration(file);
@@ -32,7 +31,6 @@ public class Config {
         try {
             config.save(file);
         } catch (IOException ignored) {
-            //Cannot save file
         }
     }
 
@@ -86,6 +84,7 @@ public class Config {
         //Nether World
         Config.get().addDefault("nether_world.settings.enabled", false);
         Config.get().addDefault("nether_world.settings.portals.override", false);
+        Config.get().addDefault("nether_world.settings.portals.vanilla_portal_ratio", false);
         Config.get().addDefault("nether_world.settings.portals.portal_world", "world");
         Config.get().addDefault("nether_world.settings.world_name", "resource_nether");
         Config.get().addDefault("nether_world.settings.world_border.enabled", true);

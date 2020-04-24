@@ -95,7 +95,7 @@ public class Teleport extends SubCommand {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(p.getUniqueId(), System.currentTimeMillis());
             }
-            p.teleport(TeleportUtils.generateLocation(world));
+            p.teleport(new TeleportUtils().generateLocation(world));
             p.addPotionEffect(effect);
             if (isSoundsEnabled()) {
                 try {
@@ -113,7 +113,7 @@ public class Teleport extends SubCommand {
 
                 @Override
                 public void run() {
-                    p.teleport(TeleportUtils.generateLocation(world));
+                    p.teleport(new TeleportUtils().generateLocation(world));
                     p.addPotionEffect(effect);
                     if (isSoundsEnabled()) {
                         try {

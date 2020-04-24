@@ -16,7 +16,11 @@ public class Portals extends Manager {
         if (!configBoolean("nether_world.settings.enabled")) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
         if (e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL || e.getFrom().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) {
-            e.setTo(new Location(Bukkit.getWorld(configString("nether_world.settings.world_name")), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+            if (configBoolean("nether_world.settings.portals.vanilla_portal_ratio")) {
+                e.setTo(new Location(Bukkit.getWorld(configString("nether_world.settings.world_name")), e.getFrom().getX() % 8, e.getFrom().getY() % 8, e.getFrom().getZ() % 8));
+            } else {
+                e.setTo(new Location(Bukkit.getWorld(configString("nether_world.settings.world_name")), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+            }
         } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER || e.getFrom().getWorld().getName().equalsIgnoreCase(configString("nether_world.settings.world_name"))) {
             if (isSupported()) {
                 e.setTo(e.getTo());

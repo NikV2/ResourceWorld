@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class UpdateChecker extends BukkitRunnable {
 
-    private ResourceWorld plugin;
+    private final ResourceWorld plugin;
 
     public UpdateChecker(ResourceWorld plugin) {
         this.plugin = plugin;
