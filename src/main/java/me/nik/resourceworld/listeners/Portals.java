@@ -4,8 +4,10 @@ import me.nik.resourceworld.api.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -47,5 +49,15 @@ public class Portals extends Manager {
 
     private boolean isSupported() {
         return !Bukkit.getVersion().contains("1.8") && !Bukkit.getVersion().contains("1.9") && !Bukkit.getVersion().contains("1.10") && !Bukkit.getVersion().contains("1.11") && !Bukkit.getVersion().contains("1.12") && !Bukkit.getVersion().contains("1.13");
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onSuffocateNether(EntityDamageEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
+        if (!p.getWorld().getName().equalsIgnoreCase(configString("nether_world.settings.world_name"))) return;
+        if (e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
+            e.setCancelled(true);
+        }
     }
 }
