@@ -32,6 +32,7 @@ public class BlockRegen extends Manager {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent e) {
         if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) return;
+        if (e.getPlayer().hasPermission("rw.admin")) return;
         Material type = e.getBlock().getType();
         for (String block : configStringList("world.settings.block_regeneration.blocks")) {
             if (type.toString().equalsIgnoreCase(block)) {
