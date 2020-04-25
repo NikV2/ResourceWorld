@@ -1,8 +1,13 @@
 package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.api.Manager;
-import org.bukkit.*;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 
 public class WorldGeneratorNether extends Manager {
     World world;
@@ -14,19 +19,14 @@ public class WorldGeneratorNether extends Manager {
             wc.environment(World.Environment.NETHER);
             world = wc.createWorld();
             final World resourceNether = Bukkit.getWorld(configString("nether_world.settings.world_name"));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (configBoolean("nether_world.settings.world_border.enabled")) {
-                        WorldBorder wb = Bukkit.getWorld(configString("nether_world.settings.world_name")).getWorldBorder();
-                        wb.setCenter(0, 0);
-                        wb.setSize(configInt("nether_world.settings.world_border.size"));
-                    }
-                    resourceNether.setPVP(configBoolean("nether_world.settings.allow_pvp"));
-                    resourceNether.setDifficulty(Difficulty.valueOf(configString("nether_world.settings.difficulty")));
-                    resourceNether.setMonsterSpawnLimit(configInt("nether_world.settings.entities.max_monsters"));
-                }
-            }.runTaskLaterAsynchronously(plugin, 30);
+            if (configBoolean("nether_world.settings.world_border.enabled")) {
+                WorldBorder wb = Bukkit.getWorld(configString("nether_world.settings.world_name")).getWorldBorder();
+                wb.setCenter(0, 0);
+                wb.setSize(configInt("nether_world.settings.world_border.size"));
+            }
+            resourceNether.setPVP(configBoolean("nether_world.settings.allow_pvp"));
+            resourceNether.setDifficulty(Difficulty.valueOf(configString("nether_world.settings.difficulty")));
+            resourceNether.setMonsterSpawnLimit(configInt("nether_world.settings.entities.max_monsters"));
             resourceNether.setKeepSpawnInMemory(configBoolean("nether_world.settings.keep_spawn_loaded"));
             Bukkit.getWorlds().add(resourceNether);
             if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))

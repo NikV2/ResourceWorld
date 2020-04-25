@@ -1,8 +1,13 @@
 package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.api.Manager;
-import org.bukkit.*;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 
 public class WorldGenerator extends Manager {
     World world;
@@ -18,21 +23,16 @@ public class WorldGenerator extends Manager {
             }
             world = wc.createWorld();
             final World resourceWorld = Bukkit.getWorld(configString("world.settings.world_name"));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (configBoolean("world.settings.world_border.enabled")) {
-                        WorldBorder wb = Bukkit.getWorld(configString("world.settings.world_name")).getWorldBorder();
-                        wb.setCenter(0, 0);
-                        wb.setSize(configInt("world.settings.world_border.size"));
-                    }
-                    resourceWorld.setPVP(configBoolean("world.settings.allow_pvp"));
-                    resourceWorld.setDifficulty(Difficulty.valueOf(configString("world.settings.difficulty")));
-                    resourceWorld.setAnimalSpawnLimit(configInt("world.settings.entities.max_animals"));
-                    resourceWorld.setMonsterSpawnLimit(configInt("world.settings.entities.max_monsters"));
-                    resourceWorld.setAmbientSpawnLimit(configInt("world.settings.entities.max_ambient.entities"));
-                }
-            }.runTaskLaterAsynchronously(plugin, 30);
+            if (configBoolean("world.settings.world_border.enabled")) {
+                WorldBorder wb = Bukkit.getWorld(resourceWorld.getName()).getWorldBorder();
+                wb.setCenter(0, 0);
+                wb.setSize(configInt("world.settings.world_border.size"));
+            }
+            resourceWorld.setPVP(configBoolean("world.settings.allow_pvp"));
+            resourceWorld.setDifficulty(Difficulty.valueOf(configString("world.settings.difficulty")));
+            resourceWorld.setAnimalSpawnLimit(configInt("world.settings.entities.max_animals"));
+            resourceWorld.setMonsterSpawnLimit(configInt("world.settings.entities.max_monsters"));
+            resourceWorld.setAmbientSpawnLimit(configInt("world.settings.entities.max_ambient.entities"));
             resourceWorld.setStorm(configBoolean("world.settings.weather_storms"));
             resourceWorld.setKeepSpawnInMemory(configBoolean("world.settings.keep_spawn_loaded"));
             Bukkit.getWorlds().add(resourceWorld);

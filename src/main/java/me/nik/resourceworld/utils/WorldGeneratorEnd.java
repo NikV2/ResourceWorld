@@ -1,8 +1,13 @@
 package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.api.Manager;
-import org.bukkit.*;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 
 public class WorldGeneratorEnd extends Manager {
     World world;
@@ -14,19 +19,14 @@ public class WorldGeneratorEnd extends Manager {
             wc.environment(World.Environment.THE_END);
             world = wc.createWorld();
             final World resourceEnd = Bukkit.getWorld(configString("end_world.settings.world_name"));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (configBoolean("end_world.settings.world_border.enabled")) {
-                        WorldBorder wb = Bukkit.getWorld(configString("end_world.settings.world_name")).getWorldBorder();
-                        wb.setCenter(0, 0);
-                        wb.setSize(configInt("end_world.settings.world_border.size"));
-                    }
-                    resourceEnd.setPVP(configBoolean("end_world.settings.allow_pvp"));
-                    resourceEnd.setDifficulty(Difficulty.valueOf(configString("end_world.settings.difficulty")));
-                    resourceEnd.setMonsterSpawnLimit(configInt("end_world.settings.entities.max_monsters"));
-                }
-            }.runTaskLaterAsynchronously(plugin, 30);
+            if (configBoolean("end_world.settings.world_border.enabled")) {
+                WorldBorder wb = Bukkit.getWorld(configString("end_world.settings.world_name")).getWorldBorder();
+                wb.setCenter(0, 0);
+                wb.setSize(configInt("end_world.settings.world_border.size"));
+            }
+            resourceEnd.setPVP(configBoolean("end_world.settings.allow_pvp"));
+            resourceEnd.setDifficulty(Difficulty.valueOf(configString("end_world.settings.difficulty")));
+            resourceEnd.setMonsterSpawnLimit(configInt("end_world.settings.entities.max_monsters"));
             resourceEnd.setKeepSpawnInMemory(configBoolean("end_world.settings.keep_spawn_loaded"));
             Bukkit.getWorlds().add(resourceEnd);
             if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
