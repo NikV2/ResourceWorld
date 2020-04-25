@@ -44,6 +44,7 @@ public class Config {
         blocks.add("DIAMOND_ORE");
         blocks.add("GOLD_ORE");
         blocks.add("EMERALD_ORE");
+        blocks.add("REDSTONE_ORE");
         blocks.add("COAL_ORE");
         blocks.add("IRON_ORE");
         blocks.add("LAPIS_ORE");
