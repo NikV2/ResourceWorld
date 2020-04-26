@@ -92,12 +92,18 @@ public final class ResourceWorld extends JavaPlugin {
     private void manageMillis() {
         if (Data.get().getLong("world.millis") == 0) {
             Data.get().set("world.millis", System.currentTimeMillis());
+            Data.save();
+            Data.reload();
         }
         if (Data.get().getLong("nether.millis") == 0) {
             Data.get().set("nether.millis", System.currentTimeMillis());
+            Data.save();
+            Data.reload();
         }
         if (Data.get().getLong("end.millis") == 0) {
             Data.get().set("end.millis", System.currentTimeMillis());
+            Data.save();
+            Data.reload();
         }
     }
 
