@@ -2,8 +2,14 @@ package me.nik.resourceworld;
 
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.listeners.*;
+import me.nik.resourceworld.listeners.BlockRegen;
+import me.nik.resourceworld.listeners.DisabledCmds;
+import me.nik.resourceworld.listeners.LeaveInWorld;
+import me.nik.resourceworld.listeners.MenuHandler;
+import me.nik.resourceworld.listeners.Portals;
+import me.nik.resourceworld.listeners.WorldSettings;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
@@ -62,14 +68,15 @@ public final class ResourceWorld extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        //Cancel all tasks
-        Bukkit.getScheduler().cancelTasks(this);
+        //Store Time Left
+        storeTimeLeft();
 
         //Reload Files
         Config.reload();
         Config.save();
         Lang.reload();
         Lang.save();
+        Data.reload();
 
         //Unload Instance
         instance = null;
@@ -78,6 +85,43 @@ public final class ResourceWorld extends JavaPlugin {
 
     public static ResourceWorld getInstance() {
         return instance;
+    }
+
+    private void storeTimeLeft() {
+        if (Config.get().getBoolean("world.settings.automated_resets.enabled") && Config.get().getBoolean("world.settings.enabled")) {
+            Data.get().set("world.timer", Config.get().getInt("world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - Data.get().getLong("world.millis")) / 1000D * 20D);
+        }
+        if (Config.get().getBoolean("nether_world.settings.automated_resets.enabled") && Config.get().getBoolean("nether_world.settings.enabled")) {
+            Data.get().set("nether.timer", Config.get().getInt("nether_world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - Data.get().getLong("nether.millis")) / 1000D * 20D);
+        }
+        if (Config.get().getBoolean("end_world.settings.automated_resets.enabled") && Config.get().getBoolean("end_world.settings.enabled")) {
+            Data.get().set("end.timer", Config.get().getInt("end_world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - Data.get().getLong("end.millis")) / 1000D * 20D);
+        }
+        Data.save();
+    }
+
+    private long worldTimer() {
+        if (Data.get().getLong("world.timer") <= 0) {
+            return Config.get().getInt("world.settings.automated_resets.interval") * 72000;
+        } else {
+            return Data.get().getLong("world.timer");
+        }
+    }
+
+    private long netherTimer() {
+        if (Data.get().getLong("nether.timer") <= 0) {
+            return Config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
+        } else {
+            return Data.get().getLong("nether.timer");
+        }
+    }
+
+    private long endTimer() {
+        if (Data.get().getLong("end.timer") <= 0) {
+            return Config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
+        } else {
+            return Data.get().getLong("end.timer");
+        }
     }
 
     private void loadFiles() {
@@ -89,6 +133,10 @@ public final class ResourceWorld extends JavaPlugin {
         Lang.addDefaults();
         Lang.get().options().copyDefaults(true);
         Lang.save();
+        Data.setup();
+        Data.addDefaults();
+        Data.get().options().copyDefaults(true);
+        Data.save();
     }
 
     private void initialize() {
@@ -116,15 +164,15 @@ public final class ResourceWorld extends JavaPlugin {
         if (Config.get().getBoolean("world.settings.enabled") && Config.get().getBoolean("world.settings.automated_resets.enabled")) {
             System.out.println(Messenger.message("automated_resets_enabled"));
             int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetWorld = new ResetWorld().runTaskTimer(this, interval, interval);
+            BukkitTask resetWorld = new ResetWorld().runTaskTimer(this, worldTimer(), interval);
         }
         if (Config.get().getBoolean("nether_world.settings.enabled") && Config.get().getBoolean("nether_world.settings.automated_resets.enabled")) {
             int interval = Config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetNether = new ResetNetherWorld().runTaskTimer(this, interval, interval);
+            BukkitTask resetNether = new ResetNetherWorld().runTaskTimer(this, netherTimer(), interval);
         }
         if (Config.get().getBoolean("end_world.settings.enabled") && Config.get().getBoolean("end_world.settings.automated_resets.enabled")) {
             int interval = Config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetEnd = new ResetEndWorld().runTaskTimer(this, interval, interval);
+            BukkitTask resetEnd = new ResetEndWorld().runTaskTimer(this, endTimer(), interval);
         }
     }
 

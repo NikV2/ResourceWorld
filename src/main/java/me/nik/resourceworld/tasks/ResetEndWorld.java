@@ -3,6 +3,7 @@ package me.nik.resourceworld.tasks;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldGenerator;
@@ -17,6 +18,9 @@ public class ResetEndWorld extends BukkitRunnable {
     @Override
     public void run() {
         if (!manager.endExists()) return;
+        Data.get().set("end.millis", System.currentTimeMillis());
+        Data.save();
+        Data.reload();
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_end"));
         new ResetTeleport().resetEndTP();
         World world = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
