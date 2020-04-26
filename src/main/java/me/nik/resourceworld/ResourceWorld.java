@@ -47,6 +47,8 @@ public final class ResourceWorld extends JavaPlugin {
         //Load Commands
         getCommand("resource").setExecutor(new CommandManager());
 
+        manageMillis();
+
         initialize();
 
         generateWorlds();
@@ -85,6 +87,18 @@ public final class ResourceWorld extends JavaPlugin {
 
     public static ResourceWorld getInstance() {
         return instance;
+    }
+
+    private void manageMillis() {
+        if (Data.get().getLong("world.millis") == 0) {
+            Data.get().set("world.millis", System.currentTimeMillis());
+        }
+        if (Data.get().getLong("nether.millis") == 0) {
+            Data.get().set("nether.millis", System.currentTimeMillis());
+        }
+        if (Data.get().getLong("end.millis") == 0) {
+            Data.get().set("end.millis", System.currentTimeMillis());
+        }
     }
 
     private void storeTimeLeft() {
