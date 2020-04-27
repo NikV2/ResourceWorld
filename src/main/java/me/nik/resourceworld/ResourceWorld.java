@@ -5,6 +5,7 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.listeners.BlockRegen;
+import me.nik.resourceworld.listeners.BlockRegenNether;
 import me.nik.resourceworld.listeners.DisabledCmds;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
@@ -164,6 +165,9 @@ public final class ResourceWorld extends JavaPlugin {
         registerEvent(new MenuHandler());
         if (Config.get().getBoolean("world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegen());
+        }
+        if (Config.get().getBoolean("nether_world.settings.block_regeneration.enabled")) {
+            registerEvent(new BlockRegenNether());
         }
         if (Config.get().getBoolean("world.settings.disable_suffocation_damage") || Config.get().getBoolean("world.settings.disable_drowning_damage") || Config.get().getBoolean("world.settings.disable_entity_spawning")) {
             registerEvent(new WorldSettings());

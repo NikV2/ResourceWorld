@@ -48,6 +48,8 @@ public class Config {
         blocks.add("COAL_ORE");
         blocks.add("IRON_ORE");
         blocks.add("LAPIS_ORE");
+        List<String> netherBlocks = Config.get().getStringList("nether_world.settings.block_regeneration.blocks");
+        netherBlocks.add("NETHER_QUARTZ_ORE");
         List<String> list = Config.get().getStringList("disabled_commands.commands");
         list.add("/sethome");
         list.add("/claim");
@@ -99,6 +101,9 @@ public class Config {
         Config.get().addDefault("nether_world.settings.automated_resets.interval", 4);
         Config.get().addDefault("nether_world.settings.disable_entity_spawning", false);
         Config.get().addDefault("nether_world.settings.entities.max_monsters", 35);
+        Config.get().addDefault("nether_world.settings.block_regeneration.enabled", false);
+        Config.get().addDefault("nether_world.settings.block_regeneration.regeneration_delay", 30);
+        Config.get().addDefault("nether_world.settings.block_regeneration.blocks", netherBlocks);
         //End World
         Config.get().addDefault("end_world.settings.enabled", false);
         Config.get().addDefault("end_world.settings.portals.override", false);
