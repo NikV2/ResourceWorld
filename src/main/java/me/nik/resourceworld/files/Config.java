@@ -77,6 +77,7 @@ public class Config {
         Config.get().addDefault("world.settings.weather_storms", true);
         Config.get().addDefault("world.settings.automated_resets.enabled", false);
         Config.get().addDefault("world.settings.automated_resets.interval", 8);
+        Config.get().addDefault("world.settings.automated_resets.store_time_on_shutdown", true);
         Config.get().addDefault("world.settings.disable_entity_spawning", false);
         Config.get().addDefault("world.settings.entities.max_animals", 45);
         Config.get().addDefault("world.settings.entities.max_monsters", 35);
@@ -99,6 +100,7 @@ public class Config {
         Config.get().addDefault("nether_world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("nether_world.settings.automated_resets.enabled", false);
         Config.get().addDefault("nether_world.settings.automated_resets.interval", 4);
+        Config.get().addDefault("nether_world.settings.automated_resets.store_time_on_shutdown", true);
         Config.get().addDefault("nether_world.settings.disable_entity_spawning", false);
         Config.get().addDefault("nether_world.settings.entities.max_monsters", 35);
         Config.get().addDefault("nether_world.settings.block_regeneration.enabled", false);
@@ -118,6 +120,7 @@ public class Config {
         Config.get().addDefault("end_world.settings.keep_spawn_loaded", false);
         Config.get().addDefault("end_world.settings.automated_resets.enabled", false);
         Config.get().addDefault("end_world.settings.automated_resets.interval", 6);
+        Config.get().addDefault("end_world.settings.automated_resets.store_time_on_shutdown", true);
         Config.get().addDefault("end_world.settings.disable_entity_spawning", false);
         Config.get().addDefault("end_world.settings.entities.max_monsters", 35);
         //Other Settings

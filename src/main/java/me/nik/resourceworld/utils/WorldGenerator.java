@@ -42,7 +42,7 @@ public class WorldGenerator extends Manager {
                 resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
             }
         } catch (Exception ignored) {
-            System.out.println(Messenger.prefix(Messenger.format("&cSomething went wrong while generating your world, Please try restarting your Server and resetting your config.yml!")));
+            System.out.println(Messenger.format("&cSomething went wrong while generating your world, Please try restarting your Server and resetting your config.yml!"));
         }
     }
 }
