@@ -1,5 +1,6 @@
 package me.nik.resourceworld.listeners;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,6 +11,10 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class Portals extends Manager {
+
+    public Portals(ResourceWorld plugin) {
+        super(plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPortalNether(PlayerPortalEvent e) {

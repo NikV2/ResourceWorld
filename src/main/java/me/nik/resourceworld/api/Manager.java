@@ -11,34 +11,38 @@ import java.util.List;
 
 public class Manager implements Listener {
 
-    protected ResourceWorld plugin = ResourceWorld.getInstance();
+    protected final ResourceWorld plugin;
 
-    public boolean configBoolean(String booleans) {
+    public Manager(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
+
+    protected boolean configBoolean(String booleans) {
         return Config.get().getBoolean(booleans);
     }
 
-    public int configInt(String ints) {
+    protected int configInt(String ints) {
         return Config.get().getInt(ints);
     }
 
-    public String configString(String string) {
+    protected String configString(String string) {
         return Config.get().getString(string);
     }
 
-    public List<String> configStringList(String stringList) {
+    protected List<String> configStringList(String stringList) {
         return Config.get().getStringList(stringList);
     }
 
-    public void booleanSet(String path, boolean value) {
+    protected void booleanSet(String path, boolean value) {
         Config.get().set(path, value);
     }
 
-    public void saveAndReload() {
+    protected void saveAndReload() {
         Config.save();
         Config.reload();
     }
 
-    public boolean deleteDirectory(File directory) {
+    protected boolean deleteDirectory(File directory) {
         if (directory.exists()) {
             File[] files = directory.listFiles();
             if (files != null)
@@ -53,19 +57,19 @@ public class Manager implements Listener {
         return directory.delete();
     }
 
-    public boolean worldExists() {
+    protected boolean worldExists() {
         return Bukkit.getWorld(configString("world.settings.world_name")) != null;
     }
 
-    public boolean netherExists() {
+    protected boolean netherExists() {
         return Bukkit.getWorld(configString("nether_world.settings.world_name")) != null;
     }
 
-    public boolean endExists() {
+    protected boolean endExists() {
         return Bukkit.getWorld(configString("end_world.settings.world_name")) != null;
     }
 
-    public boolean isInWorld(Player player) {
+    protected boolean isInWorld(Player player) {
         if (player.getWorld().getName().equalsIgnoreCase(configString("world.settings.world_name"))) {
             return true;
         } else if (player.getWorld().getName().equalsIgnoreCase(configString("nether_world.settings.world_name"))) {

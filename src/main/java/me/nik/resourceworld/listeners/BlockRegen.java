@@ -1,5 +1,6 @@
 package me.nik.resourceworld.listeners;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Material;
@@ -11,6 +12,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class BlockRegen extends Manager {
     private final int delay = configInt("world.settings.block_regeneration.regeneration_delay") * 1200;
+
+    public BlockRegen(ResourceWorld plugin) {
+        super(plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent e) {

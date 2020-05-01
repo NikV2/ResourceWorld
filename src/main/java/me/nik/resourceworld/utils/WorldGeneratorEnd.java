@@ -1,5 +1,6 @@
 package me.nik.resourceworld.utils;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -11,6 +12,10 @@ import org.bukkit.WorldType;
 
 public class WorldGeneratorEnd extends Manager {
     World world;
+
+    public WorldGeneratorEnd(ResourceWorld plugin) {
+        super(plugin);
+    }
 
     public void createWorld() {
         try {

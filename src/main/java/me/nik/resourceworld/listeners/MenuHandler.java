@@ -1,5 +1,6 @@
 package me.nik.resourceworld.listeners;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.GUIManager;
 import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
@@ -15,6 +16,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class MenuHandler extends Manager {
+
+    public MenuHandler(ResourceWorld plugin) {
+        super(plugin);
+    }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onMenuClick(InventoryClickEvent event) {
@@ -46,50 +51,22 @@ public class MenuHandler extends Manager {
                 player.closeInventory();
                 new GUIManager().openWorldsGUI(player);
                 break;
-            case "§aSettings":
-                player.closeInventory();
-                new GUIManager().openSettingsGUI(player);
-                break;
-            case "§eAlways Day":
-                booleanSet("world.settings.always_day", !configBoolean("world.settings.always_day"));
-                saveAndReload();
-                break;
-            case "§eDisable Entity Spawning":
-                booleanSet("world.settings.disable_entity_spawning", !configBoolean("world.settings.disable_entity_spawning"));
-                saveAndReload();
-                break;
-            case "§eCheck for Updates":
-                booleanSet("settings.check_for_updates", !configBoolean("settings.check_for_updates"));
-                saveAndReload();
-                break;
-            case "§eBlock Generation":
-                booleanSet("world.settings.block_regeneration.enabled", !configBoolean("world.settings.block_regeneration.enabled"));
-                saveAndReload();
-                break;
-            case "§eDisabled Commands":
-                booleanSet("disabled_commands.enabled", !configBoolean("disabled_commands.enabled"));
-                saveAndReload();
-                break;
-            case "§eAutomated Resets":
-                booleanSet("world.settings.automated_resets.enabled", !configBoolean("world.settings.automated_resets.enabled"));
-                saveAndReload();
-                break;
             case "§aResource World":
                 if (worldExists()) {
                     player.closeInventory();
-                    new ResetByCommand().executeReset();
+                    new ResetByCommand(plugin).executeReset();
                 }
                 break;
             case "§cNether World":
                 if (configBoolean("nether_world.settings.enabled")) {
                     player.closeInventory();
-                    new ResetByCommand().executeNetherReset();
+                    new ResetByCommand(plugin).executeNetherReset();
                 }
                 break;
             case "§9End World":
                 if (configBoolean("end_world.settings.enabled")) {
                     player.closeInventory();
-                    new ResetByCommand().executeEndReset();
+                    new ResetByCommand(plugin).executeEndReset();
                 }
                 break;
             case "§cBack":

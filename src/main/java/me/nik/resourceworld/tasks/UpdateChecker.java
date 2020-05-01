@@ -18,6 +18,8 @@ public class UpdateChecker extends BukkitRunnable {
         this.plugin = plugin;
     }
 
+    public static boolean UPDATE = false;
+
     @Override
     public void run() {
         try {
@@ -26,6 +28,7 @@ public class UpdateChecker extends BukkitRunnable {
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
                 System.out.println(Messenger.message("update_found"));
+                UPDATE = true;
             } else {
                 System.out.println(Messenger.message("update_not_found"));
             }

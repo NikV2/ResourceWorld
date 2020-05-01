@@ -41,6 +41,7 @@ public class Lang {
         //lang.yml
         Lang.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Lang.get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
+        Lang.get().addDefault("update_reminder", "&aThere is a new Update available, Make sure to stay up to date!");
         Lang.get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
         Lang.get().addDefault("deleting", "&f&lCleaning up the old Resource World");
         Lang.get().addDefault("reset_cooldown", "&cWARNING! You cannot reset the Resource World yet, You must wait %seconds% seconds.");

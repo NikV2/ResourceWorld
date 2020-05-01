@@ -1,12 +1,21 @@
 package me.nik.resourceworld.tasks;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
-import me.nik.resourceworld.utils.*;
+import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.WorldGenerator;
+import me.nik.resourceworld.utils.WorldGeneratorEnd;
+import me.nik.resourceworld.utils.WorldGeneratorNether;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ResetByCommand extends Manager {
+
+    public ResetByCommand(ResourceWorld plugin) {
+        super(plugin);
+    }
 
     public void executeReset() {
         if (!worldExists()) return;
@@ -31,7 +40,7 @@ public class ResetByCommand extends Manager {
 
             @Override
             public void run() {
-                new WorldGenerator().createWorld();
+                new WorldGenerator(plugin).createWorld();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
             }
         }.runTaskLater(plugin, 80);
@@ -60,7 +69,7 @@ public class ResetByCommand extends Manager {
 
             @Override
             public void run() {
-                new WorldGeneratorNether().createWorld();
+                new WorldGeneratorNether(plugin).createWorld();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
             }
         }.runTaskLater(plugin, 80);
@@ -89,7 +98,7 @@ public class ResetByCommand extends Manager {
 
             @Override
             public void run() {
-                new WorldGeneratorEnd().createWorld();
+                new WorldGeneratorEnd(plugin).createWorld();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
             }
         }.runTaskLater(plugin, 80);

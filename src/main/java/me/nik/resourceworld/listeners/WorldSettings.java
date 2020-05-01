@@ -1,5 +1,6 @@
 package me.nik.resourceworld.listeners;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
@@ -14,7 +15,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WorldSettings extends Manager {
-    public WorldSettings() {
+    public WorldSettings(ResourceWorld plugin) {
+        super(plugin);
 
         if (configBoolean("world.settings.always_day")) {
             new BukkitRunnable() {

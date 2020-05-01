@@ -10,6 +10,7 @@ import me.nik.resourceworld.listeners.DisabledCmds;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.listeners.Portals;
+import me.nik.resourceworld.listeners.UpdateReminder;
 import me.nik.resourceworld.listeners.WorldSettings;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
@@ -58,6 +59,7 @@ public final class ResourceWorld extends JavaPlugin {
         //Check for updates
         if (isEnabled("settings.check_for_updates")) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
+            registerEvent(new UpdateReminder(this));
         } else {
             System.out.println(Messenger.message("update_disabled"));
         }
@@ -174,22 +176,22 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void initialize() {
-        registerEvent(new LeaveInWorld());
-        registerEvent(new MenuHandler());
+        registerEvent(new LeaveInWorld(this));
+        registerEvent(new MenuHandler(this));
         if (isEnabled("world.settings.block_regeneration.enabled")) {
-            registerEvent(new BlockRegen());
+            registerEvent(new BlockRegen(this));
         }
         if (isEnabled("nether_world.settings.block_regeneration.enabled")) {
-            registerEvent(new BlockRegenNether());
+            registerEvent(new BlockRegenNether(this));
         }
         if (isEnabled("world.settings.disable_suffocation_damage") || isEnabled("world.settings.disable_drowning_damage") || isEnabled("world.settings.disable_entity_spawning")) {
-            registerEvent(new WorldSettings());
+            registerEvent(new WorldSettings(this));
         }
         if (isEnabled("disabled_commands.enabled")) {
-            registerEvent(new DisabledCmds());
+            registerEvent(new DisabledCmds(this));
         }
         if (isEnabled("nether_world.settings.portals.override") || Config.get().getBoolean("end_world.settings.portals.override")) {
-            registerEvent(new Portals());
+            registerEvent(new Portals(this));
         }
     }
 
@@ -215,13 +217,13 @@ public final class ResourceWorld extends JavaPlugin {
 
     private void generateWorlds() {
         if (isEnabled("world.settings.enabled")) {
-            new WorldGenerator().createWorld();
+            new WorldGenerator(this).createWorld();
         }
         if (isEnabled("nether_world.settings.enabled")) {
-            new WorldGeneratorNether().createWorld();
+            new WorldGeneratorNether(this).createWorld();
         }
         if (isEnabled("end_world.settings.enabled")) {
-            new WorldGeneratorEnd().createWorld();
+            new WorldGeneratorEnd(this).createWorld();
         }
     }
 }

@@ -1,6 +1,5 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.api.Manager;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
@@ -27,8 +26,6 @@ public class Teleport extends SubCommand {
     final private int volume = Config.get().getInt("teleport.settings.sounds.volume");
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
 
-    private final Manager manager = new Manager();
-
     @Override
     public String getName() {
         return "tp";
@@ -52,7 +49,7 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("no_perm"));
                 return;
             }
-            if (!manager.worldExists()) {
+            if (!worldExists()) {
                 player.sendMessage(Messenger.message("not_exist"));
                 return;
             }
@@ -63,7 +60,7 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("no_perm"));
                 return;
             }
-            if (Config.get().getBoolean("nether_world.settings.enabled") && manager.netherExists()) {
+            if (Config.get().getBoolean("nether_world.settings.enabled") && netherExists()) {
                 World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
                 teleport(player, worldNether);
             } else {
@@ -74,7 +71,7 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("no_perm"));
                 return;
             }
-            if (Config.get().getBoolean("end_world.settings.enabled") && manager.endExists()) {
+            if (Config.get().getBoolean("end_world.settings.enabled") && endExists()) {
                 World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
                 teleport(player, worldEnd);
             } else {
@@ -133,10 +130,10 @@ public class Teleport extends SubCommand {
 
         if (args.length == 2) {
             List<String> worlds = new ArrayList<>();
-            if (manager.netherExists()) {
+            if (netherExists()) {
                 worlds.add("nether");
             }
-            if (manager.endExists()) {
+            if (endExists()) {
                 worlds.add("end");
             }
             return worlds;
@@ -147,5 +144,17 @@ public class Teleport extends SubCommand {
 
     private boolean isSoundsEnabled() {
         return Config.get().getBoolean("teleport.settings.sounds.enabled");
+    }
+
+    private boolean worldExists() {
+        return Bukkit.getWorld(Config.get().getString("world.settings.world_name")) != null;
+    }
+
+    private boolean netherExists() {
+        return Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name")) != null;
+    }
+
+    private boolean endExists() {
+        return Bukkit.getWorld(Config.get().getString("end_world.settings.world_name")) != null;
     }
 }

@@ -1,7 +1,6 @@
 package me.nik.resourceworld.api;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
 import me.nik.resourceworld.utils.Messenger;
@@ -19,9 +18,6 @@ import java.util.ArrayList;
 
 public class GUIManager {
 
-    private Inventory mainGUI;
-    private Inventory worldsGUI;
-    private Inventory settingsGUI;
     private final ResourceWorld plugin = ResourceWorld.getInstance();
 
     public void openMainGUI(Player p) {
@@ -81,9 +77,8 @@ public class GUIManager {
 
         //Add the Items
         mainGUI.setItem(49, close);
-        mainGUI.setItem(33, settings);
-        mainGUI.setItem(31, reset);
-        mainGUI.setItem(29, support);
+        mainGUI.setItem(32, reset);
+        mainGUI.setItem(30, support);
         mainGUI.setItem(15, reload);
         mainGUI.setItem(13, teleport);
         p.openInventory(mainGUI);
@@ -111,113 +106,6 @@ public class GUIManager {
                 mainGUI.setItem(11, server);
             }
         }.runTaskTimer(plugin, 1, 10);
-    }
-
-    public void openSettingsGUI(Player p) {
-        Inventory settingsGUI = Bukkit.createInventory(new ResourceWorldHolder(), 54, Messenger.format(Lang.get().getString("settings_gui_name")));
-        p.openInventory(settingsGUI);
-        final Player pNon = p;
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                InventoryView guiView = pNon.getOpenInventory();
-                if (!(guiView.getTopInventory().getHolder() instanceof ResourceWorldHolder)) {
-                    cancel();
-                    return;
-                }
-                //always day
-                ItemStack day = new ItemStack(Material.PAPER, 1);
-                ItemMeta day_meta = day.getItemMeta();
-                day_meta.setDisplayName("§eAlways Day");
-                ArrayList<String> dayLore = new ArrayList<>();
-                dayLore.add("");
-                dayLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.always_day"));
-                dayLore.add("");
-                dayLore.add(ChatColor.WHITE + "Would you like it to");
-                dayLore.add(ChatColor.WHITE + "Always be day in the Resource World?");
-                day_meta.setLore(dayLore);
-                day.setItemMeta(day_meta);
-
-                //disable entity spawn
-                ItemStack mobspawn = new ItemStack(Material.PAPER, 1);
-                ItemMeta mobspawn_meta = mobspawn.getItemMeta();
-                mobspawn_meta.setDisplayName("§eDisable Entity Spawning");
-                ArrayList<String> moblore = new ArrayList<>();
-                moblore.add("");
-                moblore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.disable_entity_spawning"));
-                moblore.add("");
-                moblore.add(ChatColor.WHITE + "Would you like Mobs to");
-                moblore.add(ChatColor.WHITE + "Not spawn in the Resource World?");
-                mobspawn_meta.setLore(moblore);
-                mobspawn.setItemMeta(mobspawn_meta);
-
-                //check for updates
-                ItemStack updates = new ItemStack(Material.PAPER, 1);
-                ItemMeta updates_meta = updates.getItemMeta();
-                updates_meta.setDisplayName("§eCheck for Updates");
-                ArrayList<String> updatesLore = new ArrayList<>();
-                updatesLore.add("");
-                updatesLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("settings.check_for_updates"));
-                updatesLore.add("");
-                updatesLore.add(ChatColor.WHITE + "Would you like to check for");
-                updatesLore.add(ChatColor.WHITE + "Updates on Server Restarts?");
-                updates_meta.setLore(updatesLore);
-                updates.setItemMeta(updates_meta);
-
-                //ore regeneration
-                ItemStack orere = new ItemStack(Material.PAPER, 1);
-                ItemMeta orere_meta = orere.getItemMeta();
-                orere_meta.setDisplayName("§eBlock Generation");
-                ArrayList<String> orereLore = new ArrayList<>();
-                orereLore.add("");
-                orereLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.block_regeneration.enabled"));
-                orereLore.add("");
-                orereLore.add(ChatColor.WHITE + "Would you like certain blocks to");
-                orereLore.add(ChatColor.WHITE + "Regenerate after a certain amount of time?");
-                orere_meta.setLore(orereLore);
-                orere.setItemMeta(orere_meta);
-
-                //disabled commands
-                ItemStack discmd = new ItemStack(Material.PAPER, 1);
-                ItemMeta discmd_meta = discmd.getItemMeta();
-                discmd_meta.setDisplayName("§eDisabled Commands");
-                ArrayList<String> discmdLore = new ArrayList<>();
-                discmdLore.add("");
-                discmdLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("disabled_commands.enabled"));
-                discmdLore.add("");
-                discmdLore.add(ChatColor.WHITE + "Would you like certain commands to");
-                discmdLore.add(ChatColor.WHITE + "Be Disabled inside the Resource World?");
-                discmd_meta.setLore(discmdLore);
-                discmd.setItemMeta(discmd_meta);
-
-                //automated resets
-                ItemStack dm = new ItemStack(Material.PAPER, 1);
-                ItemMeta dm_meta = dm.getItemMeta();
-                dm_meta.setDisplayName("§eAutomated Resets");
-                ArrayList<String> dmLore = new ArrayList<>();
-                dmLore.add("");
-                dmLore.add(ChatColor.GRAY + "Currently set to: " + ChatColor.GREEN + Config.get().getBoolean("world.settings.automated_resets.enabled"));
-                dmLore.add("");
-                dmLore.add(ChatColor.WHITE + "Would you like to Reset the");
-                dmLore.add(ChatColor.WHITE + "Resource World Automatically?");
-                dm_meta.setLore(dmLore);
-                dm.setItemMeta(dm_meta);
-
-                ItemStack back = new ItemStack(Material.BARRIER, 1);
-                ItemMeta back_meta = back.getItemMeta();
-                back_meta.setDisplayName("§cBack");
-                back.setItemMeta(back_meta);
-
-                settingsGUI.setItem(11, day);
-                settingsGUI.setItem(13, mobspawn);
-                settingsGUI.setItem(15, updates);
-                settingsGUI.setItem(29, orere);
-                settingsGUI.setItem(31, discmd);
-                settingsGUI.setItem(33, dm);
-                settingsGUI.setItem(49, back);
-            }
-        }.runTaskTimer(plugin, 1, 5);
     }
 
     public void openWorldsGUI(Player p) {
