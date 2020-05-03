@@ -27,13 +27,13 @@ public class UpdateChecker extends BukkitRunnable {
             String version = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                System.out.println(Messenger.message("update_found"));
+                plugin.consoleMessage(Messenger.message("update_found"));
                 UPDATE = true;
             } else {
-                System.out.println(Messenger.message("update_not_found"));
+                plugin.consoleMessage(Messenger.message("update_not_found"));
             }
         } catch (IOException ignored) {
-            System.out.println(Messenger.format("&cError while checking for updates, Is your server connected to the internet?"));
+            plugin.consoleMessage(Messenger.format("&cError while checking for updates, Is your server connected to the internet?"));
         }
     }
 }

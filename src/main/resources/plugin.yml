@@ -8,7 +8,7 @@ description: Unlimited resources!
 commands:
   resource:
     description: Unlimited resources!
-    usage: /<command>
+    usage: /resource
     aliases:
       - rw
       - resourceworld

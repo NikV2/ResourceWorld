@@ -21,7 +21,7 @@ public class ResetByCommand extends Manager {
         if (!worldExists()) return;
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetTP();
-        System.out.println(Messenger.message("deleting"));
+        plugin.consoleMessage(Messenger.message("deleting"));
         World world = Bukkit.getWorld(configString("world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -32,7 +32,7 @@ public class ResetByCommand extends Manager {
                 try {
                     deleteDirectory(world.getWorldFolder());
                 } catch (NullPointerException ignored) {
-                    System.out.println(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
+                    plugin.consoleMessage(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
                 }
             }
         }.runTaskAsynchronously(plugin);
@@ -50,7 +50,7 @@ public class ResetByCommand extends Manager {
         if (!netherExists()) return;
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetNetherTP();
-        System.out.println(Messenger.message("deleting"));
+        plugin.consoleMessage(Messenger.message("deleting"));
         World world = Bukkit.getWorld(configString("nether_world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -61,7 +61,7 @@ public class ResetByCommand extends Manager {
                 try {
                     deleteDirectory(world.getWorldFolder());
                 } catch (NullPointerException ignored) {
-                    System.out.println(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
+                    plugin.consoleMessage(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
                 }
             }
         }.runTaskAsynchronously(plugin);
@@ -79,7 +79,7 @@ public class ResetByCommand extends Manager {
         if (!endExists()) return;
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetEndTP();
-        System.out.println(Messenger.message("deleting"));
+        plugin.consoleMessage(Messenger.message("deleting"));
         World world = Bukkit.getWorld(configString("end_world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -90,7 +90,7 @@ public class ResetByCommand extends Manager {
                 try {
                     deleteDirectory(world.getWorldFolder());
                 } catch (NullPointerException ignored) {
-                    System.out.println(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
+                    plugin.consoleMessage(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
                 }
             }
         }.runTaskAsynchronously(plugin);

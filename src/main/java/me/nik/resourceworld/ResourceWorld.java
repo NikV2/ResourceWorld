@@ -22,6 +22,7 @@ import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,13 +38,13 @@ public final class ResourceWorld extends JavaPlugin {
         loadFiles();
 
         //Startup Message
-        console("");
-        console("            &aResource World v" + this.getDescription().getVersion());
-        console("");
-        console("                   &fAuthor: Nik");
-        console("");
-        console("     &aRunning on &f" + this.getServer().getVersion());
-        console("");
+        consoleMessage("");
+        consoleMessage("            " + ChatColor.GREEN + "Resource World v" + this.getDescription().getVersion());
+        consoleMessage("");
+        consoleMessage("                   " + ChatColor.WHITE + "Author: Nik");
+        consoleMessage("");
+        consoleMessage("     " + ChatColor.GREEN + "Running on " + ChatColor.WHITE + this.getServer().getVersion());
+        consoleMessage("");
 
         //Load Commands
         getCommand("resource").setExecutor(new CommandManager());
@@ -61,7 +62,7 @@ public final class ResourceWorld extends JavaPlugin {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
             registerEvent(new UpdateReminder(this));
         } else {
-            System.out.println(Messenger.message("update_disabled"));
+            consoleMessage(Messenger.message("update_disabled"));
         }
 
         //Enable bStats
@@ -107,10 +108,6 @@ public final class ResourceWorld extends JavaPlugin {
             Data.save();
             Data.reload();
         }
-    }
-
-    private void console(String msg) {
-        this.getServer().getConsoleSender().sendMessage(Messenger.format(msg));
     }
 
     private void storeTimeLeft() {
@@ -225,5 +222,9 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("end_world.settings.enabled")) {
             new WorldGeneratorEnd(this).createWorld();
         }
+    }
+
+    public void consoleMessage(String message) {
+        this.getServer().getConsoleSender().sendMessage(message);
     }
 }

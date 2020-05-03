@@ -35,7 +35,7 @@ public class ResetEndWorld extends BukkitRunnable {
                 try {
                     worldUtils.deleteDirectory(world.getWorldFolder());
                 } catch (NullPointerException ignored) {
-                    System.out.println(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
+                    plugin.consoleMessage(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
                 }
             }
         }.runTaskAsynchronously(plugin);
