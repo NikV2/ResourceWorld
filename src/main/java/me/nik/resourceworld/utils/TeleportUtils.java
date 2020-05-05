@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class TeleportUtils {
-    private final HashSet<Material> unsafeBlocks = new HashSet<>();
 
+    private final HashSet<Material> unsafeBlocks = new HashSet<>();
     {
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.WATER);

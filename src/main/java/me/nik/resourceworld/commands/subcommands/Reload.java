@@ -1,5 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
@@ -7,6 +8,12 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class Reload extends SubCommand {
+
+    private final ResourceWorld plugin;
+
+    public Reload(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {

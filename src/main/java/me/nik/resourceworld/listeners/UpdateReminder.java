@@ -20,14 +20,13 @@ public class UpdateReminder implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         if (!e.getPlayer().hasPermission("rw.admin")) return;
-        if (!UpdateChecker.UPDATE) return;
 
         new BukkitRunnable() {
 
             @Override
             public void run() {
-                e.getPlayer().sendMessage(Messenger.message("update_reminder"));
+                e.getPlayer().sendMessage(Messenger.message("update_found").replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", UpdateChecker.VERSION));
             }
-        }.runTaskLaterAsynchronously(plugin, 20);
+        }.runTaskLaterAsynchronously(plugin, 40);
     }
 }

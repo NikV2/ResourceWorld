@@ -1,6 +1,7 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.listeners.UpdateReminder;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +19,7 @@ public class UpdateChecker extends BukkitRunnable {
         this.plugin = plugin;
     }
 
-    public static boolean UPDATE = false;
+    public static String VERSION = null;
 
     @Override
     public void run() {
@@ -27,13 +28,13 @@ public class UpdateChecker extends BukkitRunnable {
             String version = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
-                plugin.consoleMessage(Messenger.message("update_found"));
-                UPDATE = true;
+                VERSION = version;
+                plugin.consoleMessage(Messenger.message("update_found").replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", VERSION));
+                plugin.registerEvent(new UpdateReminder(plugin));
             } else {
                 plugin.consoleMessage(Messenger.message("update_not_found"));
             }
         } catch (IOException ignored) {
-            plugin.consoleMessage(Messenger.format("&cError while checking for updates, Is your server connected to the internet?"));
         }
     }
 }

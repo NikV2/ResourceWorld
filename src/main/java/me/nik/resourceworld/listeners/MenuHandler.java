@@ -2,23 +2,28 @@ package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.GUIManager;
-import me.nik.resourceworld.api.Manager;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class MenuHandler extends Manager {
+public class MenuHandler implements Listener {
+
+    private final ResourceWorld plugin;
+    private final WorldUtils worldUtils = new WorldUtils();
 
     public MenuHandler(ResourceWorld plugin) {
-        super(plugin);
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -49,29 +54,29 @@ public class MenuHandler extends Manager {
                 break;
             case "§aReset":
                 player.closeInventory();
-                new GUIManager().openWorldsGUI(player);
+                new GUIManager(plugin).openWorldsGUI(player);
                 break;
             case "§aResource World":
-                if (worldExists()) {
+                if (worldUtils.worldExists()) {
                     player.closeInventory();
                     new ResetByCommand(plugin).executeReset();
                 }
                 break;
             case "§cNether World":
-                if (configBoolean("nether_world.settings.enabled")) {
+                if (Config.get().getBoolean("nether_world.settings.enabled")) {
                     player.closeInventory();
                     new ResetByCommand(plugin).executeNetherReset();
                 }
                 break;
             case "§9End World":
-                if (configBoolean("end_world.settings.enabled")) {
+                if (Config.get().getBoolean("end_world.settings.enabled")) {
                     player.closeInventory();
                     new ResetByCommand(plugin).executeEndReset();
                 }
                 break;
             case "§cBack":
                 player.closeInventory();
-                new GUIManager().openMainGUI(player);
+                new GUIManager(plugin).openMainGUI(player);
                 break;
         }
         event.setCancelled(true);

@@ -12,8 +12,13 @@ import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ResetEndWorld extends BukkitRunnable {
-    private final ResourceWorld plugin = ResourceWorld.getInstance();
+
+    private final ResourceWorld plugin;
     private final WorldUtils worldUtils = new WorldUtils();
+
+    public ResetEndWorld(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void run() {
@@ -34,8 +39,8 @@ public class ResetEndWorld extends BukkitRunnable {
             public void run() {
                 try {
                     worldUtils.deleteDirectory(world.getWorldFolder());
-                } catch (NullPointerException ignored) {
-                    plugin.consoleMessage(Messenger.prefix(Messenger.format("&cThere was an error while attempting to delete your previous Resource World, Please delete it manually or Reset your config.yml!")));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
             }
         }.runTaskAsynchronously(plugin);
@@ -43,7 +48,7 @@ public class ResetEndWorld extends BukkitRunnable {
 
             @Override
             public void run() {
-                new WorldGenerator(plugin).createWorld();
+                new WorldGenerator().createWorld();
                 plugin.getServer().broadcastMessage(Messenger.message("end_has_been_reset"));
             }
         }.runTaskLater(plugin, 90);

@@ -1,5 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.GUIManager;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.utils.Messenger;
@@ -8,6 +9,12 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class Menu extends SubCommand {
+
+    private final ResourceWorld plugin;
+
+    public Menu(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {
@@ -31,7 +38,7 @@ public class Menu extends SubCommand {
             return;
         }
         if (args.length == 1) {
-            new GUIManager().openMainGUI(player);
+            new GUIManager(plugin).openMainGUI(player);
         }
     }
 

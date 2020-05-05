@@ -10,7 +10,6 @@ import me.nik.resourceworld.listeners.DisabledCmds;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.listeners.Portals;
-import me.nik.resourceworld.listeners.UpdateReminder;
 import me.nik.resourceworld.listeners.WorldSettings;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
@@ -29,11 +28,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
 
-    private static ResourceWorld instance;
-
     @Override
     public void onEnable() {
-        instance = this;
         //Load Files
         loadFiles();
 
@@ -47,7 +43,7 @@ public final class ResourceWorld extends JavaPlugin {
         consoleMessage("");
 
         //Load Commands
-        getCommand("resource").setExecutor(new CommandManager());
+        getCommand("resource").setExecutor(new CommandManager(this));
 
         manageMillis();
 
@@ -60,7 +56,6 @@ public final class ResourceWorld extends JavaPlugin {
         //Check for updates
         if (isEnabled("settings.check_for_updates")) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
-            registerEvent(new UpdateReminder(this));
         } else {
             consoleMessage(Messenger.message("update_disabled"));
         }
@@ -83,13 +78,8 @@ public final class ResourceWorld extends JavaPlugin {
         Lang.save();
         Data.reload();
 
-        //Unload Instance
-        instance = null;
+        //Unload Instances
         getCommand("resource").setExecutor(null);
-    }
-
-    public static ResourceWorld getInstance() {
-        return instance;
     }
 
     private void manageMillis() {
@@ -173,7 +163,7 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void initialize() {
-        registerEvent(new LeaveInWorld(this));
+        registerEvent(new LeaveInWorld());
         registerEvent(new MenuHandler(this));
         if (isEnabled("world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegen(this));
@@ -185,14 +175,14 @@ public final class ResourceWorld extends JavaPlugin {
             registerEvent(new WorldSettings(this));
         }
         if (isEnabled("disabled_commands.enabled")) {
-            registerEvent(new DisabledCmds(this));
+            registerEvent(new DisabledCmds());
         }
         if (isEnabled("nether_world.settings.portals.override") || Config.get().getBoolean("end_world.settings.portals.override")) {
-            registerEvent(new Portals(this));
+            registerEvent(new Portals());
         }
     }
 
-    private void registerEvent(Listener listener) {
+    public void registerEvent(Listener listener) {
         Bukkit.getServer().getPluginManager().registerEvents(listener, this);
     }
 
@@ -200,27 +190,27 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.enabled")) {
             System.out.println(Messenger.message("automated_resets_enabled"));
             int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetWorld = new ResetWorld().runTaskTimer(this, worldTimer(), interval);
+            BukkitTask resetWorld = new ResetWorld(this).runTaskTimer(this, worldTimer(), interval);
         }
         if (isEnabled("nether_world.settings.enabled") && isEnabled("nether_world.settings.automated_resets.enabled")) {
             int interval = Config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetNether = new ResetNetherWorld().runTaskTimer(this, netherTimer(), interval);
+            BukkitTask resetNether = new ResetNetherWorld(this).runTaskTimer(this, netherTimer(), interval);
         }
         if (isEnabled("end_world.settings.enabled") && isEnabled("end_world.settings.automated_resets.enabled")) {
             int interval = Config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
-            BukkitTask resetEnd = new ResetEndWorld().runTaskTimer(this, endTimer(), interval);
+            BukkitTask resetEnd = new ResetEndWorld(this).runTaskTimer(this, endTimer(), interval);
         }
     }
 
     private void generateWorlds() {
         if (isEnabled("world.settings.enabled")) {
-            new WorldGenerator(this).createWorld();
+            new WorldGenerator().createWorld();
         }
         if (isEnabled("nether_world.settings.enabled")) {
-            new WorldGeneratorNether(this).createWorld();
+            new WorldGeneratorNether().createWorld();
         }
         if (isEnabled("end_world.settings.enabled")) {
-            new WorldGeneratorEnd(this).createWorld();
+            new WorldGeneratorEnd().createWorld();
         }
     }
 

@@ -1,5 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.tasks.ResetByCommand;
@@ -14,10 +15,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class Reset extends SubCommand {
-    private final HashMap<UUID, Long> cooldown = new HashMap<UUID, Long>();
+
+    private final ResourceWorld plugin;
+
+    private final HashMap<UUID, Long> cooldown = new HashMap<>();
     private final String world = Config.get().getString("world.settings.world_name");
     private final String nether = Config.get().getString("nether_world.settings.world_name");
     private final String end = Config.get().getString("end_world.settings.world_name");
+
+    public Reset(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {

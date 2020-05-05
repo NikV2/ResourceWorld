@@ -1,6 +1,11 @@
 package me.nik.resourceworld.commands;
+
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.commands.subcommands.*;
+import me.nik.resourceworld.commands.subcommands.Menu;
+import me.nik.resourceworld.commands.subcommands.Reload;
+import me.nik.resourceworld.commands.subcommands.Reset;
+import me.nik.resourceworld.commands.subcommands.Spawn;
+import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,15 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager implements TabExecutor {
-    private final ResourceWorld plugin = ResourceWorld.getInstance();
+
+    private final ResourceWorld plugin;
 
     private final ArrayList<SubCommand> subcommands = new ArrayList<>();
 
-    public CommandManager() {
-        subcommands.add(new Teleport());
-        subcommands.add(new Reload());
-        subcommands.add(new Menu());
-        subcommands.add(new Reset());
+    public CommandManager(ResourceWorld plugin) {
+        this.plugin = plugin;
+        subcommands.add(new Teleport(plugin));
+        subcommands.add(new Reload(plugin));
+        subcommands.add(new Menu(plugin));
+        subcommands.add(new Reset(plugin));
         subcommands.add(new Spawn());
     }
 

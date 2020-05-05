@@ -18,7 +18,11 @@ import java.util.ArrayList;
 
 public class GUIManager {
 
-    private final ResourceWorld plugin = ResourceWorld.getInstance();
+    private final ResourceWorld plugin;
+
+    public GUIManager(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     public void openMainGUI(Player p) {
 
