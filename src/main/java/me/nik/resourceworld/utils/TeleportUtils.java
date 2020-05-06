@@ -6,12 +6,15 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class TeleportUtils {
 
-    private final HashSet<Material> unsafeBlocks = new HashSet<>();
+    private final int xz = Config.get().getInt("teleport.settings.max_teleport_range");
+
+    private final ArrayList<Material> unsafeBlocks = new ArrayList<>();
+
     {
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.WATER);
@@ -22,9 +25,9 @@ public class TeleportUtils {
         World.Environment environment = world.getEnvironment();
         Location randomLocation = null;
 
-        int x = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
+        int x = random.nextInt(xz);
         int y = 100;
-        int z = random.nextInt(Config.get().getInt("teleport.settings.max_teleport_range"));
+        int z = random.nextInt(xz);
 
         if (environment == World.Environment.THE_END) {
             randomLocation = new Location(world, x, y, z);
