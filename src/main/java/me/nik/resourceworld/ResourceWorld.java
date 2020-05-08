@@ -77,6 +77,9 @@ public final class ResourceWorld extends JavaPlugin {
         Lang.reload();
         Lang.save();
         Data.reload();
+
+        //Unload Instances
+        getCommand("resource").setExecutor(null);
     }
 
     private void manageMillis() {

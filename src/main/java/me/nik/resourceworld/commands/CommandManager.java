@@ -36,6 +36,7 @@ public class CommandManager implements TabExecutor {
         if (!(sender instanceof Player)) {
             if (args.length == 0) {
                 helpMessage(sender);
+                return true;
             } else if (args[0].equalsIgnoreCase("reload")) {
                 sender.sendMessage(Messenger.message("reloading"));
                 sender.getServer().getPluginManager().disablePlugin(plugin);
@@ -66,7 +67,7 @@ public class CommandManager implements TabExecutor {
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     public ArrayList<SubCommand> getSubcommands() {
