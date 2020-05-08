@@ -13,27 +13,36 @@ public class WorldGeneratorNether {
     World world;
 
     private final String worldName = Config.get().getString("nether_world.settings.world_name");
+    private final WorldType type = WorldType.valueOf(Config.get().getString("nether_world.settings.world_type"));
+    private final World.Environment environment = World.Environment.valueOf(Config.get().getString("nether_world.settings.environment"));
+    private final boolean useBorder = Config.get().getBoolean("nether_world.settings.world_border.enabled");
+    private final int border = Config.get().getInt("nether_world.settings.world_border.size");
+    private final boolean pvp = Config.get().getBoolean("nether_world.settings.allow_pvp");
+    private final Difficulty difficulty = Difficulty.valueOf(Config.get().getString("nether_world.settings.difficulty"));
+    private final int monsterLimit = Config.get().getInt("nether_world.settings.entities.max_monsters");
+    private final boolean loadSpawn = Config.get().getBoolean("nether_world.settings.keep_spawn_loaded");
+    private final boolean keepInventory = Config.get().getBoolean("world.settings.keep_inventory_on_death");
 
     public void createWorld() {
         try {
             WorldCreator wc = new WorldCreator(worldName);
-            wc.type(WorldType.NORMAL);
-            wc.environment(World.Environment.NETHER);
+            wc.type(type);
+            wc.environment(environment);
             world = wc.createWorld();
             final World resourceNether = Bukkit.getWorld(worldName);
-            if (Config.get().getBoolean("nether_world.settings.world_border.enabled")) {
+            if (useBorder) {
                 WorldBorder wb = Bukkit.getWorld(worldName).getWorldBorder();
                 wb.setCenter(0, 0);
-                wb.setSize(Config.get().getInt("nether_world.settings.world_border.size"));
+                wb.setSize(border);
             }
-            resourceNether.setPVP(Config.get().getBoolean("nether_world.settings.allow_pvp"));
-            resourceNether.setDifficulty(Difficulty.valueOf(Config.get().getString("nether_world.settings.difficulty")));
-            resourceNether.setMonsterSpawnLimit(Config.get().getInt("nether_world.settings.entities.max_monsters"));
-            resourceNether.setKeepSpawnInMemory(Config.get().getBoolean("nether_world.settings.keep_spawn_loaded"));
+            resourceNether.setPVP(pvp);
+            resourceNether.setDifficulty(difficulty);
+            resourceNether.setMonsterSpawnLimit(monsterLimit);
+            resourceNether.setKeepSpawnInMemory(loadSpawn);
             Bukkit.getWorlds().add(resourceNether);
             if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
                 return;
-            if (Config.get().getBoolean("world.settings.keep_inventory_on_death")) {
+            if (keepInventory) {
                 resourceNether.setGameRule(GameRule.KEEP_INVENTORY, true);
             }
         } catch (Exception ignored) {

@@ -91,6 +91,8 @@ public class Config {
         Config.get().addDefault("nether_world.settings.portals.vanilla_portal_ratio", false);
         Config.get().addDefault("nether_world.settings.portals.portal_world", "world");
         Config.get().addDefault("nether_world.settings.world_name", "resource_nether");
+        Config.get().addDefault("nether_world.settings.world_type", "NORMAL");
+        Config.get().addDefault("nether_world.settings.environment", "NETHER");
         Config.get().addDefault("nether_world.settings.world_border.enabled", true);
         Config.get().addDefault("nether_world.settings.world_border.size", 4500);
         Config.get().addDefault("nether_world.settings.allow_pvp", true);
@@ -111,6 +113,8 @@ public class Config {
         Config.get().addDefault("end_world.settings.portals.override", false);
         Config.get().addDefault("end_world.settings.portals.portal_world", "world");
         Config.get().addDefault("end_world.settings.world_name", "resource_end");
+        Config.get().addDefault("end_world.settings.world_type", "NORMAL");
+        Config.get().addDefault("end_world.settings.environment", "THE_END");
         Config.get().addDefault("end_world.settings.world_border.enabled", true);
         Config.get().addDefault("end_world.settings.world_border.size", 4500);
         Config.get().addDefault("end_world.settings.allow_pvp", true);
