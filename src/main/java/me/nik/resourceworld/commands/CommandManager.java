@@ -66,7 +66,7 @@ public class CommandManager implements TabExecutor {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     public ArrayList<SubCommand> getSubcommands() {
