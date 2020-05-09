@@ -1,5 +1,5 @@
 name: ResourceWorld
-version: 1.5.4
+version: 1.5.5
 main: me.nik.resourceworld.ResourceWorld
 load: POSTWORLD
 api-version: 1.13
@@ -8,10 +8,7 @@ description: Unlimited resources!
 commands:
   resource:
     description: Unlimited resources!
-    usage: /resource
-    aliases:
-      - rw
-      - resourceworld
+    aliases: [resourceworld, rw]
 permissions:
   rw.tp:
     description: Randomly Teleport To The Resource World!
