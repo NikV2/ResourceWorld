@@ -25,7 +25,7 @@ public class BlockRegen implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         if (!e.getBlock().getWorld().getName().equalsIgnoreCase(world)) return;
         final Material type = e.getBlock().getType();
