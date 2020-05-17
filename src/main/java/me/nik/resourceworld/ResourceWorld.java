@@ -160,7 +160,6 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void initialize() {
-        registerEvent(new LeaveInWorld());
         registerEvent(new MenuHandler(this));
         if (isEnabled("world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegen(this));
@@ -176,6 +175,9 @@ public final class ResourceWorld extends JavaPlugin {
         }
         if (isEnabled("nether_world.settings.portals.override") || Config.get().getBoolean("end_world.settings.portals.override")) {
             registerEvent(new Portals());
+        }
+        if (isEnabled("settings.teleport_to_spawn_on_quit")) {
+            registerEvent(new LeaveInWorld());
         }
     }
 

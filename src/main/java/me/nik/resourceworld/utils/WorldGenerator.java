@@ -54,6 +54,7 @@ public class WorldGenerator {
             resourceWorld.setStorm(storms);
             resourceWorld.setKeepSpawnInMemory(loadSpawn);
             Bukkit.getWorlds().add(resourceWorld);
+            new WorldCommands().worldRunCommands();
             if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
                 return;
             if (keepInventory) {
