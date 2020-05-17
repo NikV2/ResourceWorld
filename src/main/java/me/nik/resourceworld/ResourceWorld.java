@@ -1,5 +1,6 @@
 package me.nik.resourceworld;
 
+import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
@@ -63,6 +64,8 @@ public final class ResourceWorld extends JavaPlugin {
         //Enable bStats
         int pluginId = 6981;
         MetricsLite metricsLite = new MetricsLite(this, pluginId);
+
+        PaperLib.suggestPaper(this);
     }
 
     @Override

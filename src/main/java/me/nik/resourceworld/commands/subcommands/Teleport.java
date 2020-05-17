@@ -1,5 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
+import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
@@ -100,7 +101,7 @@ public class Teleport extends SubCommand {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(p.getUniqueId(), System.currentTimeMillis());
             }
-            p.teleport(new TeleportUtils().generateLocation(world));
+            PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
             p.addPotionEffect(effect);
             if (isSoundsEnabled()) {
                 try {
@@ -118,7 +119,7 @@ public class Teleport extends SubCommand {
 
                 @Override
                 public void run() {
-                    p.teleport(new TeleportUtils().generateLocation(world));
+                    PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
                     p.addPotionEffect(effect);
                     if (isSoundsEnabled()) {
                         try {

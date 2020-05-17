@@ -6,22 +6,21 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class TeleportUtils {
 
-    private final int xz = Config.get().getInt("teleport.settings.max_teleport_range");
+    private static final HashSet<Material> UNSAFEBLOCKS = new HashSet<>();
 
-    private final ArrayList<Material> unsafeBlocks = new ArrayList<>();
-
-    {
-        unsafeBlocks.add(Material.LAVA);
-        unsafeBlocks.add(Material.WATER);
+    static {
+        UNSAFEBLOCKS.add(Material.LAVA);
+        UNSAFEBLOCKS.add(Material.WATER);
     }
 
-    public Location generateLocation(World world) {
+    public static Location generateLocation(World world) {
         Random random = new Random();
+        int xz = Config.get().getInt("teleport.settings.max_teleport_range");
         World.Environment environment = world.getEnvironment();
         Location randomLocation = null;
 
@@ -47,13 +46,10 @@ public class TeleportUtils {
             randomLocation = generateLocation(world);
         }
 
-        if (Config.get().getBoolean("teleport.settings.load_chunk_before_teleporting") && !randomLocation.getChunk().isLoaded()) {
-            randomLocation.getChunk().load(true);
-        }
         return randomLocation;
     }
 
-    private boolean isLocationSafe(Location location) {
+    private static boolean isLocationSafe(Location location) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
@@ -61,6 +57,6 @@ public class TeleportUtils {
         Block above = location.getWorld().getBlockAt(x, y + 1, z);
         Block blockN = location.getWorld().getBlockAt(x - 1, y, z - 1);
         Block blockP = location.getWorld().getBlockAt(x + 1, y + 1, z + 1);
-        return !(unsafeBlocks.contains(below.getType()) || (unsafeBlocks.contains(blockP.getType())) || below.isEmpty() || above.getType().isSolid() || blockN.getType().isSolid() || blockP.getType().isSolid());
+        return !(UNSAFEBLOCKS.contains(below.getType()) || (UNSAFEBLOCKS.contains(blockP.getType())) || below.isEmpty() || above.getType().isSolid() || blockN.getType().isSolid() || blockP.getType().isSolid());
     }
 }
