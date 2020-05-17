@@ -59,10 +59,10 @@ public class Config {
         worldCmds.add("title @p title {\"text\":\"The Resource World\",\"color\":\"green\"}");
         worldCmds.add("title @p subtitle {\"text\":\"Has been Reset!\",\"color\":\"green\"}");
         List<String> netherCmds = Config.get().getStringList("nether_world.settings.automated_resets.commands");
-        netherCmds.add("title @p title {\"text\":\"The Resource World\",\"color\":\"green\"}");
+        netherCmds.add("title @p title {\"text\":\"The Resource Nether\",\"color\":\"green\"}");
         netherCmds.add("title @p subtitle {\"text\":\"Has been Reset!\",\"color\":\"green\"}");
         List<String> endCmds = Config.get().getStringList("end_world.settings.automated_resets.commands");
-        endCmds.add("title @p title {\"text\":\"The Resource World\",\"color\":\"green\"}");
+        endCmds.add("title @p title {\"text\":\"The Resource End\",\"color\":\"green\"}");
         endCmds.add("title @p subtitle {\"text\":\"Has been Reset!\",\"color\":\"green\"}");
         Config.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Config.get().addDefault("settings.check_for_updates", true);
