@@ -43,7 +43,6 @@ public final class ResourceWorld extends JavaPlugin {
         consoleMessage("     " + ChatColor.GREEN + "Running on " + ChatColor.WHITE + this.getServer().getVersion());
         consoleMessage("");
 
-        //Load Commands
         getCommand("resource").setExecutor(new CommandManager(this));
 
         manageMillis();
@@ -65,10 +64,7 @@ public final class ResourceWorld extends JavaPlugin {
         int pluginId = 6981;
         MetricsLite metricsLite = new MetricsLite(this, pluginId);
 
-        try {
-            PaperLib.suggestPaper(this);
-        } catch (Exception ignored) {
-        }
+        PaperLib.suggestPaper(this);
     }
 
     @Override

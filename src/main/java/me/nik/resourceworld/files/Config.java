@@ -64,6 +64,9 @@ public class Config {
         List<String> endCmds = Config.get().getStringList("end_world.settings.automated_resets.commands");
         endCmds.add("title @p title {\"text\":\"The Resource End\",\"color\":\"green\"}");
         endCmds.add("title @p subtitle {\"text\":\"Has been Reset!\",\"color\":\"green\"}");
+        List<String> unsafeBlocks = Config.get().getStringList("teleport.settings.unsafe_blocks");
+        unsafeBlocks.add("lava");
+        unsafeBlocks.add("water");
         Config.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Config.get().addDefault("settings.check_for_updates", true);
         Config.get().addDefault("settings.main_spawn_world", "world");
@@ -154,6 +157,7 @@ public class Config {
         Config.get().addDefault("teleport.settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT");
         Config.get().addDefault("teleport.settings.sounds.volume", 1);
         Config.get().addDefault("teleport.settings.sounds.pitch", 1);
+        Config.get().addDefault("teleport.settings.unsafe_blocks", unsafeBlocks);
         Config.get().addDefault("disabled_commands.enabled", false);
         Config.get().addDefault("disabled_commands.commands", list);
     }

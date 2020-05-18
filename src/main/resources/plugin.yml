@@ -1,11 +1,10 @@
 name: ResourceWorld
-version: 1.5.8
+version: 1.5.9
 main: me.nik.resourceworld.ResourceWorld
 load: POSTWORLD
-api-version: 1.13
+api-version: "1.13"
 authors: [Nik]
 description: Unlimited resources!
-softdepend: [PaperLib]
 commands:
   resource:
     description: Unlimited resources!
