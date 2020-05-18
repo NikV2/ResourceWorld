@@ -5,6 +5,7 @@ load: POSTWORLD
 api-version: 1.13
 authors: [Nik]
 description: Unlimited resources!
+softdepend: [PaperLib]
 commands:
   resource:
     description: Unlimited resources!

@@ -101,7 +101,11 @@ public class Teleport extends SubCommand {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(p.getUniqueId(), System.currentTimeMillis());
             }
-            PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+            try {
+                PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+            } catch (Exception ignored) {
+                p.teleport(TeleportUtils.generateLocation(world));
+            }
             p.addPotionEffect(effect);
             if (isSoundsEnabled()) {
                 try {
@@ -119,7 +123,11 @@ public class Teleport extends SubCommand {
 
                 @Override
                 public void run() {
-                    PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+                    try {
+                        PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+                    } catch (Exception ignored) {
+                        p.teleport(TeleportUtils.generateLocation(world));
+                    }
                     p.addPotionEffect(effect);
                     if (isSoundsEnabled()) {
                         try {

@@ -65,7 +65,10 @@ public final class ResourceWorld extends JavaPlugin {
         int pluginId = 6981;
         MetricsLite metricsLite = new MetricsLite(this, pluginId);
 
-        PaperLib.suggestPaper(this);
+        try {
+            PaperLib.suggestPaper(this);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
