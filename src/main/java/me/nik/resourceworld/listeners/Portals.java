@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -16,7 +15,7 @@ public class Portals implements Listener {
     private final String nether = Config.get().getString("nether_world.settings.world_name");
     private final String end = Config.get().getString("end_world.settings.world_name");
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onPortalNether(PlayerPortalEvent e) {
         if (!Config.get().getBoolean("nether_world.settings.enabled")) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
@@ -35,7 +34,7 @@ public class Portals implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onPortalEnd(PlayerPortalEvent e) {
         if (!Config.get().getBoolean("end_world.settings.enabled")) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL) return;

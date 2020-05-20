@@ -4,6 +4,7 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
@@ -49,6 +50,7 @@ public class ResetByCommand {
             @Override
             public void run() {
                 new WorldGenerator().createWorld();
+                new WorldCommands().worldRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
             }
         }.runTaskLater(plugin, 80);
@@ -78,6 +80,7 @@ public class ResetByCommand {
             @Override
             public void run() {
                 new WorldGeneratorNether().createWorld();
+                new WorldCommands().netherRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
             }
         }.runTaskLater(plugin, 80);
@@ -107,6 +110,7 @@ public class ResetByCommand {
             @Override
             public void run() {
                 new WorldGeneratorEnd().createWorld();
+                new WorldCommands().endRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
             }
         }.runTaskLater(plugin, 80);

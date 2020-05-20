@@ -5,6 +5,7 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ public class ResetEndWorld extends BukkitRunnable {
             @Override
             public void run() {
                 new WorldGenerator().createWorld();
+                new WorldCommands().endRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message("end_has_been_reset"));
             }
         }.runTaskLater(plugin, 90);

@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -15,7 +16,7 @@ public class LeaveInWorld implements Listener {
     private final String end = Config.get().getString("end_world.settings.world_name");
     private final String spawn = Config.get().getString("settings.main_spawn_world");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onLeave(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         if (isInWorld(p)) {

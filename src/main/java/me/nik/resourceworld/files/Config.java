@@ -103,7 +103,7 @@ public class Config {
         //Nether World
         Config.get().addDefault("nether_world.settings.enabled", false);
         Config.get().addDefault("nether_world.settings.portals.override", false);
-        Config.get().addDefault("nether_world.settings.portals.vanilla_portal_ratio", false);
+        Config.get().addDefault("nether_world.settings.portals.vanilla_portal_ratio", true);
         Config.get().addDefault("nether_world.settings.portals.portal_world", "world");
         Config.get().addDefault("nether_world.settings.world_name", "resource_nether");
         Config.get().addDefault("nether_world.settings.world_type", "NORMAL");

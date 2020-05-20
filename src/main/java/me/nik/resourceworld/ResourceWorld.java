@@ -16,6 +16,7 @@ import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
+import me.nik.resourceworld.utils.ConfigManager;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
@@ -33,6 +34,9 @@ public final class ResourceWorld extends JavaPlugin {
     public void onEnable() {
         //Load Files
         loadFiles();
+
+        //Check for mistakes
+        new ConfigManager(this).checkForMistakes();
 
         //Startup Message
         consoleMessage("");

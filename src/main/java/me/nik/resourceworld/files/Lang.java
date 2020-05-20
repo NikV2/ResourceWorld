@@ -69,5 +69,6 @@ public class Lang {
         Lang.get().addDefault("main_world_error", "&cWe could not teleport you back to the main world, Please contact an Administrator.");
         Lang.get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
         Lang.get().addDefault("update_disabled", "&f&lUpdate Checker is Disabled, Skipping");
+        Lang.get().addDefault("fixed_mistakes", "&c&lEncountered Errors in your Configuration File, Some values have been Reset or Modified. &a&l%mistakes%");
     }
 }

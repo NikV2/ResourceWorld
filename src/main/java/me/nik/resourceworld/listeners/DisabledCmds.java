@@ -4,6 +4,7 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -16,11 +17,12 @@ public class DisabledCmds implements Listener {
     private final String end = Config.get().getString("end_world.settings.world_name");
     private final List<String> commands = Config.get().getStringList("disabled_commands.commands");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
         if (p.hasPermission("rw.admin")) return;
         if (isInWorld(p)) {
+            if (e.getMessage().equalsIgnoreCase("/")) return;
             for (String cmd : commands) {
                 if (cmd.contains(e.getMessage())) {
                     e.setCancelled(true);
