@@ -22,9 +22,9 @@ public class DisabledCmds implements Listener {
         Player p = e.getPlayer();
         if (p.hasPermission("rw.admin")) return;
         if (isInWorld(p)) {
-            if (e.getMessage().equalsIgnoreCase("/")) return;
+            if (e.getMessage().equals("/")) return;
             for (String cmd : commands) {
-                if (cmd.contains(e.getMessage())) {
+                if (e.getMessage().contains(cmd)) {
                     e.setCancelled(true);
                     p.sendMessage(Messenger.message("disabled_command"));
                 }
