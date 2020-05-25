@@ -60,13 +60,29 @@ public class ConfigManager {
         String netherEnvironment = Config.get().getString("nether_world.settings.environment");
         String endEnvironment = Config.get().getString("end_world.settings.environment");
 
-        if (teleportRange > worldBorder || teleportRange > netherBorder || teleportRange > endBorder) {
+        boolean isWorldEnabled = Config.get().getBoolean("world.settings.enabled");
+        boolean isNetherEnabled = Config.get().getBoolean("nether_world.settings.enabled");
+        boolean isEndEnabled = Config.get().getBoolean("end_world.settings.enabled");
+
+        if (teleportRange > worldBorder && isWorldEnabled) {
             Config.get().set("teleport.settings.max_teleport_range", 800);
             Config.get().set("world.settings.world_border.size", 4500);
+            hasMistakes = true;
+            mistakes.add("The Teleport Range was higher than the World Border");
+        }
+
+        if (teleportRange > netherBorder && isNetherEnabled) {
+            Config.get().set("teleport.settings.max_teleport_range", 800);
             Config.get().set("nether_world.settings.world_border.size", 4500);
+            hasMistakes = true;
+            mistakes.add("The Teleport Range was higher than the Nether Border");
+        }
+
+        if (teleportRange > endBorder && isEndEnabled) {
+            Config.get().set("teleport.settings.max_teleport_range", 800);
             Config.get().set("end_world.settings.world_border.size", 4500);
             hasMistakes = true;
-            mistakes.add("Teleport Range was higher than the World Border");
+            mistakes.add("The Teleport Range was higher than the End Border");
         }
 
         if (!difficulties.contains(worldDifficulty)) {
