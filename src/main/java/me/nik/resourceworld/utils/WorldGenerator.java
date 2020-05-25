@@ -17,7 +17,7 @@ public class WorldGenerator {
     private final boolean structures = Config.get().getBoolean("world.settings.generate_structures");
     private final World.Environment environment = World.Environment.valueOf(Config.get().getString("world.settings.environment"));
     private final boolean useSeed = Config.get().getBoolean("world.settings.custom_seed.enabled");
-    private final int seed = Config.get().getInt("world.settings.custom_seed.seed");
+    private final long seed = Config.get().getLong("world.settings.custom_seed.seed");
     private final boolean useBorder = Config.get().getBoolean("world.settings.world_border.enabled");
     private final int border = Config.get().getInt("world.settings.world_border.size");
     private final boolean pvp = Config.get().getBoolean("world.settings.allow_pvp");
