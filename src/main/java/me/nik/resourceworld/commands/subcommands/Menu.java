@@ -11,9 +11,11 @@ import java.util.List;
 public class Menu extends SubCommand {
 
     private final ResourceWorld plugin;
+    private final GUIManager guiManager;
 
     public Menu(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.guiManager = new GUIManager(plugin);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class Menu extends SubCommand {
             return;
         }
         if (args.length == 1) {
-            new GUIManager(plugin).openMainGUI(player);
+            guiManager.openMainGUI(player);
         }
     }
 

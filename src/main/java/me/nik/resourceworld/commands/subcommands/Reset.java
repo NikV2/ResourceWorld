@@ -22,9 +22,11 @@ public class Reset extends SubCommand {
     private final String world = Config.get().getString("world.settings.world_name");
     private final String nether = Config.get().getString("nether_world.settings.world_name");
     private final String end = Config.get().getString("end_world.settings.world_name");
+    private final ResetByCommand resetByCommand;
 
     public Reset(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.resetByCommand = new ResetByCommand(plugin);
     }
 
     @Override
@@ -56,13 +58,12 @@ public class Reset extends SubCommand {
                     player.sendMessage(Messenger.message("reset_cooldown").replaceAll("%seconds%", String.valueOf(secondsleft)));
                 } else {
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-                    new ResetByCommand(plugin).executeReset();
+                    resetByCommand.executeReset();
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
                             cooldown.remove(player.getUniqueId());
-                            cancel();
                         }
                     }.runTaskLaterAsynchronously(plugin, timer * 20);
                 }
@@ -76,13 +77,12 @@ public class Reset extends SubCommand {
                     player.sendMessage(Messenger.message("reset_cooldown").replaceAll("%seconds%", String.valueOf(secondsleft)));
                 } else {
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-                    new ResetByCommand(plugin).executeNetherReset();
+                    resetByCommand.executeNetherReset();
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
                             cooldown.remove(player.getUniqueId());
-                            cancel();
                         }
                     }.runTaskLaterAsynchronously(plugin, timer * 20);
                 }
@@ -96,13 +96,12 @@ public class Reset extends SubCommand {
                     player.sendMessage(Messenger.message("reset_cooldown").replaceAll("%seconds%", String.valueOf(secondsleft)));
                 } else {
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-                    new ResetByCommand(plugin).executeEndReset();
+                    resetByCommand.executeEndReset();
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
                             cooldown.remove(player.getUniqueId());
-                            cancel();
                         }
                     }.runTaskLaterAsynchronously(plugin, timer * 20);
                 }

@@ -32,12 +32,13 @@ public class Teleport extends SubCommand {
     final private int volume = Config.get().getInt("teleport.settings.sounds.volume");
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
     private final boolean isSoundsEnabled = Config.get().getBoolean("teleport.settings.sounds.enabled");
-    private final WorldUtils worldUtils = new WorldUtils();
+    private final WorldUtils worldUtils;
     private final boolean isNetherEnabled = Config.get().getBoolean("nether_world.settings.enabled");
     private final boolean isEndEnabled = Config.get().getBoolean("end_world.settings.enabled");
 
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.worldUtils = new WorldUtils();
     }
 
     @Override

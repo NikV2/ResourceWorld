@@ -6,7 +6,9 @@ import me.nik.resourceworld.commands.subcommands.Reload;
 import me.nik.resourceworld.commands.subcommands.Reset;
 import me.nik.resourceworld.commands.subcommands.Spawn;
 import me.nik.resourceworld.commands.subcommands.Teleport;
+import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,8 +24,14 @@ public class CommandManager implements TabExecutor {
 
     private final ArrayList<SubCommand> subcommands = new ArrayList<>();
 
+    private final WorldUtils worldUtils;
+    private final ResetByCommand resetByCommand;
+
     public CommandManager(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.worldUtils = new WorldUtils();
+        this.resetByCommand = new ResetByCommand(plugin);
+
         subcommands.add(new Teleport(plugin));
         subcommands.add(new Reload(plugin));
         subcommands.add(new Menu(plugin));
@@ -48,6 +56,32 @@ public class CommandManager implements TabExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 helpMessage(sender);
                 return true;
+            }
+            if (args[0].equalsIgnoreCase("reset")) {
+                if (args.length == 1) {
+                    if (!worldUtils.worldExists()) {
+                        sender.sendMessage(Messenger.message("not_exist"));
+                        return true;
+                    }
+                    resetByCommand.executeReset();
+                    return true;
+                }
+                if (args[1].equalsIgnoreCase("nether")) {
+                    if (!worldUtils.netherExists()) {
+                        sender.sendMessage(Messenger.message("not_exist"));
+                        return true;
+                    }
+                    resetByCommand.executeNetherReset();
+                    return true;
+                }
+                if (args[1].equalsIgnoreCase("end")) {
+                    if (!worldUtils.endExists()) {
+                        sender.sendMessage(Messenger.message("not_exist"));
+                        return true;
+                    }
+                    resetByCommand.executeEndReset();
+                    return true;
+                }
             }
             sender.sendMessage(Messenger.message("console_message"));
             return true;

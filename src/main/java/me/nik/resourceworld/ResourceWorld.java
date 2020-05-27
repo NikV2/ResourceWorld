@@ -1,6 +1,5 @@
 package me.nik.resourceworld;
 
-import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
@@ -44,8 +43,6 @@ public final class ResourceWorld extends JavaPlugin {
         consoleMessage("");
         consoleMessage("                   " + ChatColor.WHITE + "Author: Nik");
         consoleMessage("");
-        consoleMessage("     " + ChatColor.GREEN + "Running on " + ChatColor.WHITE + this.getServer().getVersion());
-        consoleMessage("");
 
         getCommand("resource").setExecutor(new CommandManager(this));
 
@@ -65,10 +62,7 @@ public final class ResourceWorld extends JavaPlugin {
         }
 
         //Enable bStats
-        int pluginId = 6981;
-        MetricsLite metricsLite = new MetricsLite(this, pluginId);
-
-        PaperLib.suggestPaper(this);
+        MetricsLite metricsLite = new MetricsLite(this, 6981);
     }
 
     @Override
