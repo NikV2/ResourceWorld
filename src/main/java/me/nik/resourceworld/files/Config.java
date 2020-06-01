@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class Config {
-    private static File file;
+    private File file;
     private static FileConfiguration config;
 
-    public static void setup() {
+    public void setup() {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("ResourceWorld").getDataFolder(), "config.yml");
         if (!file.exists()) {
             try {
@@ -27,18 +27,18 @@ public class Config {
         return config;
     }
 
-    public static void save() {
+    public void save() {
         try {
             config.save(file);
         } catch (IOException ignored) {
         }
     }
 
-    public static void reload() {
+    public void reload() {
         config = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static void addDefaults() {
+    public void addDefaults() {
         //config.yml
         List<String> blocks = Config.get().getStringList("world.settings.block_regeneration.blocks");
         blocks.add("DIAMOND_ORE");

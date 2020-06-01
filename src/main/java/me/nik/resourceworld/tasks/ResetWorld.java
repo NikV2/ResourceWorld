@@ -26,8 +26,8 @@ public class ResetWorld extends BukkitRunnable {
         if (!worldUtils.worldExists()) return;
         if (Config.get().getBoolean("world.settings.automated_resets.store_time_on_shutdown")) {
             Data.get().set("world.millis", System.currentTimeMillis());
-            Data.save();
-            Data.reload();
+            plugin.data.save();
+            plugin.data.reload();
         }
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetTP();

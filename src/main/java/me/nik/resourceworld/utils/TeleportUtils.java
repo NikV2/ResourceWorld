@@ -10,9 +10,9 @@ import java.util.Random;
 
 public class TeleportUtils {
 
-    private static final List<String> unsafeBlocks = Config.get().getStringList("teleport.settings.unsafe_blocks");
+    private final List<String> unsafeBlocks = Config.get().getStringList("teleport.settings.unsafe_blocks");
 
-    public static Location generateLocation(World world) {
+    public Location generateLocation(World world) {
         int xz = Config.get().getInt("teleport.settings.max_teleport_range");
         Random random = new Random();
         World.Environment environment = world.getEnvironment();
@@ -42,7 +42,7 @@ public class TeleportUtils {
         return randomLocation;
     }
 
-    private static boolean isLocationSafe(Location location) {
+    private boolean isLocationSafe(Location location) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();

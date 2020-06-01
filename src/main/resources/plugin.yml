@@ -1,7 +1,6 @@
 name: ResourceWorld
-version: 1.6.3
+version: 1.6.4
 main: me.nik.resourceworld.ResourceWorld
-load: POSTWORLD
 api-version: 1.13
 authors: [Nik]
 description: Unlimited resources!

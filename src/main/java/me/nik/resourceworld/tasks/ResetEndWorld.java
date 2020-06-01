@@ -26,8 +26,8 @@ public class ResetEndWorld extends BukkitRunnable {
         if (!worldUtils.endExists()) return;
         if (Config.get().getBoolean("end_world.settings.automated_resets.store_time_on_shutdown")) {
             Data.get().set("end.millis", System.currentTimeMillis());
-            Data.save();
-            Data.reload();
+            plugin.data.save();
+            plugin.data.reload();
         }
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_end"));
         new ResetTeleport().resetEndTP();

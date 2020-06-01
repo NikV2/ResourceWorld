@@ -29,8 +29,16 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
 
+    public Config config;
+    public Data data;
+    public Lang lang;
+
     @Override
     public void onEnable() {
+        this.config = new Config();
+        this.data = new Data();
+        this.lang = new Lang();
+
         //Load Files
         loadFiles();
 
@@ -72,28 +80,28 @@ public final class ResourceWorld extends JavaPlugin {
         storeTimeLeft();
 
         //Reload Files
-        Config.reload();
-        Config.save();
-        Lang.reload();
-        Lang.save();
-        Data.reload();
+        config.reload();
+        config.save();
+        lang.reload();
+        lang.save();
+        data.reload();
     }
 
     private void manageMillis() {
         if (isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.store_time_on_shutdown") && Data.get().getLong("world.millis") == 0) {
             Data.get().set("world.millis", System.currentTimeMillis());
-            Data.save();
-            Data.reload();
+            data.save();
+            data.reload();
         }
         if (isEnabled("nether_world.settings.enabled") && isEnabled("nether_world.settings.automated_resets.store_time_on_shutdown") && Data.get().getLong("nether.millis") == 0) {
             Data.get().set("nether.millis", System.currentTimeMillis());
-            Data.save();
-            Data.reload();
+            data.save();
+            data.reload();
         }
         if (isEnabled("end_world.settings.enabled") && isEnabled("end_world.settings.automated_resets.store_time_on_shutdown") && Data.get().getLong("end.millis") == 0) {
             Data.get().set("end.millis", System.currentTimeMillis());
-            Data.save();
-            Data.reload();
+            data.save();
+            data.reload();
         }
     }
 
@@ -107,7 +115,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("end_world.settings.automated_resets.enabled") && isEnabled("end_world.settings.enabled") && isEnabled("end_world.settings.automated_resets.store_time_on_shutdown")) {
             Data.get().set("end.timer", Config.get().getInt("end_world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - Data.get().getLong("end.millis")) / 1000D * 20D);
         }
-        Data.save();
+        data.save();
     }
 
     private boolean isEnabled(String input) {
@@ -145,18 +153,18 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void loadFiles() {
-        Config.setup();
-        Config.addDefaults();
+        config.setup();
+        config.addDefaults();
         Config.get().options().copyDefaults(true);
-        Config.save();
-        Lang.setup();
-        Lang.addDefaults();
+        config.save();
+        lang.setup();
+        lang.addDefaults();
         Lang.get().options().copyDefaults(true);
-        Lang.save();
-        Data.setup();
-        Data.addDefaults();
+        lang.save();
+        data.setup();
+        data.addDefaults();
         Data.get().options().copyDefaults(true);
-        Data.save();
+        data.save();
     }
 
     private void initialize() {

@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class Lang {
-    private static File file;
+    private File file;
     private static FileConfiguration lang;
 
-    public static void setup() {
+    public void setup() {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("ResourceWorld").getDataFolder(), "lang.yml");
         if (!file.exists()) {
             try {
@@ -26,18 +26,18 @@ public class Lang {
         return lang;
     }
 
-    public static void save() {
+    public void save() {
         try {
             lang.save(file);
         } catch (IOException ignored) {
         }
     }
 
-    public static void reload() {
+    public void reload() {
         lang = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static void addDefaults() {
+    public void addDefaults() {
         //lang.yml
         Lang.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         Lang.get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");

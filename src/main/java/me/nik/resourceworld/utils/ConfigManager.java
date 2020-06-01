@@ -176,8 +176,8 @@ public class ConfigManager {
         }
 
         if (hasMistakes) {
-            Config.save();
-            Config.reload();
+            plugin.config.save();
+            plugin.config.reload();
             plugin.consoleMessage(Messenger.message("fixed_mistakes").replaceAll("%mistakes%", mistakes.toString()));
         }
 

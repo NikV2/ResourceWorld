@@ -26,8 +26,8 @@ public class ResetNetherWorld extends BukkitRunnable {
         if (!worldUtils.netherExists()) return;
         if (Config.get().getBoolean("nether_world.settings.automated_resets.store_time_on_shutdown")) {
             Data.get().set("nether.millis", System.currentTimeMillis());
-            Data.save();
-            Data.reload();
+            plugin.data.save();
+            plugin.data.reload();
         }
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_nether"));
         new ResetTeleport().resetNetherTP();

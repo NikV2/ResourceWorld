@@ -33,12 +33,14 @@ public class Teleport extends SubCommand {
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
     private final boolean isSoundsEnabled = Config.get().getBoolean("teleport.settings.sounds.enabled");
     private final WorldUtils worldUtils;
+    private final TeleportUtils teleportUtils;
     private final boolean isNetherEnabled = Config.get().getBoolean("nether_world.settings.enabled");
     private final boolean isEndEnabled = Config.get().getBoolean("end_world.settings.enabled");
 
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
         this.worldUtils = new WorldUtils();
+        this.teleportUtils = new TeleportUtils();
     }
 
     @Override
@@ -107,7 +109,7 @@ public class Teleport extends SubCommand {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(p.getUniqueId(), System.currentTimeMillis());
             }
-            PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+            PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
             p.addPotionEffect(effect);
             if (isSoundsEnabled) {
                 try {
@@ -125,7 +127,7 @@ public class Teleport extends SubCommand {
 
                 @Override
                 public void run() {
-                    PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+                    PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
                     p.addPotionEffect(effect);
                     if (isSoundsEnabled) {
                         try {
