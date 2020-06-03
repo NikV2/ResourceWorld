@@ -1,8 +1,8 @@
 package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.api.GUIManager;
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.utils.GUIManager;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
 

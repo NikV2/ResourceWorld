@@ -32,14 +32,12 @@ public class Teleport extends SubCommand {
     final private int volume = Config.get().getInt("teleport.settings.sounds.volume");
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
     private final boolean isSoundsEnabled = Config.get().getBoolean("teleport.settings.sounds.enabled");
-    private final WorldUtils worldUtils;
     private final TeleportUtils teleportUtils;
     private final boolean isNetherEnabled = Config.get().getBoolean("nether_world.settings.enabled");
     private final boolean isEndEnabled = Config.get().getBoolean("end_world.settings.enabled");
 
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.worldUtils = new WorldUtils();
         this.teleportUtils = new TeleportUtils();
     }
 
@@ -66,7 +64,7 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("no_perm"));
                 return;
             }
-            if (!worldUtils.worldExists()) {
+            if (!WorldUtils.worldExists()) {
                 player.sendMessage(Messenger.message("not_exist"));
                 return;
             }
@@ -77,7 +75,7 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("no_perm"));
                 return;
             }
-            if (isNetherEnabled && worldUtils.netherExists()) {
+            if (isNetherEnabled && WorldUtils.netherExists()) {
                 World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
                 teleport(player, worldNether);
             } else {
@@ -88,7 +86,7 @@ public class Teleport extends SubCommand {
                 player.sendMessage(Messenger.message("no_perm"));
                 return;
             }
-            if (isEndEnabled && worldUtils.endExists()) {
+            if (isEndEnabled && WorldUtils.endExists()) {
                 World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
                 teleport(player, worldEnd);
             } else {
@@ -146,10 +144,10 @@ public class Teleport extends SubCommand {
 
         if (args.length == 2) {
             List<String> worlds = new ArrayList<>();
-            if (worldUtils.netherExists()) {
+            if (WorldUtils.netherExists()) {
                 worlds.add("nether");
             }
-            if (worldUtils.endExists()) {
+            if (WorldUtils.endExists()) {
                 worlds.add("end");
             }
             return worlds;

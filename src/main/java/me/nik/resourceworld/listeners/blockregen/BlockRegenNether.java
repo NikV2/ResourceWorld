@@ -1,4 +1,4 @@
-package me.nik.resourceworld.listeners;
+package me.nik.resourceworld.listeners.blockregen;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
@@ -13,21 +13,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class BlockRegen implements Listener {
+public class BlockRegenNether implements Listener {
 
     private final ResourceWorld plugin;
 
-    private final int delay = Config.get().getInt("world.settings.block_regeneration.regeneration_delay") * 1200;
-    private final String world = Config.get().getString("world.settings.world_name");
-    private final List<String> blocks = Config.get().getStringList("world.settings.block_regeneration.blocks");
+    private final int delay = Config.get().getInt("nether_world.settings.block_regeneration.regeneration_delay") * 1200;
+    private final String world = Config.get().getString("nether_world.settings.world_name");
+    private final List<String> blocks = Config.get().getStringList("nether_world.settings.block_regeneration.blocks");
 
-    public BlockRegen(ResourceWorld plugin) {
+    public BlockRegenNether(ResourceWorld plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
-        if (!e.getBlock().getWorld().getName().equalsIgnoreCase(world)) return;
+        if (!e.getBlock().getWorld().getName().equalsIgnoreCase(world))
+            return;
         final Material type = e.getBlock().getType();
         for (String block : blocks) {
             if (type.toString().equalsIgnoreCase(block)) {
@@ -44,7 +45,8 @@ public class BlockRegen implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(world)) return;
+        if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(world))
+            return;
         if (e.getPlayer().hasPermission("rw.admin")) return;
         Material type = e.getBlock().getType();
         for (String block : blocks) {

@@ -15,7 +15,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ResetEndWorld extends BukkitRunnable {
 
     private final ResourceWorld plugin;
-    private final WorldUtils worldUtils = new WorldUtils();
 
     public ResetEndWorld(ResourceWorld plugin) {
         this.plugin = plugin;
@@ -23,7 +22,7 @@ public class ResetEndWorld extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!worldUtils.endExists()) return;
+        if (!WorldUtils.endExists()) return;
         if (Config.get().getBoolean("end_world.settings.automated_resets.store_time_on_shutdown")) {
             Data.get().set("end.millis", System.currentTimeMillis());
             plugin.data.save();
@@ -39,7 +38,7 @@ public class ResetEndWorld extends BukkitRunnable {
             @Override
             public void run() {
                 try {
-                    worldUtils.deleteDirectory(world.getWorldFolder());
+                    WorldUtils.deleteDirectory(world.getWorldFolder());
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

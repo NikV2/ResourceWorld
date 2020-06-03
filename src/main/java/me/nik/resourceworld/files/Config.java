@@ -81,9 +81,10 @@ public class Config {
         Config.get().addDefault("world.settings.world_border.enabled", true);
         Config.get().addDefault("world.settings.world_border.size", 4500);
         Config.get().addDefault("world.settings.allow_pvp", true);
-        Config.get().addDefault("world.settings.always_day", true);
+        Config.get().addDefault("world.settings.always_day", false);
         Config.get().addDefault("world.settings.disable_suffocation_damage", true);
         Config.get().addDefault("world.settings.disable_drowning_damage", true);
+        Config.get().addDefault("world.settings.disable_explosion_damage", false);
         Config.get().addDefault("world.settings.difficulty", "NORMAL");
         Config.get().addDefault("world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("world.settings.keep_spawn_loaded", false);
@@ -112,6 +113,7 @@ public class Config {
         Config.get().addDefault("nether_world.settings.world_border.size", 4500);
         Config.get().addDefault("nether_world.settings.allow_pvp", true);
         Config.get().addDefault("nether_world.settings.disable_suffocation_damage", true);
+        Config.get().addDefault("nether_world.settings.disable_explosion_damage", false);
         Config.get().addDefault("nether_world.settings.difficulty", "NORMAL");
         Config.get().addDefault("nether_world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("nether_world.settings.keep_spawn_loaded", false);
@@ -136,6 +138,7 @@ public class Config {
         Config.get().addDefault("end_world.settings.world_border.size", 4500);
         Config.get().addDefault("end_world.settings.allow_pvp", true);
         Config.get().addDefault("end_world.settings.disable_suffocation_damage", true);
+        Config.get().addDefault("end_world.settings.disable_explosion_damage", false);
         Config.get().addDefault("end_world.settings.difficulty", "NORMAL");
         Config.get().addDefault("end_world.settings.keep_inventory_on_death", false);
         Config.get().addDefault("end_world.settings.keep_spawn_loaded", false);

@@ -1,9 +1,8 @@
-package me.nik.resourceworld.api;
+package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
-import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

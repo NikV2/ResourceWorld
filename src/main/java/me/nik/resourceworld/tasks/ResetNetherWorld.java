@@ -15,7 +15,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ResetNetherWorld extends BukkitRunnable {
 
     private final ResourceWorld plugin;
-    private final WorldUtils worldUtils = new WorldUtils();
 
     public ResetNetherWorld(ResourceWorld plugin) {
         this.plugin = plugin;
@@ -23,7 +22,7 @@ public class ResetNetherWorld extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!worldUtils.netherExists()) return;
+        if (!WorldUtils.netherExists()) return;
         if (Config.get().getBoolean("nether_world.settings.automated_resets.store_time_on_shutdown")) {
             Data.get().set("nether.millis", System.currentTimeMillis());
             plugin.data.save();
@@ -39,7 +38,7 @@ public class ResetNetherWorld extends BukkitRunnable {
             @Override
             public void run() {
                 try {
-                    worldUtils.deleteDirectory(world.getWorldFolder());
+                    WorldUtils.deleteDirectory(world.getWorldFolder());
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

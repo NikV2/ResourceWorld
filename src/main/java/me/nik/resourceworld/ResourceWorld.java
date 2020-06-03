@@ -4,13 +4,23 @@ import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.listeners.BlockRegen;
-import me.nik.resourceworld.listeners.BlockRegenNether;
 import me.nik.resourceworld.listeners.DisabledCmds;
+import me.nik.resourceworld.listeners.Drowning;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.listeners.Portals;
-import me.nik.resourceworld.listeners.WorldSettings;
+import me.nik.resourceworld.listeners.blockregen.BlockRegen;
+import me.nik.resourceworld.listeners.blockregen.BlockRegenNether;
+import me.nik.resourceworld.listeners.entityspawning.EntitySpawning;
+import me.nik.resourceworld.listeners.entityspawning.EntitySpawningEnd;
+import me.nik.resourceworld.listeners.entityspawning.EntitySpawningNether;
+import me.nik.resourceworld.listeners.explosion.Explosion;
+import me.nik.resourceworld.listeners.explosion.ExplosionEnd;
+import me.nik.resourceworld.listeners.explosion.ExplosionNether;
+import me.nik.resourceworld.listeners.suffocation.Suffocation;
+import me.nik.resourceworld.listeners.suffocation.SuffocationEnd;
+import me.nik.resourceworld.listeners.suffocation.SuffocationNether;
+import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
@@ -62,12 +72,8 @@ public final class ResourceWorld extends JavaPlugin {
 
         startIntervals();
 
-        //Check for updates
-        if (isEnabled("settings.check_for_updates")) {
-            BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
-        } else {
-            consoleMessage(Messenger.message("update_disabled"));
-        }
+        //Initialize Tasks
+        initializeTasks();
 
         //Enable bStats
         MetricsLite metricsLite = new MetricsLite(this, 6981);
@@ -85,6 +91,18 @@ public final class ResourceWorld extends JavaPlugin {
         lang.reload();
         lang.save();
         data.reload();
+    }
+
+    private void initializeTasks() {
+        if (isEnabled("settings.check_for_updates")) {
+            BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
+        } else {
+            consoleMessage(Messenger.message("update_disabled"));
+        }
+
+        if (isEnabled("world.settings.always_day")) {
+            BukkitTask alwaysDay = new AlwaysDay().runTaskTimer(this, 1200, 1200);
+        }
     }
 
     private void manageMillis() {
@@ -175,8 +193,26 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("nether_world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegenNether(this));
         }
-        if (isEnabled("world.settings.disable_suffocation_damage") || isEnabled("world.settings.disable_drowning_damage") || isEnabled("world.settings.disable_entity_spawning")) {
-            registerEvent(new WorldSettings(this));
+        if (isEnabled("world.settings.disable_suffocation_damage")) {
+            registerEvent(new Suffocation());
+        }
+        if (isEnabled("nether_world.settings.disable_suffocation_damage")) {
+            registerEvent(new SuffocationNether());
+        }
+        if (isEnabled("end_world.settings.disable_suffocation_damage")) {
+            registerEvent(new SuffocationEnd());
+        }
+        if (isEnabled("world.settings.disable_drowning_damage")) {
+            registerEvent(new Drowning());
+        }
+        if (isEnabled("world.settings.disable_entity_spawning")) {
+            registerEvent(new EntitySpawning());
+        }
+        if (isEnabled("nether_world.settings.disable_entity_spawning")) {
+            registerEvent(new EntitySpawningNether());
+        }
+        if (isEnabled("end_world.settings.disable_entity_spawning")) {
+            registerEvent(new EntitySpawningEnd());
         }
         if (isEnabled("disabled_commands.enabled")) {
             registerEvent(new DisabledCmds());
@@ -186,6 +222,15 @@ public final class ResourceWorld extends JavaPlugin {
         }
         if (isEnabled("settings.teleport_to_spawn_on_quit")) {
             registerEvent(new LeaveInWorld());
+        }
+        if (isEnabled("world.settings.disable_explosion_damage")) {
+            registerEvent(new Explosion());
+        }
+        if (isEnabled("nether_world.settings.disable_explosion_damage")) {
+            registerEvent(new ExplosionNether());
+        }
+        if (isEnabled("end_world.settings.disable_explosion_damage")) {
+            registerEvent(new ExplosionEnd());
         }
     }
 

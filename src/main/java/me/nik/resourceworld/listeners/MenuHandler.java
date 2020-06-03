@@ -1,10 +1,10 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.api.GUIManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.holder.ResourceWorldHolder;
 import me.nik.resourceworld.tasks.ResetByCommand;
+import me.nik.resourceworld.utils.GUIManager;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldUtils;
@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 public class MenuHandler implements Listener {
 
     private final ResourceWorld plugin;
-    private final WorldUtils worldUtils = new WorldUtils();
 
     public MenuHandler(ResourceWorld plugin) {
         this.plugin = plugin;
@@ -57,7 +56,7 @@ public class MenuHandler implements Listener {
                 new GUIManager(plugin).openWorldsGUI(player);
                 break;
             case "§aResource World":
-                if (worldUtils.worldExists()) {
+                if (WorldUtils.worldExists()) {
                     player.closeInventory();
                     new ResetByCommand(plugin).executeReset();
                 }

@@ -24,12 +24,10 @@ public class CommandManager implements TabExecutor {
 
     private final ArrayList<SubCommand> subcommands = new ArrayList<>();
 
-    private final WorldUtils worldUtils;
     private final ResetByCommand resetByCommand;
 
     public CommandManager(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.worldUtils = new WorldUtils();
         this.resetByCommand = new ResetByCommand(plugin);
 
         subcommands.add(new Teleport(plugin));
@@ -59,7 +57,7 @@ public class CommandManager implements TabExecutor {
             }
             if (args[0].equalsIgnoreCase("reset")) {
                 if (args.length == 1) {
-                    if (!worldUtils.worldExists()) {
+                    if (!WorldUtils.worldExists()) {
                         sender.sendMessage(Messenger.message("not_exist"));
                         return true;
                     }
@@ -67,7 +65,7 @@ public class CommandManager implements TabExecutor {
                     return true;
                 }
                 if (args[1].equalsIgnoreCase("nether")) {
-                    if (!worldUtils.netherExists()) {
+                    if (!WorldUtils.netherExists()) {
                         sender.sendMessage(Messenger.message("not_exist"));
                         return true;
                     }
@@ -75,7 +73,7 @@ public class CommandManager implements TabExecutor {
                     return true;
                 }
                 if (args[1].equalsIgnoreCase("end")) {
-                    if (!worldUtils.endExists()) {
+                    if (!WorldUtils.endExists()) {
                         sender.sendMessage(Messenger.message("not_exist"));
                         return true;
                     }
