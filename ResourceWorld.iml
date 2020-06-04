@@ -28,6 +28,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.15-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.25" level="project" />
     <orderEntry type="library" name="Maven: org.bstats:bstats-bukkit-lite:1.7" level="project" />
-    <orderEntry type="library" name="Maven: io.papermc:paperlib:1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: io.papermc:paperlib:1.0.3" level="project" />
   </component>
 </module>
