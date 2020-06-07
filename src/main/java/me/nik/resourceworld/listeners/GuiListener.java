@@ -1,6 +1,7 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.gui.Menu;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,6 +18,7 @@ public class GuiListener implements Listener {
         if (!(holder instanceof Menu)) return;
 
         if (e.getCurrentItem() == null) return;
+        if (e.getCurrentItem().getType() == Material.AIR) return;
 
         e.setCancelled(true);
 
