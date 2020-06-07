@@ -93,6 +93,9 @@ public final class ResourceWorld extends JavaPlugin {
         data.reload();
     }
 
+    /**
+     * Initialize all Existing Tasks.
+     */
     private void initializeTasks() {
         if (isEnabled("settings.check_for_updates")) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
@@ -136,6 +139,10 @@ public final class ResourceWorld extends JavaPlugin {
         data.save();
     }
 
+    /**
+     * @param input Path to the boolean
+     * @return Whether or not that boolean is Enabled.
+     */
     private boolean isEnabled(String input) {
         return Config.get().getBoolean(input);
     }
@@ -170,6 +177,9 @@ public final class ResourceWorld extends JavaPlugin {
         }
     }
 
+    /**
+     * Load all the built-in Files.
+     */
     private void loadFiles() {
         config.setup();
         config.addDefaults();
@@ -185,6 +195,10 @@ public final class ResourceWorld extends JavaPlugin {
         data.save();
     }
 
+    /**
+     * Initialize all the Existing Listeners
+     * If a specific Listener is Disabled in the config.yml, Ignore it.
+     */
     private void initialize() {
         if (isEnabled("world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegen(this));
@@ -235,10 +249,18 @@ public final class ResourceWorld extends JavaPlugin {
         registerEvent(new GuiListener());
     }
 
+    /**
+     * Registers the specified Listener
+     *
+     * @param listener The listener to register
+     */
     public void registerEvent(Listener listener) {
         Bukkit.getServer().getPluginManager().registerEvents(listener, this);
     }
 
+    /**
+     * Checks if there's any Time saved and Starts the Intervals afterwards.
+     */
     private void startIntervals() {
         if (isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.enabled")) {
             System.out.println(Messenger.message("automated_resets_enabled"));
@@ -255,6 +277,9 @@ public final class ResourceWorld extends JavaPlugin {
         }
     }
 
+    /**
+     * Generates or Loads all the Enabled Worlds
+     */
     private void generateWorlds() {
         if (isEnabled("world.settings.enabled")) {
             new WorldGenerator().createWorld();

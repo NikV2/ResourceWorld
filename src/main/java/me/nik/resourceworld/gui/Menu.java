@@ -15,10 +15,6 @@ public abstract class Menu implements InventoryHolder {
 
     protected final ResourceWorld plugin;
 
-    /*
-     Thanks to CodySimpson and his Community
-     */
-
     protected Inventory inventory;
 
     protected PlayerMenuUtility playerMenuUtility;
