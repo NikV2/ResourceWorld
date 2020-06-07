@@ -29,7 +29,7 @@ public class ResetByCommand {
         if (!WorldUtils.worldExists()) return;
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetTP();
-        plugin.consoleMessage(Messenger.message("deleting"));
+        Messenger.consoleMessage(Messenger.message("deleting"));
         World world = Bukkit.getWorld(overworld);
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -59,7 +59,7 @@ public class ResetByCommand {
         if (!WorldUtils.netherExists()) return;
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetNetherTP();
-        plugin.consoleMessage(Messenger.message("deleting"));
+        Messenger.consoleMessage(Messenger.message("deleting"));
         World world = Bukkit.getWorld(nether);
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -89,7 +89,7 @@ public class ResetByCommand {
         if (!WorldUtils.endExists()) return;
         plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
         new ResetTeleport().resetEndTP();
-        plugin.consoleMessage(Messenger.message("deleting"));
+        Messenger.consoleMessage(Messenger.message("deleting"));
         World world = Bukkit.getWorld(end);
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);

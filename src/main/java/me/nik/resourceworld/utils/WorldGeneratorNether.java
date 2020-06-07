@@ -45,7 +45,9 @@ public class WorldGeneratorNether {
             if (keepInventory) {
                 resourceNether.setGameRule(GameRule.KEEP_INVENTORY, true);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Messenger.consoleMessage("There was an error attempting to Generate a new World, Please contact the Author with the Following Error");
+            e.printStackTrace();
         }
     }
 }

@@ -2,7 +2,8 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
-import me.nik.resourceworld.utils.GUIManager;
+import me.nik.resourceworld.gui.PlayerMenuUtility;
+import me.nik.resourceworld.gui.menus.MainGui;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
 
@@ -11,11 +12,9 @@ import java.util.List;
 public class Menu extends SubCommand {
 
     private final ResourceWorld plugin;
-    private final GUIManager guiManager;
 
     public Menu(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.guiManager = new GUIManager(plugin);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class Menu extends SubCommand {
             return;
         }
         if (args.length == 1) {
-            guiManager.openMainGUI(player);
+            new MainGui(new PlayerMenuUtility(player), plugin).open();
         }
     }
 

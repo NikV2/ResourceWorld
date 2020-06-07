@@ -59,7 +59,9 @@ public class WorldGenerator {
             if (keepInventory) {
                 resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Messenger.consoleMessage("There was an error attempting to Generate a new World, Please contact the Author with the Following Error");
+            e.printStackTrace();
         }
     }
 }

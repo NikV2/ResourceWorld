@@ -178,7 +178,7 @@ public class ConfigManager {
         if (hasMistakes) {
             plugin.config.save();
             plugin.config.reload();
-            plugin.consoleMessage(Messenger.message("fixed_mistakes").replaceAll("%mistakes%", mistakes.toString()));
+            Messenger.consoleMessage(Messenger.message("fixed_mistakes").replaceAll("%mistakes%", mistakes.toString()));
         }
 
         difficulties.clear();

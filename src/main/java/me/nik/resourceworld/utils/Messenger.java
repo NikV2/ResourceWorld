@@ -1,5 +1,6 @@
 package me.nik.resourceworld.utils;
 import me.nik.resourceworld.files.Lang;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class Messenger {
@@ -13,5 +14,9 @@ public class Messenger {
 
     public static String message(String msg) {
         return format(Lang.get().getString("prefix") + format(Lang.get().getString(msg)));
+    }
+
+    public static void consoleMessage(String message) {
+        Bukkit.getServer().getConsoleSender().sendMessage(message);
     }
 }

@@ -6,8 +6,8 @@ import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.listeners.DisabledCmds;
 import me.nik.resourceworld.listeners.Drowning;
+import me.nik.resourceworld.listeners.GuiListener;
 import me.nik.resourceworld.listeners.LeaveInWorld;
-import me.nik.resourceworld.listeners.MenuHandler;
 import me.nik.resourceworld.listeners.Portals;
 import me.nik.resourceworld.listeners.blockregen.BlockRegen;
 import me.nik.resourceworld.listeners.blockregen.BlockRegenNether;
@@ -56,11 +56,11 @@ public final class ResourceWorld extends JavaPlugin {
         new ConfigManager(this).checkForMistakes();
 
         //Startup Message
-        consoleMessage("");
-        consoleMessage("            " + ChatColor.GREEN + "Resource World v" + this.getDescription().getVersion());
-        consoleMessage("");
-        consoleMessage("                   " + ChatColor.WHITE + "Author: Nik");
-        consoleMessage("");
+        Messenger.consoleMessage("");
+        Messenger.consoleMessage("            " + ChatColor.GREEN + "Resource World v" + this.getDescription().getVersion());
+        Messenger.consoleMessage("");
+        Messenger.consoleMessage("                   " + ChatColor.WHITE + "Author: Nik");
+        Messenger.consoleMessage("");
 
         getCommand("resource").setExecutor(new CommandManager(this));
 
@@ -76,7 +76,7 @@ public final class ResourceWorld extends JavaPlugin {
         initializeTasks();
 
         //Enable bStats
-        MetricsLite metricsLite = new MetricsLite(this, 6981);
+        new MetricsLite(this, 6981);
     }
 
     @Override
@@ -97,7 +97,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("settings.check_for_updates")) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
-            consoleMessage(Messenger.message("update_disabled"));
+            Messenger.consoleMessage(Messenger.message("update_disabled"));
         }
 
         if (isEnabled("world.settings.always_day")) {
@@ -186,7 +186,6 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void initialize() {
-        registerEvent(new MenuHandler(this));
         if (isEnabled("world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegen(this));
         }
@@ -232,6 +231,8 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("end_world.settings.disable_explosion_damage")) {
             registerEvent(new ExplosionEnd());
         }
+        //Don't be an idiot Nik, Always register this Listener
+        registerEvent(new GuiListener());
     }
 
     public void registerEvent(Listener listener) {
@@ -264,9 +265,5 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("end_world.settings.enabled")) {
             new WorldGeneratorEnd().createWorld();
         }
-    }
-
-    public void consoleMessage(String message) {
-        this.getServer().getConsoleSender().sendMessage(message);
     }
 }
