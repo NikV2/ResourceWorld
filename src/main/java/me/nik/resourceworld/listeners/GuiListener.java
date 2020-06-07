@@ -11,9 +11,8 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getClickedInventory().getHolder() == null) return;
 
-        InventoryHolder holder = e.getClickedInventory().getHolder();
+        InventoryHolder holder = e.getInventory().getHolder();
 
         if (!(holder instanceof Menu)) return;
 
