@@ -1,8 +1,8 @@
 package me.nik.resourceworld.files;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +11,8 @@ public class Lang {
     private File file;
     private static FileConfiguration lang;
 
-    public void setup() {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("ResourceWorld").getDataFolder(), "lang.yml");
+    public void setup(JavaPlugin plugin) {
+        file = new File(plugin.getDataFolder(), "lang.yml");
         if (!file.exists()) {
             try {
                 file.createNewFile();

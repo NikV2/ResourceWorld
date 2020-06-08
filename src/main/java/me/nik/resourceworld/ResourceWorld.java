@@ -181,15 +181,15 @@ public final class ResourceWorld extends JavaPlugin {
      * Load all the built-in Files.
      */
     private void loadFiles() {
-        config.setup();
+        config.setup(this);
         config.addDefaults();
         Config.get().options().copyDefaults(true);
         config.save();
-        lang.setup();
+        lang.setup(this);
         lang.addDefaults();
         Lang.get().options().copyDefaults(true);
         lang.save();
-        data.setup();
+        data.setup(this);
         data.addDefaults();
         Data.get().options().copyDefaults(true);
         data.save();

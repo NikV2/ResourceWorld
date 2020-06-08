@@ -12,6 +12,12 @@ public class TeleportUtils {
 
     private final List<String> unsafeBlocks = Config.get().getStringList("teleport.settings.unsafe_blocks");
 
+    /**
+     * Checks for a safe location within that world
+     *
+     * @param world The world to find a random location from
+     * @return A random location
+     */
     public Location generateLocation(World world) {
         int xz = Config.get().getInt("teleport.settings.max_teleport_range");
         Random random = new Random();
