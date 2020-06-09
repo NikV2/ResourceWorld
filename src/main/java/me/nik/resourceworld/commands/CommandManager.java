@@ -59,6 +59,7 @@ public class CommandManager implements TabExecutor {
             pluginInfo(sender);
             return true;
         }
+        helpMessage(sender);
         return true;
     }
 
