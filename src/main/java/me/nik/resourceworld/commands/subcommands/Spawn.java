@@ -5,6 +5,7 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -26,11 +27,20 @@ public class Spawn extends SubCommand {
     }
 
     @Override
-    public void perform(Player player, String[] args) {
+    public String getPermission() {
+        return "rw.tp";
+    }
+
+    @Override
+    public boolean canConsoleExecute() {
+        return false;
+    }
+
+    @Override
+    public void perform(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            if (!player.hasPermission("rw.tp")) {
-                player.sendMessage(Messenger.message("no_perm"));
-            } else if (Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")) == null) {
+            Player player = (Player) sender;
+            if (Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")) == null) {
                 player.sendMessage(Messenger.message("main_world_error"));
             } else {
                 final Location loc = Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")).getSpawnLocation();
@@ -41,7 +51,7 @@ public class Spawn extends SubCommand {
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
         return null;
     }
 }

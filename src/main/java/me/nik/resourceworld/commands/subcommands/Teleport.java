@@ -11,6 +11,7 @@ import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -33,8 +34,6 @@ public class Teleport extends SubCommand {
     final private int pitch = Config.get().getInt("teleport.settings.sounds.pitch");
     private final boolean isSoundsEnabled = Config.get().getBoolean("teleport.settings.sounds.enabled");
     private final TeleportUtils teleportUtils;
-    private final boolean isNetherEnabled = Config.get().getBoolean("nether_world.settings.enabled");
-    private final boolean isEndEnabled = Config.get().getBoolean("end_world.settings.enabled");
 
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
@@ -57,40 +56,93 @@ public class Teleport extends SubCommand {
     }
 
     @Override
-    public void perform(Player player, String[] args) {
+    public String getPermission() {
+        return "rw.tp";
+    }
 
-        if (args.length == 1) {
-            if (!player.hasPermission("rw.tp")) {
-                player.sendMessage(Messenger.message("no_perm"));
-                return;
+    @Override
+    public boolean canConsoleExecute() {
+        return true;
+    }
+
+    @Override
+    public void perform(CommandSender sender, String[] args) {
+
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            if (args.length == 1) {
+                if (!WorldUtils.worldExists()) {
+                    player.sendMessage(Messenger.message("not_exist"));
+                    return;
+                }
+                World worldResource = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
+                teleport(player, worldResource);
+            } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
+                if (!player.hasPermission("rw.tp.nether")) {
+                    player.sendMessage(Messenger.message("no_perm"));
+                    return;
+                }
+                if (WorldUtils.netherExists()) {
+                    World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
+                    teleport(player, worldNether);
+                } else {
+                    player.sendMessage(Messenger.message("not_exist"));
+                }
+            } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
+                if (!player.hasPermission("rw.tp.end")) {
+                    player.sendMessage(Messenger.message("no_perm"));
+                    return;
+                }
+                if (WorldUtils.endExists()) {
+                    World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
+                    teleport(player, worldEnd);
+                } else {
+                    player.sendMessage(Messenger.message("not_exist"));
+                }
             }
-            if (!WorldUtils.worldExists()) {
-                player.sendMessage(Messenger.message("not_exist"));
-                return;
-            }
-            World worldResource = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
-            teleport(player, worldResource);
-        } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
-            if (!player.hasPermission("rw.tp.nether")) {
-                player.sendMessage(Messenger.message("no_perm"));
-                return;
-            }
-            if (isNetherEnabled && WorldUtils.netherExists()) {
+        } else {
+            if (args.length == 2) {
+                if (!WorldUtils.worldExists()) {
+                    sender.sendMessage(Messenger.message("not_exist"));
+                    return;
+                }
+                World worldResource = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
+                String p = args[1];
+                try {
+                    Player player = Bukkit.getPlayer(p);
+                    teleport(player, worldResource);
+                    sender.sendMessage(Messenger.message("teleporting_player").replaceAll("%player%", p).replaceAll("%world%", worldResource.getName()));
+                } catch (NullPointerException e) {
+                    sender.sendMessage("Player not found.");
+                }
+            } else if (args.length == 3 && args[1].equalsIgnoreCase("nether")) {
+                if (!WorldUtils.netherExists()) {
+                    sender.sendMessage(Messenger.message("not_exist"));
+                    return;
+                }
                 World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
-                teleport(player, worldNether);
-            } else {
-                player.sendMessage(Messenger.message("not_exist"));
-            }
-        } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
-            if (!player.hasPermission("rw.tp.end")) {
-                player.sendMessage(Messenger.message("no_perm"));
-                return;
-            }
-            if (isEndEnabled && WorldUtils.endExists()) {
+                String p = args[2];
+                try {
+                    Player player = Bukkit.getPlayer(p);
+                    teleport(player, worldNether);
+                    sender.sendMessage(Messenger.message("teleporting_player").replaceAll("%player%", p).replaceAll("%world%", worldNether.getName()));
+                } catch (NullPointerException e) {
+                    sender.sendMessage("Player not found.");
+                }
+            } else if (args.length == 3 && args[1].equalsIgnoreCase("end")) {
+                if (!WorldUtils.endExists()) {
+                    sender.sendMessage(Messenger.message("not_exist"));
+                    return;
+                }
                 World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
-                teleport(player, worldEnd);
-            } else {
-                player.sendMessage(Messenger.message("not_exist"));
+                String p = args[2];
+                try {
+                    Player player = Bukkit.getPlayer(p);
+                    teleport(player, worldEnd);
+                    sender.sendMessage(Messenger.message("teleporting_player").replaceAll("%player%", p).replaceAll("%world%", worldEnd.getName()));
+                } catch (NullPointerException e) {
+                    sender.sendMessage("Player not found.");
+                }
             }
         }
     }
@@ -140,7 +192,7 @@ public class Teleport extends SubCommand {
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
 
         if (args.length == 2) {
             List<String> worlds = new ArrayList<>();

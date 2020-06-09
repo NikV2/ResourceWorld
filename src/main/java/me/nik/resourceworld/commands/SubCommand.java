@@ -1,6 +1,6 @@
 package me.nik.resourceworld.commands;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -12,7 +12,11 @@ public abstract class SubCommand {
 
     protected abstract String getSyntax();
 
-    protected abstract void perform(Player player, String[] args);
+    public abstract String getPermission();
 
-    protected abstract List<String> getSubcommandArguments(Player player, String[] args);
+    public abstract boolean canConsoleExecute();
+
+    protected abstract void perform(CommandSender sender, String[] args);
+
+    protected abstract List<String> getSubcommandArguments(CommandSender sender, String[] args);
 }

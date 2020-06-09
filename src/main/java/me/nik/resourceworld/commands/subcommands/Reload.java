@@ -3,7 +3,7 @@ package me.nik.resourceworld.commands.subcommands;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.utils.Messenger;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -31,21 +31,27 @@ public class Reload extends SubCommand {
     }
 
     @Override
-    public void perform(Player player, String[] args) {
-        if (!player.hasPermission("rw.admin")) {
-            player.sendMessage(Messenger.message("no_perm"));
-            return;
-        }
+    public String getPermission() {
+        return "rw.admin";
+    }
+
+    @Override
+    public boolean canConsoleExecute() {
+        return true;
+    }
+
+    @Override
+    public void perform(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            player.sendMessage(Messenger.message("reloading"));
+            sender.sendMessage(Messenger.message("reloading"));
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             plugin.getServer().getPluginManager().enablePlugin(plugin);
-            player.sendMessage(Messenger.message("reloaded"));
+            sender.sendMessage(Messenger.message("reloaded"));
         }
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
         return null;
     }
 }
