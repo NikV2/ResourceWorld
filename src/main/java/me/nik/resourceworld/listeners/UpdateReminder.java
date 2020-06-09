@@ -6,26 +6,21 @@ import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class UpdateReminder implements Listener {
 
     private final ResourceWorld plugin;
+    private final UpdateChecker updateChecker;
 
-    public UpdateReminder(ResourceWorld plugin) {
+    public UpdateReminder(ResourceWorld plugin, UpdateChecker updateChecker) {
         this.plugin = plugin;
+        this.updateChecker = updateChecker;
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e) {
         if (!e.getPlayer().hasPermission("rw.admin")) return;
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                e.getPlayer().sendMessage(Messenger.message("update_found").replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", UpdateChecker.newVersion));
-            }
-        }.runTaskLaterAsynchronously(plugin, 40);
+        String newVersion = updateChecker.getNewVersion();
+        e.getPlayer().sendMessage(Messenger.message("update_found").replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
     }
 }
