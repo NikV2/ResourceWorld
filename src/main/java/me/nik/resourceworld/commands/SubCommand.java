@@ -12,9 +12,9 @@ public abstract class SubCommand {
 
     protected abstract String getSyntax();
 
-    public abstract String getPermission();
+    protected abstract String getPermission();
 
-    public abstract boolean canConsoleExecute();
+    protected abstract boolean canConsoleExecute();
 
     protected abstract void perform(CommandSender sender, String[] args);
 
