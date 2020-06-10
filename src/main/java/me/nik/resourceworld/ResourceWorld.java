@@ -20,6 +20,7 @@ import me.nik.resourceworld.listeners.explosion.ExplosionNether;
 import me.nik.resourceworld.listeners.suffocation.Suffocation;
 import me.nik.resourceworld.listeners.suffocation.SuffocationEnd;
 import me.nik.resourceworld.listeners.suffocation.SuffocationNether;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
@@ -100,7 +101,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("settings.check_for_updates")) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
-            Messenger.consoleMessage(Messenger.message("update_disabled"));
+            Messenger.consoleMessage(Messenger.message(MsgType.UPDATE_DISABLED));
         }
 
         if (isEnabled("world.settings.always_day")) {
@@ -230,7 +231,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("disabled_commands.enabled")) {
             registerEvent(new DisabledCmds());
         }
-        if (isEnabled("nether_world.settings.portals.override") || Config.get().getBoolean("end_world.settings.portals.override")) {
+        if (isEnabled("nether_world.settings.portals.override") || isEnabled("end_world.settings.portals.override")) {
             registerEvent(new Portals());
         }
         if (isEnabled("settings.teleport_to_spawn_on_quit")) {
@@ -263,7 +264,6 @@ public final class ResourceWorld extends JavaPlugin {
      */
     private void startIntervals() {
         if (isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.enabled")) {
-            System.out.println(Messenger.message("automated_resets_enabled"));
             int interval = Config.get().getInt("world.settings.automated_resets.interval") * 72000;
             BukkitTask resetWorld = new ResetWorld(this).runTaskTimer(this, worldTimer(), interval);
         }

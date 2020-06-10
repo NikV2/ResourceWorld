@@ -2,6 +2,7 @@ package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.listeners.UpdateReminder;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -29,10 +30,10 @@ public class UpdateChecker extends BukkitRunnable {
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
                 newVersion = version;
-                Messenger.consoleMessage(Messenger.message("update_found").replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
+                Messenger.consoleMessage(Messenger.message(MsgType.UPDATE_FOUND).replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
                 plugin.registerEvent(new UpdateReminder(plugin, this));
             } else {
-                Messenger.consoleMessage(Messenger.message("update_not_found"));
+                Messenger.consoleMessage(Messenger.message(MsgType.UPDATE_NOT_FOUND));
             }
         } catch (IOException ignored) {
         }

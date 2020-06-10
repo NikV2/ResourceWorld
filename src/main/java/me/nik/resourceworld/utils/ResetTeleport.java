@@ -1,6 +1,7 @@
 package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.MsgType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(world)) {
                 Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
                 p.teleport(loc);
-                p.sendMessage(Messenger.message("teleported_message"));
+                p.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
             }
         }
     }
@@ -29,7 +30,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(nether)) {
                 Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
                 p.teleport(loc);
-                p.sendMessage(Messenger.message("teleported_message"));
+                p.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
             }
         }
     }
@@ -40,7 +41,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(end)) {
                 Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
                 p.teleport(loc);
-                p.sendMessage(Messenger.message("teleported_message"));
+                p.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
             }
         }
     }

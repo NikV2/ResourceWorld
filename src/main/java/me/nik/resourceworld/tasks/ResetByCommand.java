@@ -2,6 +2,7 @@ package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldCommands;
@@ -27,9 +28,9 @@ public class ResetByCommand {
 
     public void executeReset() {
         if (!WorldUtils.worldExists()) return;
-        plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
+        plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_WORLD));
         new ResetTeleport().resetTP();
-        Messenger.consoleMessage(Messenger.message("deleting"));
+        Messenger.consoleMessage(Messenger.message(MsgType.DELETING));
         World world = Bukkit.getWorld(overworld);
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -50,16 +51,16 @@ public class ResetByCommand {
             public void run() {
                 new WorldGenerator().createWorld();
                 new WorldCommands().worldRunCommands();
-                plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
+                plugin.getServer().broadcastMessage(Messenger.message(MsgType.WORLD_HAS_BEEN_RESET));
             }
         }.runTaskLater(plugin, 80);
     }
 
     public void executeNetherReset() {
         if (!WorldUtils.netherExists()) return;
-        plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
+        plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_NETHER));
         new ResetTeleport().resetNetherTP();
-        Messenger.consoleMessage(Messenger.message("deleting"));
+        Messenger.consoleMessage(Messenger.message(MsgType.DELETING));
         World world = Bukkit.getWorld(nether);
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -80,16 +81,16 @@ public class ResetByCommand {
             public void run() {
                 new WorldGeneratorNether().createWorld();
                 new WorldCommands().netherRunCommands();
-                plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
+                plugin.getServer().broadcastMessage(Messenger.message(MsgType.NETHER_HAS_BEEN_RESET));
             }
         }.runTaskLater(plugin, 80);
     }
 
     public void executeEndReset() {
         if (!WorldUtils.endExists()) return;
-        plugin.getServer().broadcastMessage(Messenger.message("resetting_the_world"));
+        plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_END));
         new ResetTeleport().resetEndTP();
-        Messenger.consoleMessage(Messenger.message("deleting"));
+        Messenger.consoleMessage(Messenger.message(MsgType.DELETING));
         World world = Bukkit.getWorld(end);
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -110,7 +111,7 @@ public class ResetByCommand {
             public void run() {
                 new WorldGeneratorEnd().createWorld();
                 new WorldCommands().endRunCommands();
-                plugin.getServer().broadcastMessage(Messenger.message("world_has_been_reset"));
+                plugin.getServer().broadcastMessage(Messenger.message(MsgType.END_HAS_BEEN_RESET));
             }
         }.runTaskLater(plugin, 80);
     }

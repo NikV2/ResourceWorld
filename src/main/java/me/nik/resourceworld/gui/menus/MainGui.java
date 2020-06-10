@@ -1,9 +1,9 @@
 package me.nik.resourceworld.gui.menus;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.gui.Menu;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import org.bukkit.ChatColor;
@@ -22,7 +22,7 @@ public class MainGui extends Menu {
 
     @Override
     protected String getMenuName() {
-        return Messenger.format(Lang.get().getString("gui_name"));
+        return Messenger.message(MsgType.GUI_NAME);
     }
 
     @Override
@@ -36,14 +36,14 @@ public class MainGui extends Menu {
         switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
             case "§aTeleport All":
                 new ResetTeleport().resetTP();
-                p.sendMessage(Messenger.message("teleported_players"));
+                p.sendMessage(Messenger.message(MsgType.TELEPORTED_PLAYERS));
                 break;
             case "§aReload":
                 p.closeInventory();
-                p.sendMessage(Messenger.message("reloading"));
+                p.sendMessage(Messenger.message(MsgType.RELOADING));
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 plugin.getServer().getPluginManager().enablePlugin(plugin);
-                p.sendMessage(Messenger.message("reloaded"));
+                p.sendMessage(Messenger.message(MsgType.RELOADED));
                 break;
             case "§aLooking for Support?":
                 p.closeInventory();

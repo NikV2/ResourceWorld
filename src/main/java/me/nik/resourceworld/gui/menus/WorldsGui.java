@@ -2,9 +2,9 @@ package me.nik.resourceworld.gui.menus;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
-import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.gui.Menu;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.WorldUtils;
@@ -20,7 +20,7 @@ public class WorldsGui extends Menu {
 
     @Override
     protected String getMenuName() {
-        return Messenger.format(Lang.get().getString("worlds_gui_name"));
+        return Messenger.message(MsgType.WORLDS_GUI_NAME);
     }
 
     @Override

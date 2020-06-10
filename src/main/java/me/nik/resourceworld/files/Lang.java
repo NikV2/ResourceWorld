@@ -45,8 +45,6 @@ public class Lang {
         Lang.get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
         Lang.get().addDefault("deleting", "&f&lCleaning up the old Resource World");
         Lang.get().addDefault("reset_cooldown", "&cWARNING! You cannot reset the Resource World yet, You must wait %seconds% seconds.");
-        Lang.get().addDefault("automated_resets_disabled", "&f&lAutomated Resets are Disabled, Skipping.");
-        Lang.get().addDefault("automated_resets_enabled", "&f&lAutomated Resets are Enabled, Initializing.");
         Lang.get().addDefault("resetting_the_world", "&fCleaning up the Resource World, This may cause Lag!");
         Lang.get().addDefault("resetting_the_nether", "&fCleaning up the Nether World, This may cause Lag!");
         Lang.get().addDefault("resetting_the_end", "&fCleaning up the End World, This may cause Lag!");
@@ -61,7 +59,6 @@ public class Lang {
         Lang.get().addDefault("reloading", "&fReloading... This may cause lag!");
         Lang.get().addDefault("teleport_delay", "&aTeleporting to the Resource World in %seconds% seconds.");
         Lang.get().addDefault("gui_name", "&2&lResource World Menu");
-        Lang.get().addDefault("settings_gui_name", "&2&lResource World Settings");
         Lang.get().addDefault("worlds_gui_name", "&2&lReset A Resource World");
         Lang.get().addDefault("teleported_message", "&fYou have been Teleported back to spawn!");
         Lang.get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");

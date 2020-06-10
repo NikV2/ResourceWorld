@@ -4,7 +4,7 @@ import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
-import me.nik.resourceworld.files.Lang;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldUtils;
@@ -72,38 +72,38 @@ public class Teleport extends SubCommand {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (!WorldUtils.worldExists()) {
-                    player.sendMessage(Messenger.message("not_exist"));
+                    player.sendMessage(Messenger.message(MsgType.NOT_EXIST));
                     return;
                 }
                 World worldResource = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
                 teleport(player, worldResource);
             } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
                 if (!player.hasPermission("rw.tp.nether")) {
-                    player.sendMessage(Messenger.message("no_perm"));
+                    player.sendMessage(Messenger.message(MsgType.NO_PERMISSION));
                     return;
                 }
                 if (WorldUtils.netherExists()) {
                     World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
                     teleport(player, worldNether);
                 } else {
-                    player.sendMessage(Messenger.message("not_exist"));
+                    player.sendMessage(Messenger.message(MsgType.NOT_EXIST));
                 }
             } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
                 if (!player.hasPermission("rw.tp.end")) {
-                    player.sendMessage(Messenger.message("no_perm"));
+                    player.sendMessage(Messenger.message(MsgType.NO_PERMISSION));
                     return;
                 }
                 if (WorldUtils.endExists()) {
                     World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
                     teleport(player, worldEnd);
                 } else {
-                    player.sendMessage(Messenger.message("not_exist"));
+                    player.sendMessage(Messenger.message(MsgType.NOT_EXIST));
                 }
             }
         } else {
             if (args.length == 2) {
                 if (!WorldUtils.worldExists()) {
-                    sender.sendMessage(Messenger.message("not_exist"));
+                    sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
                     return;
                 }
                 World worldResource = Bukkit.getWorld(Config.get().getString("world.settings.world_name"));
@@ -111,13 +111,13 @@ public class Teleport extends SubCommand {
                 try {
                     Player player = Bukkit.getPlayer(p);
                     teleport(player, worldResource);
-                    sender.sendMessage(Messenger.message("teleporting_player").replaceAll("%player%", p).replaceAll("%world%", worldResource.getName()));
+                    sender.sendMessage(Messenger.message(MsgType.TELEPORTING_PLAYER).replaceAll("%player%", p).replaceAll("%world%", worldResource.getName()));
                 } catch (NullPointerException e) {
                     sender.sendMessage("Player not found.");
                 }
             } else if (args.length == 3 && args[1].equalsIgnoreCase("nether")) {
                 if (!WorldUtils.netherExists()) {
-                    sender.sendMessage(Messenger.message("not_exist"));
+                    sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
                     return;
                 }
                 World worldNether = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
@@ -125,13 +125,13 @@ public class Teleport extends SubCommand {
                 try {
                     Player player = Bukkit.getPlayer(p);
                     teleport(player, worldNether);
-                    sender.sendMessage(Messenger.message("teleporting_player").replaceAll("%player%", p).replaceAll("%world%", worldNether.getName()));
+                    sender.sendMessage(Messenger.message(MsgType.TELEPORTING_PLAYER).replaceAll("%player%", p).replaceAll("%world%", worldNether.getName()));
                 } catch (NullPointerException e) {
                     sender.sendMessage("Player not found.");
                 }
             } else if (args.length == 3 && args[1].equalsIgnoreCase("end")) {
                 if (!WorldUtils.endExists()) {
-                    sender.sendMessage(Messenger.message("not_exist"));
+                    sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
                     return;
                 }
                 World worldEnd = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
@@ -139,7 +139,7 @@ public class Teleport extends SubCommand {
                 try {
                     Player player = Bukkit.getPlayer(p);
                     teleport(player, worldEnd);
-                    sender.sendMessage(Messenger.message("teleporting_player").replaceAll("%player%", p).replaceAll("%world%", worldEnd.getName()));
+                    sender.sendMessage(Messenger.message(MsgType.TELEPORTING_PLAYER).replaceAll("%player%", p).replaceAll("%world%", worldEnd.getName()));
                 } catch (NullPointerException e) {
                     sender.sendMessage("Player not found.");
                 }
@@ -148,16 +148,18 @@ public class Teleport extends SubCommand {
     }
 
     private void teleport(Player p, World world) {
-        if (cooldown.containsKey(p.getUniqueId())) {
-            long secondsleft = ((cooldown.get(p.getUniqueId()) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
+        UUID uuid = p.getUniqueId();
+        if (cooldown.containsKey(uuid)) {
+            long secondsleft = ((cooldown.get(uuid) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
             if (secondsleft > 0) {
-                p.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("cooldown_message").replaceAll("%seconds%", String.valueOf(secondsleft)))));
+                p.sendMessage(Messenger.message(MsgType.COOLDOWN_MESSAGE).replaceAll("%seconds%", String.valueOf(secondsleft)));
                 return;
             }
+            cooldown.remove(uuid);
         }
         if (delaytime < 1) {
             if (!p.hasPermission("rw.admin")) {
-                cooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                cooldown.put(uuid, System.currentTimeMillis());
             }
             PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
             p.addPotionEffect(effect);
@@ -165,13 +167,12 @@ public class Teleport extends SubCommand {
                 try {
                     p.playSound(p.getLocation(), Sound.valueOf(Config.get().getString("teleport.settings.sounds.sound")), volume, pitch);
                 } catch (IllegalArgumentException ignored) {
-                    System.out.println(Messenger.prefix(Messenger.format("Your current Teleportation sound does not exist on your Server Version! Please try setting a valid Sound Effect.")));
                 }
             }
         } else {
-            p.sendMessage(Messenger.prefix(Messenger.format(Lang.get().getString("teleport_delay").replaceAll("%seconds%", String.valueOf(delaytime)))));
+            p.sendMessage(Messenger.message(MsgType.TELEPORT_DELAY).replaceAll("%seconds%", String.valueOf(delaytime)));
             if (!p.hasPermission("rw.admin")) {
-                cooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                cooldown.put(uuid, System.currentTimeMillis());
             }
             new BukkitRunnable() {
 
@@ -183,7 +184,6 @@ public class Teleport extends SubCommand {
                         try {
                             p.playSound(p.getLocation(), Sound.valueOf(Config.get().getString("teleport.settings.sounds.sound")), volume, pitch);
                         } catch (IllegalArgumentException ignored) {
-                            System.out.println(Messenger.prefix(Messenger.format("Your current Teleportation sound does not exist on your Server Version! Please try setting a valid Sound Effect.")));
                         }
                     }
                 }

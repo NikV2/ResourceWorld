@@ -2,6 +2,7 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -41,11 +42,11 @@ public class Spawn extends SubCommand {
         if (args.length == 1) {
             Player player = (Player) sender;
             if (Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")) == null) {
-                player.sendMessage(Messenger.message("main_world_error"));
+                player.sendMessage(Messenger.message(MsgType.MAIN_WORLD_ERROR));
             } else {
                 final Location loc = Bukkit.getWorld(Config.get().getString("settings.main_spawn_world")).getSpawnLocation();
                 player.teleport(loc);
-                player.sendMessage(Messenger.message("teleported_message"));
+                player.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
             }
         }
     }

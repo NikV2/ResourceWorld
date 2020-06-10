@@ -2,6 +2,7 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.command.CommandSender;
 
@@ -43,10 +44,10 @@ public class Reload extends SubCommand {
     @Override
     public void perform(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            sender.sendMessage(Messenger.message("reloading"));
+            sender.sendMessage(Messenger.message(MsgType.RELOADING));
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             plugin.getServer().getPluginManager().enablePlugin(plugin);
-            sender.sendMessage(Messenger.message("reloaded"));
+            sender.sendMessage(Messenger.message(MsgType.RELOADED));
         }
     }
 

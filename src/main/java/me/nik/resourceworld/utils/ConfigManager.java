@@ -2,6 +2,7 @@ package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.MsgType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,7 +179,7 @@ public class ConfigManager {
         if (hasMistakes) {
             plugin.config.save();
             plugin.config.reload();
-            Messenger.consoleMessage(Messenger.message("fixed_mistakes").replaceAll("%mistakes%", mistakes.toString()));
+            Messenger.consoleMessage(Messenger.message(MsgType.FIXED_MISTAKES).replaceAll("%mistakes%", mistakes.toString()));
         }
 
         difficulties.clear();

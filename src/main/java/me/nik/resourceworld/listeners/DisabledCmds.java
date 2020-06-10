@@ -1,6 +1,7 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +27,7 @@ public class DisabledCmds implements Listener {
             for (String cmd : commands) {
                 if (e.getMessage().contains(cmd)) {
                     e.setCancelled(true);
-                    p.sendMessage(Messenger.message("disabled_command"));
+                    p.sendMessage(Messenger.message(MsgType.DISABLED_COMMAND));
                 }
             }
         }
