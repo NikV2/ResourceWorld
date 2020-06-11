@@ -1,6 +1,6 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
@@ -12,16 +12,29 @@ import org.bukkit.WorldType;
 public class WorldGeneratorEnd {
     World world;
 
-    private final String worldName = Config.get().getString("end_world.settings.world_name");
-    private final WorldType type = WorldType.valueOf(Config.get().getString("end_world.settings.world_type"));
-    private final World.Environment environment = World.Environment.valueOf(Config.get().getString("end_world.settings.environment"));
-    private final boolean useBorder = Config.get().getBoolean("end_world.settings.world_border.enabled");
-    private final int border = Config.get().getInt("end_world.settings.world_border.size");
-    private final boolean pvp = Config.get().getBoolean("end_world.settings.allow_pvp");
-    private final Difficulty difficulty = Difficulty.valueOf(Config.get().getString("end_world.settings.difficulty"));
-    private final int monsterLimit = Config.get().getInt("end_world.settings.entities.max_monsters");
-    private final boolean loadSpawn = Config.get().getBoolean("end_world.settings.keep_spawn_loaded");
-    private final boolean keepInventory = Config.get().getBoolean("end_world.settings.keep_inventory_on_death");
+    private final String worldName;
+    private final WorldType type;
+    private final World.Environment environment;
+    private final boolean useBorder;
+    private final int border;
+    private final boolean pvp;
+    private final Difficulty difficulty;
+    private final int monsterLimit;
+    private final boolean loadSpawn;
+    private final boolean keepInventory;
+
+    public WorldGeneratorEnd(ResourceWorld plugin) {
+        this.worldName = plugin.getConfig().getString("end_world.settings.world_name");
+        this.type = WorldType.valueOf(plugin.getConfig().getString("end_world.settings.world_type"));
+        this.environment = World.Environment.valueOf(plugin.getConfig().getString("end_world.settings.environment"));
+        this.useBorder = plugin.getConfig().getBoolean("end_world.settings.world_border.enabled");
+        this.border = plugin.getConfig().getInt("end_world.settings.world_border.size");
+        this.pvp = plugin.getConfig().getBoolean("end_world.settings.allow_pvp");
+        this.difficulty = Difficulty.valueOf(plugin.getConfig().getString("end_world.settings.difficulty"));
+        this.monsterLimit = plugin.getConfig().getInt("end_world.settings.entities.max_monsters");
+        this.loadSpawn = plugin.getConfig().getBoolean("end_world.settings.keep_spawn_loaded");
+        this.keepInventory = plugin.getConfig().getBoolean("end_world.settings.keep_inventory_on_death");
+    }
 
     public void createWorld() {
         try {

@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners.explosion;
 
-import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +10,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class Explosion implements Listener {
 
-    private final String overworld = Config.get().getString("world.settings.world_name");
+    private final String overworld;
+
+    public Explosion(ResourceWorld plugin) {
+        this.overworld = plugin.getConfig().getString("world.settings.world_name");
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplode(EntityExplodeEvent e) {

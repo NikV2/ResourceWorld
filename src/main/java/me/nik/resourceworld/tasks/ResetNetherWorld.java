@@ -1,8 +1,6 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
-import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
@@ -24,14 +22,14 @@ public class ResetNetherWorld extends BukkitRunnable {
     @Override
     public void run() {
         if (!WorldUtils.netherExists()) return;
-        if (Config.get().getBoolean("nether_world.settings.automated_resets.store_time_on_shutdown")) {
-            Data.get().set("nether.millis", System.currentTimeMillis());
-            plugin.data.save();
-            plugin.data.reload();
+        if (plugin.getConfig().getBoolean("nether_world.settings.automated_resets.store_time_on_shutdown")) {
+            plugin.getData().set("nether.millis", System.currentTimeMillis());
+            plugin.saveData();
+            plugin.reloadData();
         }
         plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_NETHER));
-        new ResetTeleport().resetNetherTP();
-        World world = Bukkit.getWorld(Config.get().getString("nether_world.settings.world_name"));
+        new ResetTeleport(plugin).resetNetherTP();
+        World world = Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
         new BukkitRunnable() {
@@ -49,8 +47,8 @@ public class ResetNetherWorld extends BukkitRunnable {
 
             @Override
             public void run() {
-                new WorldGeneratorNether().createWorld();
-                new WorldCommands().netherRunCommands();
+                new WorldGeneratorNether(plugin).createWorld();
+                new WorldCommands(plugin).netherRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message(MsgType.NETHER_HAS_BEEN_RESET));
             }
         }.runTaskLater(plugin, 90);

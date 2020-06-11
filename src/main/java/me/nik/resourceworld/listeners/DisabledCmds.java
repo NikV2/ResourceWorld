@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners;
 
-import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.entity.Player;
@@ -13,10 +13,17 @@ import java.util.List;
 
 public class DisabledCmds implements Listener {
 
-    private final String world = Config.get().getString("world.settings.world_name");
-    private final String nether = Config.get().getString("nether_world.settings.world_name");
-    private final String end = Config.get().getString("end_world.settings.world_name");
-    private final List<String> commands = Config.get().getStringList("disabled_commands.commands");
+    private final String world;
+    private final String nether;
+    private final String end;
+    private final List<String> commands;
+
+    public DisabledCmds(ResourceWorld plugin) {
+        this.world = plugin.getConfig().getString("world.settings.world_name");
+        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
+        this.end = plugin.getConfig().getString("end_world.settings.world_name");
+        this.commands = plugin.getConfig().getStringList("disabled_commands.commands");
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {

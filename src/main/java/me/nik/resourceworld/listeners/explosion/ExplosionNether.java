@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners.explosion;
 
-import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +10,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class ExplosionNether implements Listener {
 
-    private final String nether = Config.get().getString("nether_world.settings.world_name");
+    private final String nether;
+
+    public ExplosionNether(ResourceWorld plugin) {
+        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplode(EntityExplodeEvent e) {

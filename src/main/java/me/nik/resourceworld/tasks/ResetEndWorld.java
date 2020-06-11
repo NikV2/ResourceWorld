@@ -1,8 +1,6 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
-import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
@@ -24,14 +22,14 @@ public class ResetEndWorld extends BukkitRunnable {
     @Override
     public void run() {
         if (!WorldUtils.endExists()) return;
-        if (Config.get().getBoolean("end_world.settings.automated_resets.store_time_on_shutdown")) {
-            Data.get().set("end.millis", System.currentTimeMillis());
-            plugin.data.save();
-            plugin.data.reload();
+        if (plugin.getConfig().getBoolean("end_world.settings.automated_resets.store_time_on_shutdown")) {
+            plugin.getData().set("end.millis", System.currentTimeMillis());
+            plugin.saveData();
+            plugin.reloadData();
         }
         plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_END));
-        new ResetTeleport().resetEndTP();
-        World world = Bukkit.getWorld(Config.get().getString("end_world.settings.world_name"));
+        new ResetTeleport(plugin).resetEndTP();
+        World world = Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
         new BukkitRunnable() {
@@ -49,8 +47,8 @@ public class ResetEndWorld extends BukkitRunnable {
 
             @Override
             public void run() {
-                new WorldGenerator().createWorld();
-                new WorldCommands().endRunCommands();
+                new WorldGenerator(plugin).createWorld();
+                new WorldCommands(plugin).endRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message(MsgType.END_HAS_BEEN_RESET));
             }
         }.runTaskLater(plugin, 90);

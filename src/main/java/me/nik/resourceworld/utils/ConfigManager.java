@@ -1,7 +1,6 @@
 package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 
 import java.util.ArrayList;
@@ -41,144 +40,144 @@ public class ConfigManager {
 
         List<String> mistakes = new ArrayList<>();
 
-        int worldBorder = Config.get().getInt("world.settings.world_border.size") / 2;
-        int netherBorder = Config.get().getInt("nether_world.settings.world_border.size") / 2;
-        int endBorder = Config.get().getInt("end_world.settings.world_border.size") / 2;
-        int teleportRange = Config.get().getInt("teleport.settings.max_teleport_range");
-        int worldRegenerationDelay = Config.get().getInt("world.settings.block_regeneration.regeneration_delay");
-        int netherRegenerationDelay = Config.get().getInt("nether_world.settings.block_regeneration.regeneration_delay");
-        int worldReset = Config.get().getInt("world.settings.automated_resets.interval");
-        int netherReset = Config.get().getInt("nether_world.settings.automated_resets.interval");
-        int endReset = Config.get().getInt("end_world.settings.automated_resets.interval");
+        int worldBorder = plugin.getConfig().getInt("world.settings.world_border.size") / 2;
+        int netherBorder = plugin.getConfig().getInt("nether_world.settings.world_border.size") / 2;
+        int endBorder = plugin.getConfig().getInt("end_world.settings.world_border.size") / 2;
+        int teleportRange = plugin.getConfig().getInt("teleport.settings.max_teleport_range");
+        int worldRegenerationDelay = plugin.getConfig().getInt("world.settings.block_regeneration.regeneration_delay");
+        int netherRegenerationDelay = plugin.getConfig().getInt("nether_world.settings.block_regeneration.regeneration_delay");
+        int worldReset = plugin.getConfig().getInt("world.settings.automated_resets.interval");
+        int netherReset = plugin.getConfig().getInt("nether_world.settings.automated_resets.interval");
+        int endReset = plugin.getConfig().getInt("end_world.settings.automated_resets.interval");
 
-        String worldDifficulty = Config.get().getString("world.settings.difficulty");
-        String netherDifficulty = Config.get().getString("nether_world.settings.difficulty");
-        String endDifficulty = Config.get().getString("end_world.settings.difficulty");
-        String worldType = Config.get().getString("world.settings.world_type");
-        String netherType = Config.get().getString("nether_world.settings.world_type");
-        String endType = Config.get().getString("end_world.settings.world_type");
-        String worldEnvironment = Config.get().getString("world.settings.environment");
-        String netherEnvironment = Config.get().getString("nether_world.settings.environment");
-        String endEnvironment = Config.get().getString("end_world.settings.environment");
+        String worldDifficulty = plugin.getConfig().getString("world.settings.difficulty");
+        String netherDifficulty = plugin.getConfig().getString("nether_world.settings.difficulty");
+        String endDifficulty = plugin.getConfig().getString("end_world.settings.difficulty");
+        String worldType = plugin.getConfig().getString("world.settings.world_type");
+        String netherType = plugin.getConfig().getString("nether_world.settings.world_type");
+        String endType = plugin.getConfig().getString("end_world.settings.world_type");
+        String worldEnvironment = plugin.getConfig().getString("world.settings.environment");
+        String netherEnvironment = plugin.getConfig().getString("nether_world.settings.environment");
+        String endEnvironment = plugin.getConfig().getString("end_world.settings.environment");
 
-        boolean isWorldEnabled = Config.get().getBoolean("world.settings.enabled");
-        boolean isNetherEnabled = Config.get().getBoolean("nether_world.settings.enabled");
-        boolean isEndEnabled = Config.get().getBoolean("end_world.settings.enabled");
+        boolean isWorldEnabled = plugin.getConfig().getBoolean("world.settings.enabled");
+        boolean isNetherEnabled = plugin.getConfig().getBoolean("nether_world.settings.enabled");
+        boolean isEndEnabled = plugin.getConfig().getBoolean("end_world.settings.enabled");
 
         if (teleportRange > worldBorder && isWorldEnabled) {
-            Config.get().set("teleport.settings.max_teleport_range", 800);
-            Config.get().set("world.settings.world_border.size", 4500);
+            plugin.getConfig().set("teleport.settings.max_teleport_range", 800);
+            plugin.getConfig().set("world.settings.world_border.size", 4500);
             hasMistakes = true;
             mistakes.add("The Teleport Range was higher than the World Border");
         }
 
         if (teleportRange > netherBorder && isNetherEnabled) {
-            Config.get().set("teleport.settings.max_teleport_range", 800);
-            Config.get().set("nether_world.settings.world_border.size", 4500);
+            plugin.getConfig().set("teleport.settings.max_teleport_range", 800);
+            plugin.getConfig().set("nether_world.settings.world_border.size", 4500);
             hasMistakes = true;
             mistakes.add("The Teleport Range was higher than the Nether Border");
         }
 
         if (teleportRange > endBorder && isEndEnabled) {
-            Config.get().set("teleport.settings.max_teleport_range", 800);
-            Config.get().set("end_world.settings.world_border.size", 4500);
+            plugin.getConfig().set("teleport.settings.max_teleport_range", 800);
+            plugin.getConfig().set("end_world.settings.world_border.size", 4500);
             hasMistakes = true;
             mistakes.add("The Teleport Range was higher than the End Border");
         }
 
         if (!difficulties.contains(worldDifficulty)) {
-            Config.get().set("world.settings.difficulty", "NORMAL");
+            plugin.getConfig().set("world.settings.difficulty", "NORMAL");
             hasMistakes = true;
             mistakes.add("World Difficulty was invalid");
         }
 
         if (!difficulties.contains(netherDifficulty)) {
-            Config.get().set("nether_world.settings.difficulty", "NORMAL");
+            plugin.getConfig().set("nether_world.settings.difficulty", "NORMAL");
             hasMistakes = true;
             mistakes.add("Nether World Difficulty was invalid");
         }
 
         if (!difficulties.contains(endDifficulty)) {
-            Config.get().set("end_world.settings.difficulty", "NORMAL");
+            plugin.getConfig().set("end_world.settings.difficulty", "NORMAL");
             hasMistakes = true;
             mistakes.add("End World Difficulty was invalid");
         }
 
         if (!types.contains(worldType)) {
-            Config.get().set("world.settings.world_type", "NORMAL");
+            plugin.getConfig().set("world.settings.world_type", "NORMAL");
             hasMistakes = true;
             mistakes.add("World Type was invalid");
         }
 
         if (!types.contains(netherType)) {
-            Config.get().set("nether_world.settings.world_type", "NORMAL");
+            plugin.getConfig().set("nether_world.settings.world_type", "NORMAL");
             hasMistakes = true;
             mistakes.add("Nether World Type was invalid");
         }
 
         if (!types.contains(endType)) {
-            Config.get().set("end_world.settings.world_type", "NORMAL");
+            plugin.getConfig().set("end_world.settings.world_type", "NORMAL");
             hasMistakes = true;
             mistakes.add("End World Type was invalid");
         }
 
         if (!environments.contains(worldEnvironment)) {
-            Config.get().set("world.settings.environment", "NORMAL");
+            plugin.getConfig().set("world.settings.environment", "NORMAL");
             hasMistakes = true;
             mistakes.add("World Environment was invalid");
         }
 
         if (!environments.contains(netherEnvironment)) {
-            Config.get().set("nether_world.settings.environment", "NETHER");
+            plugin.getConfig().set("nether_world.settings.environment", "NETHER");
             hasMistakes = true;
             mistakes.add("Nether World Environment was invalid");
         }
 
         if (!environments.contains(endEnvironment)) {
-            Config.get().set("end_world.settings.environment", "THE_END");
+            plugin.getConfig().set("end_world.settings.environment", "THE_END");
             hasMistakes = true;
             mistakes.add("End World Environment was invalid");
         }
 
         if (worldRegenerationDelay <= 0) {
-            Config.get().set("world.settings.block_regeneration.regeneration_delay", 1);
+            plugin.getConfig().set("world.settings.block_regeneration.regeneration_delay", 1);
             hasMistakes = true;
             mistakes.add("World Regeneration delay cant be set to zero");
         }
 
         if (netherRegenerationDelay <= 0) {
-            Config.get().set("nether_world.settings.block_regeneration.regeneration_delay", 1);
+            plugin.getConfig().set("nether_world.settings.block_regeneration.regeneration_delay", 1);
             hasMistakes = true;
             mistakes.add("Nether World Regeneration delay cant be set to zero");
         }
 
         if (worldReset <= 0) {
-            Config.get().set("world.settings.automated_resets.interval", 8);
+            plugin.getConfig().set("world.settings.automated_resets.interval", 8);
             hasMistakes = true;
             mistakes.add("World Reset Interval cant be set to zero");
         }
 
         if (netherReset <= 0) {
-            Config.get().set("nether_world.settings.automated_resets.interval", 4);
+            plugin.getConfig().set("nether_world.settings.automated_resets.interval", 4);
             hasMistakes = true;
             mistakes.add("Nether World Reset Interval cant be set to zero");
         }
 
         if (endReset <= 0) {
-            Config.get().set("end_world.settings.automated_resets.interval", 6);
+            plugin.getConfig().set("end_world.settings.automated_resets.interval", 6);
             hasMistakes = true;
             mistakes.add("End World Reset Interval cant be set to zero");
         }
 
         if (teleportRange <= 5) {
-            Config.get().set("teleport.settings.max_teleport_range", 20);
+            plugin.getConfig().set("teleport.settings.max_teleport_range", 20);
             hasMistakes = true;
             mistakes.add("Teleport Range cant be set to less or equal or five");
         }
 
         if (hasMistakes) {
-            plugin.config.save();
-            plugin.config.reload();
+            plugin.saveConfig();
+            plugin.reloadConfig();
             Messenger.consoleMessage(Messenger.message(MsgType.FIXED_MISTAKES).replaceAll("%mistakes%", mistakes.toString()));
         }
 

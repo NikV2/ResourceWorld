@@ -1,18 +1,27 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.Bukkit;
 
 import java.util.List;
 
 public class WorldCommands {
 
-    private final List<String> wCmds = Config.get().getStringList("world.settings.commands_after_reset.commands");
-    private final List<String> nCmds = Config.get().getStringList("nether_world.settings.commands_after_reset.commands");
-    private final List<String> eCmds = Config.get().getStringList("end_world.settings.commands_after_reset.commands");
-    private final boolean wRunCommands = Config.get().getBoolean("world.settings.commands_after_reset.enabled");
-    private final boolean nRunCommands = Config.get().getBoolean("nether_world.settings.commands_after_reset.enabled");
-    private final boolean eRunCommands = Config.get().getBoolean("end_world.settings.commands_after_reset.enabled");
+    private final List<String> wCmds;
+    private final List<String> nCmds;
+    private final List<String> eCmds;
+    private final boolean wRunCommands;
+    private final boolean nRunCommands;
+    private final boolean eRunCommands;
+
+    public WorldCommands(ResourceWorld plugin) {
+        this.wCmds = plugin.getConfig().getStringList("world.settings.commands_after_reset.commands");
+        this.nCmds = plugin.getConfig().getStringList("nether_world.settings.commands_after_reset.commands");
+        this.eCmds = plugin.getConfig().getStringList("end_world.settings.commands_after_reset.commands");
+        this.wRunCommands = plugin.getConfig().getBoolean("world.settings.commands_after_reset.enabled");
+        this.nRunCommands = plugin.getConfig().getBoolean("nether_world.settings.commands_after_reset.enabled");
+        this.eRunCommands = plugin.getConfig().getBoolean("end_world.settings.commands_after_reset.enabled");
+    }
 
     public void worldRunCommands() {
         if (!wRunCommands) return;

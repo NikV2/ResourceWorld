@@ -2,7 +2,6 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import me.nik.resourceworld.utils.Messenger;
@@ -14,13 +13,16 @@ import java.util.List;
 
 public class Reset extends SubCommand {
 
-    private final String world = Config.get().getString("world.settings.world_name");
-    private final String nether = Config.get().getString("nether_world.settings.world_name");
-    private final String end = Config.get().getString("end_world.settings.world_name");
+    private final String world;
+    private final String nether;
+    private final String end;
     private final ResetByCommand resetByCommand;
 
     public Reset(ResourceWorld plugin) {
         this.resetByCommand = new ResetByCommand(plugin);
+        this.world = plugin.getConfig().getString("world.settings.world_name");
+        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
+        this.end = plugin.getConfig().getString("end_world.settings.world_name");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -10,7 +10,13 @@ import java.util.Random;
 
 public class TeleportUtils {
 
-    private final List<String> unsafeBlocks = Config.get().getStringList("teleport.settings.unsafe_blocks");
+    private final List<String> unsafeBlocks;
+    private final int xz;
+
+    public TeleportUtils(ResourceWorld plugin) {
+        this.unsafeBlocks = plugin.getConfig().getStringList("teleport.settings.unsafe_blocks");
+        this.xz = plugin.getConfig().getInt("teleport.settings.max_teleport_range");
+    }
 
     /**
      * Checks for a safe location within that world
@@ -19,7 +25,6 @@ public class TeleportUtils {
      * @return A random location
      */
     public Location generateLocation(World world) {
-        int xz = Config.get().getInt("teleport.settings.max_teleport_range");
         Random random = new Random();
         World.Environment environment = world.getEnvironment();
         Location randomLocation = null;

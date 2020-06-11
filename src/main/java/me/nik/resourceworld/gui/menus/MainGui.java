@@ -35,7 +35,7 @@ public class MainGui extends Menu {
         Player p = (Player) e.getWhoClicked();
         switch (e.getCurrentItem().getItemMeta().getDisplayName()) {
             case "§aTeleport All":
-                new ResetTeleport().resetTP();
+                new ResetTeleport(plugin).resetTP();
                 p.sendMessage(Messenger.message(MsgType.TELEPORTED_PLAYERS));
                 break;
             case "§aReload":

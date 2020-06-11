@@ -30,7 +30,7 @@ public class CommandManager implements TabExecutor {
         subcommands.add(new Reload(plugin));
         subcommands.add(new Menu(plugin));
         subcommands.add(new Reset(plugin));
-        subcommands.add(new Spawn());
+        subcommands.add(new Spawn(plugin));
     }
 
     @Override

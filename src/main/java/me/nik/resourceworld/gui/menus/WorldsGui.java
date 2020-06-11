@@ -1,7 +1,6 @@
 package me.nik.resourceworld.gui.menus;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.gui.Menu;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
 import me.nik.resourceworld.managers.MsgType;
@@ -39,13 +38,13 @@ public class WorldsGui extends Menu {
                 }
                 break;
             case "§cNether World":
-                if (Config.get().getBoolean("nether_world.settings.enabled")) {
+                if (plugin.getConfig().getBoolean("nether_world.settings.enabled")) {
                     p.closeInventory();
                     new ResetByCommand(plugin).executeNetherReset();
                 }
                 break;
             case "§9End World":
-                if (Config.get().getBoolean("end_world.settings.enabled")) {
+                if (plugin.getConfig().getBoolean("end_world.settings.enabled")) {
                     p.closeInventory();
                     new ResetByCommand(plugin).executeEndReset();
                 }

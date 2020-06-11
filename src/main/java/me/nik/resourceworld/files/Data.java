@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Data {
     private File file;
-    private static FileConfiguration data;
+    private FileConfiguration data;
 
     public void setup(JavaPlugin plugin) {
         file = new File(plugin.getDataFolder(), "data.yml");
@@ -22,7 +22,7 @@ public class Data {
         data = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static FileConfiguration get() {
+    public FileConfiguration get() {
         return data;
     }
 
@@ -39,12 +39,12 @@ public class Data {
 
     public void addDefaults() {
         //lang.yml
-        Data.get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
-        Data.get().addDefault("world.timer", 0);
-        Data.get().addDefault("world.millis", 0);
-        Data.get().addDefault("nether.timer", 0);
-        Data.get().addDefault("nether.millis", 0);
-        Data.get().addDefault("end.timer", 0);
-        Data.get().addDefault("end.millis", 0);
+        get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
+        get().addDefault("world.timer", 0);
+        get().addDefault("world.millis", 0);
+        get().addDefault("nether.timer", 0);
+        get().addDefault("nether.millis", 0);
+        get().addDefault("end.timer", 0);
+        get().addDefault("end.millis", 0);
     }
 }

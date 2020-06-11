@@ -1,7 +1,6 @@
 package me.nik.resourceworld.listeners.blockregen;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Material;
@@ -18,12 +17,15 @@ public class BlockRegenNether implements Listener {
 
     private final ResourceWorld plugin;
 
-    private final int delay = Config.get().getInt("nether_world.settings.block_regeneration.regeneration_delay") * 1200;
-    private final String world = Config.get().getString("nether_world.settings.world_name");
-    private final List<String> blocks = Config.get().getStringList("nether_world.settings.block_regeneration.blocks");
+    private final int delay;
+    private final String world;
+    private final List<String> blocks;
 
     public BlockRegenNether(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.delay = plugin.getConfig().getInt("nether_world.settings.block_regeneration.regeneration_delay") * 1200;
+        this.world = plugin.getConfig().getString("nether_world.settings.world_name");
+        this.blocks = plugin.getConfig().getStringList("nether_world.settings.block_regeneration.blocks");
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
