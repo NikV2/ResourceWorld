@@ -34,6 +34,8 @@ public class Teleport extends SubCommand {
     private final boolean isSoundsEnabled;
     private final boolean paper;
 
+    private final TeleportUtils teleportUtils;
+
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
         this.cdtime = plugin.getConfig().getInt("teleport.settings.cooldown");
@@ -43,6 +45,7 @@ public class Teleport extends SubCommand {
         this.pitch = plugin.getConfig().getInt("teleport.settings.sounds.pitch");
         this.isSoundsEnabled = plugin.getConfig().getBoolean("teleport.settings.sounds.enabled");
         this.paper = plugin.getConfig().getBoolean("teleport.settings.async");
+        this.teleportUtils = new TeleportUtils(plugin);
     }
 
     @Override
@@ -167,9 +170,9 @@ public class Teleport extends SubCommand {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
             if (paper) {
-                PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+                PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
             } else {
-                p.teleport(TeleportUtils.generateLocation(world));
+                p.teleport(teleportUtils.generateLocation(world));
             }
             p.addPotionEffect(effect);
             if (isSoundsEnabled) {
@@ -188,9 +191,9 @@ public class Teleport extends SubCommand {
                 @Override
                 public void run() {
                     if (paper) {
-                        PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+                        PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
                     } else {
-                        p.teleport(TeleportUtils.generateLocation(world));
+                        p.teleport(teleportUtils.generateLocation(world));
                     }
                     p.addPotionEffect(effect);
                     if (isSoundsEnabled) {

@@ -1,5 +1,6 @@
 package me.nik.resourceworld;
 
+import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
@@ -28,7 +29,6 @@ import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
 import me.nik.resourceworld.utils.ConfigManager;
 import me.nik.resourceworld.utils.Messenger;
-import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
@@ -81,6 +81,8 @@ public final class ResourceWorld extends JavaPlugin {
         initializeTasks();
 
         new MetricsLite(this, 6981);
+
+        PaperLib.suggestPaper(this);
     }
 
     @Override
@@ -232,7 +234,6 @@ public final class ResourceWorld extends JavaPlugin {
     public void initializeClasses() {
         Messenger.initialize(lang);
         WorldUtils.initialize(config);
-        TeleportUtils.initialize(config);
     }
 
 
