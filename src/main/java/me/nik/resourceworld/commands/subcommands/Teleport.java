@@ -32,17 +32,17 @@ public class Teleport extends SubCommand {
     final private int volume;
     final private int pitch;
     private final boolean isSoundsEnabled;
-    private final TeleportUtils teleportUtils;
+    private final boolean paper;
 
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.teleportUtils = new TeleportUtils(plugin);
         this.cdtime = plugin.getConfig().getInt("teleport.settings.cooldown");
         this.delaytime = plugin.getConfig().getInt("teleport.settings.delay");
         this.effect = new PotionEffect(PotionEffectType.getByName(plugin.getConfig().getString("teleport.settings.effects.effect")), plugin.getConfig().getInt("teleport.settings.effects.duration") * 20, plugin.getConfig().getInt("teleport.settings.effects.amplifier"));
         this.volume = plugin.getConfig().getInt("teleport.settings.sounds.volume");
         this.pitch = plugin.getConfig().getInt("teleport.settings.sounds.pitch");
         this.isSoundsEnabled = plugin.getConfig().getBoolean("teleport.settings.sounds.enabled");
+        this.paper = plugin.getConfig().getBoolean("teleport.settings.async");
     }
 
     @Override
@@ -166,7 +166,11 @@ public class Teleport extends SubCommand {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
-            PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
+            if (paper) {
+                PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+            } else {
+                p.teleport(TeleportUtils.generateLocation(world));
+            }
             p.addPotionEffect(effect);
             if (isSoundsEnabled) {
                 try {
@@ -183,7 +187,11 @@ public class Teleport extends SubCommand {
 
                 @Override
                 public void run() {
-                    PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
+                    if (paper) {
+                        PaperLib.teleportAsync(p, TeleportUtils.generateLocation(world));
+                    } else {
+                        p.teleport(TeleportUtils.generateLocation(world));
+                    }
                     p.addPotionEffect(effect);
                     if (isSoundsEnabled) {
                         try {

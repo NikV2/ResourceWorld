@@ -2,20 +2,24 @@ package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.ResourceWorld;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
 
 public class TeleportUtils {
 
-    private final List<String> unsafeBlocks;
-    private final int xz;
+    private static final HashSet<Material> UNSAFE_BLOCKS = new HashSet<>();
+    private static int xz;
+
+    static {
+        UNSAFE_BLOCKS.add(Material.LAVA);
+        UNSAFE_BLOCKS.add(Material.WATER);
+    }
 
     public TeleportUtils(ResourceWorld plugin) {
-        this.unsafeBlocks = plugin.getConfig().getStringList("teleport.settings.unsafe_blocks");
-        this.xz = plugin.getConfig().getInt("teleport.settings.max_teleport_range");
+        xz = plugin.getConfig().getInt("teleport.settings.max_teleport_range");
     }
 
     /**
@@ -24,10 +28,10 @@ public class TeleportUtils {
      * @param world The world to find a random location from
      * @return A random location
      */
-    public Location generateLocation(World world) {
+    public static Location generateLocation(World world) {
         Random random = new Random();
         World.Environment environment = world.getEnvironment();
-        Location randomLocation = null;
+        Location randomLocation;
 
         int x = random.nextInt(xz);
         int y = 100;
@@ -37,13 +41,7 @@ public class TeleportUtils {
             randomLocation = new Location(world, x, y, z);
             y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
         } else {
-            boolean isSafe = false;
-            while (!isSafe) {
-                randomLocation = new Location(world, x, y, z);
-                if (!randomLocation.getBlock().isEmpty()) {
-                    isSafe = true;
-                } else y--;
-            }
+            randomLocation = new Location(world, x, y, z);
         }
         randomLocation.setY(y + 1);
 
@@ -53,14 +51,14 @@ public class TeleportUtils {
         return randomLocation;
     }
 
-    private boolean isLocationSafe(Location location) {
+    private static boolean isLocationSafe(Location location) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
-        Block below = location.getWorld().getBlockAt(x, y - 2, z);
-        Block above = location.getWorld().getBlockAt(x, y + 1, z);
-        Block blockN = location.getWorld().getBlockAt(x - 1, y, z - 1);
-        Block blockP = location.getWorld().getBlockAt(x + 1, y + 1, z + 1);
-        return !(unsafeBlocks.contains(below.getType().name().toLowerCase()) || (unsafeBlocks.contains(blockP.getType().name().toLowerCase())) || below.isEmpty() || above.getType().isSolid() || blockN.getType().isSolid() || blockP.getType().isSolid());
+        Material below = location.getWorld().getBlockAt(x, y - 2, z).getType();
+        Material above = location.getWorld().getBlockAt(x, y + 1, z).getType();
+        Material blockN = location.getWorld().getBlockAt(x - 1, y, z - 1).getType();
+        Material blockP = location.getWorld().getBlockAt(x + 1, y + 1, z + 1).getType();
+        return !(UNSAFE_BLOCKS.contains(below) || (UNSAFE_BLOCKS.contains(blockP)) || below.isAir() || above.isSolid() || blockN.isSolid() || blockP.isSolid());
     }
 }

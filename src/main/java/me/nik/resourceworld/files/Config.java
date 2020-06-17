@@ -64,9 +64,6 @@ public class Config {
         List<String> endCmds = get().getStringList("end_world.settings.automated_resets.commands");
         endCmds.add("title @p title {\"text\":\"The Resource End\",\"color\":\"green\"}");
         endCmds.add("title @p subtitle {\"text\":\"Has been Reset!\",\"color\":\"green\"}");
-        List<String> unsafeBlocks = get().getStringList("teleport.settings.unsafe_blocks");
-        unsafeBlocks.add("lava");
-        unsafeBlocks.add("water");
         get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         get().addDefault("settings.check_for_updates", true);
         get().addDefault("settings.main_spawn_world", "world");
@@ -150,6 +147,7 @@ public class Config {
         get().addDefault("end_world.settings.commands_after_reset.enabled", false);
         get().addDefault("end_world.settings.commands_after_reset.commands", endCmds);
         //Other Settings
+        get().addDefault("teleport.settings.async", true);
         get().addDefault("teleport.settings.cooldown", 60);
         get().addDefault("teleport.settings.delay", 3);
         get().addDefault("teleport.settings.max_teleport_range", 800);
@@ -160,7 +158,6 @@ public class Config {
         get().addDefault("teleport.settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT");
         get().addDefault("teleport.settings.sounds.volume", 1);
         get().addDefault("teleport.settings.sounds.pitch", 1);
-        get().addDefault("teleport.settings.unsafe_blocks", unsafeBlocks);
         get().addDefault("disabled_commands.enabled", false);
         get().addDefault("disabled_commands.commands", list);
     }
