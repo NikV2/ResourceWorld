@@ -1,6 +1,6 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,8 +18,8 @@ public class TeleportUtils {
         UNSAFE_BLOCKS.add(Material.WATER);
     }
 
-    public TeleportUtils(ResourceWorld plugin) {
-        xz = plugin.getConfig().getInt("teleport.settings.max_teleport_range");
+    public static void initialize(Config config) {
+        xz = config.get().getInt("teleport.settings.max_teleport_range");
     }
 
     /**

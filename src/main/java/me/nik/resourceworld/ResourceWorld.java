@@ -28,6 +28,7 @@ import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
 import me.nik.resourceworld.utils.ConfigManager;
 import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
@@ -55,9 +56,6 @@ public final class ResourceWorld extends JavaPlugin {
         //Load Files
         loadFiles();
 
-        Messenger.initialize(lang);
-        WorldUtils.initialize(config);
-
         //Check for mistakes
         new ConfigManager(this).checkForMistakes();
 
@@ -72,16 +70,16 @@ public final class ResourceWorld extends JavaPlugin {
 
         manageMillis();
 
-        initialize();
+        initializeClasses();
+
+        initializeListeners();
 
         generateWorlds();
 
         startIntervals();
 
-        //Initialize Tasks
         initializeTasks();
 
-        //Enable bStats
         new MetricsLite(this, 6981);
     }
 
@@ -229,10 +227,20 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     /**
+     * Initializes all the classes that depend on a function in this class
+     */
+    public void initializeClasses() {
+        Messenger.initialize(lang);
+        WorldUtils.initialize(config);
+        TeleportUtils.initialize(config);
+    }
+
+
+    /**
      * Initialize all the Existing Listeners
      * If a specific Listener is Disabled in the config.yml, Ignore it.
      */
-    private void initialize() {
+    private void initializeListeners() {
         if (isEnabled("world.settings.block_regeneration.enabled")) {
             registerEvent(new BlockRegen(this));
         }
