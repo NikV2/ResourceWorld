@@ -14,7 +14,6 @@ public class TeleportUtils {
 
     private final HashSet<Material> unsafeBlocks = new HashSet<>();
     private final int xz;
-
     {
         unsafeBlocks.add(Material.LAVA);
         unsafeBlocks.add(Material.WATER);
@@ -42,16 +41,22 @@ public class TeleportUtils {
         if (environment == World.Environment.THE_END) {
             randomLocation = new Location(world, x, y, z);
             y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
+            randomLocation.setY(y);
+            Block below = randomLocation.getWorld().getBlockAt(x, y - 2, z);
+            if (below.isEmpty()) {
+                randomLocation = generateLocation(world);
+            }
+            return randomLocation;
         } else {
             boolean safe = false;
             while (!safe) {
                 randomLocation = new Location(world, x, y, z);
                 if (!randomLocation.getBlock().isEmpty()) {
+                    randomLocation.setY(y + 1);
                     safe = true;
                 } else y--;
             }
         }
-        randomLocation.setY(y + 1);
 
         while (!isLocationSafe(randomLocation)) {
             randomLocation = generateLocation(world);
