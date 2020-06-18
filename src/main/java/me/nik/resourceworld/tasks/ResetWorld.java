@@ -1,6 +1,7 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
@@ -14,21 +15,31 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ResetWorld extends BukkitRunnable {
 
     private final ResourceWorld plugin;
+    private final ResetTeleport resetTeleport;
+    private final WorldGenerator worldGenerator;
+    private final WorldCommands worldCommands;
+
+    private final Teleport teleport;
 
     public ResetWorld(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.resetTeleport = new ResetTeleport(plugin);
+        this.worldGenerator = new WorldGenerator(plugin);
+        this.worldCommands = new WorldCommands(plugin);
+        this.teleport = new Teleport(plugin);
     }
 
     @Override
     public void run() {
         if (!WorldUtils.worldExists()) return;
+        teleport.setResettingWorld(true);
         if (plugin.getConfig().getBoolean("world.settings.automated_resets.store_time_on_shutdown")) {
             plugin.getData().set("world.millis", System.currentTimeMillis());
             plugin.saveData();
             plugin.reloadData();
         }
         plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_WORLD));
-        new ResetTeleport(plugin).resetTP();
+        resetTeleport.resetTP();
         World world = Bukkit.getWorld(plugin.getConfig().getString("world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -47,9 +58,10 @@ public class ResetWorld extends BukkitRunnable {
 
             @Override
             public void run() {
-                new WorldGenerator(plugin).createWorld();
-                new WorldCommands(plugin).worldRunCommands();
+                worldGenerator.createWorld();
+                worldCommands.worldRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message(MsgType.WORLD_HAS_BEEN_RESET));
+                teleport.setResettingWorld(false);
             }
         }.runTaskLater(plugin, 90);
     }

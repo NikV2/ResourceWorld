@@ -1,11 +1,12 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldCommands;
-import me.nik.resourceworld.utils.WorldGenerator;
+import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -14,21 +15,30 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ResetEndWorld extends BukkitRunnable {
 
     private final ResourceWorld plugin;
+    private final ResetTeleport resetTeleport;
+    private final WorldGeneratorEnd worldGeneratorEnd;
+    private final WorldCommands worldCommands;
+    private final Teleport teleport;
 
     public ResetEndWorld(ResourceWorld plugin) {
         this.plugin = plugin;
+        this.resetTeleport = new ResetTeleport(plugin);
+        this.worldGeneratorEnd = new WorldGeneratorEnd(plugin);
+        this.worldCommands = new WorldCommands(plugin);
+        this.teleport = new Teleport(plugin);
     }
 
     @Override
     public void run() {
         if (!WorldUtils.endExists()) return;
+        teleport.setResettingEnd(true);
         if (plugin.getConfig().getBoolean("end_world.settings.automated_resets.store_time_on_shutdown")) {
             plugin.getData().set("end.millis", System.currentTimeMillis());
             plugin.saveData();
             plugin.reloadData();
         }
         plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_END));
-        new ResetTeleport(plugin).resetEndTP();
+        resetTeleport.resetEndTP();
         World world = Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
@@ -47,9 +57,10 @@ public class ResetEndWorld extends BukkitRunnable {
 
             @Override
             public void run() {
-                new WorldGenerator(plugin).createWorld();
-                new WorldCommands(plugin).endRunCommands();
+                worldGeneratorEnd.createWorld();
+                worldCommands.endRunCommands();
                 plugin.getServer().broadcastMessage(Messenger.message(MsgType.END_HAS_BEEN_RESET));
+                teleport.setResettingEnd(false);
             }
         }.runTaskLater(plugin, 90);
     }

@@ -7,17 +7,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import java.util.HashSet;
 import java.util.Random;
 
 public class TeleportUtils {
-
-    private final HashSet<Material> unsafeBlocks = new HashSet<>();
     private final int xz;
-    {
-        unsafeBlocks.add(Material.LAVA);
-        unsafeBlocks.add(Material.WATER);
-    }
 
     public TeleportUtils(ResourceWorld plugin) {
         this.xz = plugin.getConfig().getInt("teleport.settings.max_teleport_range");
@@ -40,10 +33,10 @@ public class TeleportUtils {
 
         if (environment == World.Environment.THE_END) {
             randomLocation = new Location(world, x, y, z);
-            y = randomLocation.getWorld().getHighestBlockYAt(randomLocation);
+            y = randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 1;
             randomLocation.setY(y);
-            Block below = randomLocation.getWorld().getBlockAt(x, y - 2, z);
-            if (below.isEmpty()) {
+            Material below = randomLocation.getWorld().getBlockAt(x, y - 3, z).getType();
+            if (!below.isSolid()) {
                 randomLocation = generateLocation(world);
             }
             return randomLocation;
@@ -78,9 +71,9 @@ public class TeleportUtils {
         if (!ground.getType().isSolid()) {
             return false;
         }
-        if (unsafeBlocks.contains(ground.getType())) {
+        if (ground.isLiquid()) {
             return false;
         }
-        return !unsafeBlocks.contains(feet.getLocation().add(0, -1, 0).getBlock().getType());
+        return !feet.getLocation().add(0, -1, 0).getBlock().isLiquid();
     }
 }
