@@ -58,6 +58,8 @@ public final class ResourceWorld extends JavaPlugin {
         //Load Files
         loadFiles();
 
+        initializeClasses();
+
         //Check for mistakes
         new ConfigManager(this).checkForMistakes();
 
@@ -71,8 +73,6 @@ public final class ResourceWorld extends JavaPlugin {
         getCommand("resource").setExecutor(new CommandManager(this));
 
         manageMillis();
-
-        initializeClasses();
 
         initializeListeners();
 
