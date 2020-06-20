@@ -12,6 +12,8 @@ import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.Portals;
 import me.nik.resourceworld.listeners.blockregen.BlockRegen;
 import me.nik.resourceworld.listeners.blockregen.BlockRegenNether;
+import me.nik.resourceworld.listeners.blockregen.BlockRegenPlace;
+import me.nik.resourceworld.listeners.blockregen.BlockRegenPlaceNether;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawning;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawningEnd;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawningNether;
@@ -286,6 +288,12 @@ public final class ResourceWorld extends JavaPlugin {
         }
         if (isEnabled("end_world.settings.disable_explosion_damage")) {
             registerEvent(new ExplosionEnd(this));
+        }
+        if (isEnabled("world.settings.block_regeneration.prevent_placing")) {
+            registerEvent(new BlockRegenPlace(this));
+        }
+        if (isEnabled("nether_world.settings.block_regeneration.prevent_placing")) {
+            registerEvent(new BlockRegenPlaceNether(this));
         }
         //Don't be an idiot Nik, Always register this Listener
         registerEvent(new GuiListener());

@@ -94,6 +94,7 @@ public class Config {
         get().addDefault("world.settings.entities.max_monsters", 35);
         get().addDefault("world.settings.entities.max_ambient_entities", 5);
         get().addDefault("world.settings.block_regeneration.enabled", true);
+        get().addDefault("world.settings.block_regeneration.prevent_placing", true);
         get().addDefault("world.settings.block_regeneration.regeneration_delay", 30);
         get().addDefault("world.settings.block_regeneration.blocks", blocks);
         get().addDefault("world.settings.commands_after_reset.enabled", false);
@@ -120,6 +121,7 @@ public class Config {
         get().addDefault("nether_world.settings.disable_entity_spawning", false);
         get().addDefault("nether_world.settings.entities.max_monsters", 35);
         get().addDefault("nether_world.settings.block_regeneration.enabled", false);
+        get().addDefault("nether_world.settings.block_regeneration.prevent_placing", true);
         get().addDefault("nether_world.settings.block_regeneration.regeneration_delay", 30);
         get().addDefault("nether_world.settings.block_regeneration.blocks", netherBlocks);
         get().addDefault("nether_world.settings.commands_after_reset.enabled", false);

@@ -1,14 +1,11 @@
 package me.nik.resourceworld.listeners.blockregen;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -42,20 +39,6 @@ public class BlockRegenNether implements Listener {
                         e.getBlock().setType(type);
                     }
                 }.runTaskLater(plugin, delay);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(world))
-            return;
-        if (e.getPlayer().hasPermission("rw.admin")) return;
-        Material type = e.getBlock().getType();
-        for (String block : blocks) {
-            if (type.toString().equalsIgnoreCase(block)) {
-                e.setCancelled(true);
-                e.getPlayer().sendMessage(Messenger.message(MsgType.BLOCK_PLACE));
             }
         }
     }
