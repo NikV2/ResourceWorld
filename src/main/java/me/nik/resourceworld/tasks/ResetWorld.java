@@ -3,7 +3,6 @@ package me.nik.resourceworld.tasks;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGenerator;
@@ -38,7 +37,7 @@ public class ResetWorld extends BukkitRunnable {
             plugin.saveData();
             plugin.reloadData();
         }
-        plugin.getServer().broadcastMessage(Messenger.message(MsgType.RESETTING_THE_WORLD));
+        plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_WORLD.getMessage());
         resetTeleport.resetTP();
         World world = Bukkit.getWorld(plugin.getConfig().getString("world.settings.world_name"));
         Bukkit.unloadWorld(world, false);
@@ -60,7 +59,7 @@ public class ResetWorld extends BukkitRunnable {
             public void run() {
                 worldGenerator.createWorld();
                 worldCommands.worldRunCommands();
-                plugin.getServer().broadcastMessage(Messenger.message(MsgType.WORLD_HAS_BEEN_RESET));
+                plugin.getServer().broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingWorld(false);
             }
         }.runTaskLater(plugin, 90);

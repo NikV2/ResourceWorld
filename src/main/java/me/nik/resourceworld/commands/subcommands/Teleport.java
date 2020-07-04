@@ -4,7 +4,6 @@ import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
@@ -96,38 +95,38 @@ public class Teleport extends SubCommand {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (!WorldUtils.worldExists() || resettingWorld) {
-                    player.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                    player.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
                 World worldResource = Bukkit.getWorld(plugin.getConfig().getString("world.settings.world_name"));
                 teleport(player, worldResource);
             } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
                 if (!player.hasPermission("rw.tp.nether")) {
-                    player.sendMessage(Messenger.message(MsgType.NO_PERMISSION));
+                    player.sendMessage(MsgType.NO_PERMISSION.getMessage());
                     return;
                 }
                 if (WorldUtils.netherExists() || !resettingNether) {
                     World worldNether = Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.world_name"));
                     teleport(player, worldNether);
                 } else {
-                    player.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                    player.sendMessage(MsgType.NOT_EXIST.getMessage());
                 }
             } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
                 if (!player.hasPermission("rw.tp.end")) {
-                    player.sendMessage(Messenger.message(MsgType.NO_PERMISSION));
+                    player.sendMessage(MsgType.NO_PERMISSION.getMessage());
                     return;
                 }
                 if (WorldUtils.endExists() || !resettingEnd) {
                     World worldEnd = Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.world_name"));
                     teleport(player, worldEnd);
                 } else {
-                    player.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                    player.sendMessage(MsgType.NOT_EXIST.getMessage());
                 }
             }
         } else {
             if (args.length == 2) {
                 if (!WorldUtils.worldExists() || resettingWorld) {
-                    sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                    sender.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
                 World worldResource = Bukkit.getWorld(plugin.getConfig().getString("world.settings.world_name"));
@@ -135,13 +134,13 @@ public class Teleport extends SubCommand {
                 try {
                     Player player = Bukkit.getPlayer(p);
                     teleport(player, worldResource);
-                    sender.sendMessage(Messenger.message(MsgType.TELEPORTING_PLAYER).replaceAll("%player%", p).replaceAll("%world%", worldResource.getName()));
+                    sender.sendMessage(MsgType.TELEPORTING_PLAYER.getMessage().replaceAll("%player%", p).replaceAll("%world%", worldResource.getName()));
                 } catch (NullPointerException e) {
                     sender.sendMessage("Player not found.");
                 }
             } else if (args.length == 3 && args[1].equalsIgnoreCase("nether")) {
                 if (!WorldUtils.netherExists() || resettingNether) {
-                    sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                    sender.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
                 World worldNether = Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.world_name"));
@@ -149,13 +148,13 @@ public class Teleport extends SubCommand {
                 try {
                     Player player = Bukkit.getPlayer(p);
                     teleport(player, worldNether);
-                    sender.sendMessage(Messenger.message(MsgType.TELEPORTING_PLAYER).replaceAll("%player%", p).replaceAll("%world%", worldNether.getName()));
+                    sender.sendMessage(MsgType.TELEPORTING_PLAYER.getMessage().replaceAll("%player%", p).replaceAll("%world%", worldNether.getName()));
                 } catch (NullPointerException e) {
                     sender.sendMessage("Player not found.");
                 }
             } else if (args.length == 3 && args[1].equalsIgnoreCase("end")) {
                 if (!WorldUtils.endExists() || resettingEnd) {
-                    sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                    sender.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
                 World worldEnd = Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.world_name"));
@@ -163,7 +162,7 @@ public class Teleport extends SubCommand {
                 try {
                     Player player = Bukkit.getPlayer(p);
                     teleport(player, worldEnd);
-                    sender.sendMessage(Messenger.message(MsgType.TELEPORTING_PLAYER).replaceAll("%player%", p).replaceAll("%world%", worldEnd.getName()));
+                    sender.sendMessage(MsgType.TELEPORTING_PLAYER.getMessage().replaceAll("%player%", p).replaceAll("%world%", worldEnd.getName()));
                 } catch (NullPointerException e) {
                     sender.sendMessage("Player not found.");
                 }
@@ -176,7 +175,7 @@ public class Teleport extends SubCommand {
         if (cooldown.containsKey(uuid)) {
             long secondsleft = ((cooldown.get(uuid) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
             if (secondsleft > 0) {
-                p.sendMessage(Messenger.message(MsgType.COOLDOWN_MESSAGE).replaceAll("%seconds%", String.valueOf(secondsleft)));
+                p.sendMessage(MsgType.COOLDOWN_MESSAGE.getMessage().replaceAll("%seconds%", String.valueOf(secondsleft)));
                 return;
             }
             cooldown.remove(uuid);
@@ -198,7 +197,7 @@ public class Teleport extends SubCommand {
                 }
             }
         } else {
-            p.sendMessage(Messenger.message(MsgType.TELEPORT_DELAY).replaceAll("%seconds%", String.valueOf(delaytime)));
+            p.sendMessage(MsgType.TELEPORT_DELAY.getMessage().replaceAll("%seconds%", String.valueOf(delaytime)));
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
             }

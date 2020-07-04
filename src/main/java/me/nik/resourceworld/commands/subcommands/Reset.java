@@ -4,7 +4,6 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.tasks.ResetByCommand;
-import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -56,20 +55,20 @@ public class Reset extends SubCommand {
             if (worldExists(world)) {
                 resetByCommand.executeReset();
             } else {
-                sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                sender.sendMessage(MsgType.NOT_EXIST.getMessage());
             }
         } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
             if (worldExists(nether)) {
                 resetByCommand.executeNetherReset();
             } else {
-                sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+                sender.sendMessage(MsgType.NOT_EXIST.getMessage());
             }
         } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
             if (worldExists(end)) {
                 resetByCommand.executeEndReset();
             }
         } else {
-            sender.sendMessage(Messenger.message(MsgType.NOT_EXIST));
+            sender.sendMessage(MsgType.NOT_EXIST.getMessage());
         }
     }
 

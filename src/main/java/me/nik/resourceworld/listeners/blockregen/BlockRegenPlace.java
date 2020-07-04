@@ -2,7 +2,6 @@ package me.nik.resourceworld.listeners.blockregen;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,7 +28,7 @@ public class BlockRegenPlace implements Listener {
         for (String block : blocks) {
             if (type.toString().equalsIgnoreCase(block)) {
                 e.setCancelled(true);
-                e.getPlayer().sendMessage(Messenger.message(MsgType.BLOCK_PLACE));
+                e.getPlayer().sendMessage(MsgType.BLOCK_PLACE.getMessage());
             }
         }
     }

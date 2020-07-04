@@ -26,7 +26,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(world)) {
                 Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
                 p.teleport(loc);
-                p.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
+                p.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
             }
         }
     }
@@ -37,7 +37,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(nether)) {
                 Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
                 p.teleport(loc);
-                p.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
+                p.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
             }
         }
     }
@@ -48,7 +48,7 @@ public class ResetTeleport {
             if (p.getWorld().getName().equals(end)) {
                 Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
                 p.teleport(loc);
-                p.sendMessage(Messenger.message(MsgType.TELEPORTED_MESSAGE));
+                p.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
             }
         }
     }

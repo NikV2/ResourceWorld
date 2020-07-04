@@ -34,7 +34,6 @@ import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
-import me.nik.resourceworld.utils.WorldUtils;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,20 +44,39 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
 
+    private static ResourceWorld plugin;
+
     private Config config;
     private Data data;
     private Lang lang;
 
+    public static ResourceWorld getInstance() {
+        return plugin;
+    }
+
+    @Override
+    public void onDisable() {
+
+        //Store Time Left
+        storeTimeLeft();
+
+        //Reload Files
+        config.reload();
+        config.save();
+        lang.reload();
+        lang.save();
+        data.reload();
+    }
+
     @Override
     public void onEnable() {
+        plugin = this;
         this.config = new Config();
         this.data = new Data();
         this.lang = new Lang();
 
         //Load Files
         loadFiles();
-
-        initializeClasses();
 
         //Check for mistakes
         new ConfigManager(this).checkForMistakes();
@@ -88,20 +106,6 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
-
-        //Store Time Left
-        storeTimeLeft();
-
-        //Reload Files
-        config.reload();
-        config.save();
-        lang.reload();
-        lang.save();
-        data.reload();
-    }
-
-    @Override
     public FileConfiguration getConfig() {
         return config.get();
     }
@@ -114,6 +118,10 @@ public final class ResourceWorld extends JavaPlugin {
     @Override
     public void reloadConfig() {
         config.reload();
+    }
+
+    public FileConfiguration getLang() {
+        return lang.get();
     }
 
     public FileConfiguration getData() {
@@ -135,7 +143,7 @@ public final class ResourceWorld extends JavaPlugin {
         if (isEnabled("settings.check_for_updates")) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
-            Messenger.consoleMessage(Messenger.message(MsgType.UPDATE_DISABLED));
+            Messenger.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
         }
 
         if (isEnabled("world.settings.always_day")) {
@@ -228,14 +236,6 @@ public final class ResourceWorld extends JavaPlugin {
         data.addDefaults();
         data.get().options().copyDefaults(true);
         data.save();
-    }
-
-    /**
-     * Initializes all the classes that depend on a function in this class
-     */
-    public void initializeClasses() {
-        Messenger.initialize(lang);
-        WorldUtils.initialize(config);
     }
 
 

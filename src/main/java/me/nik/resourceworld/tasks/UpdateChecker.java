@@ -30,10 +30,10 @@ public class UpdateChecker extends BukkitRunnable {
 
             if (!plugin.getDescription().getVersion().equalsIgnoreCase(version)) {
                 newVersion = version;
-                Messenger.consoleMessage(Messenger.message(MsgType.UPDATE_FOUND).replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
+                Messenger.consoleMessage(MsgType.UPDATE_FOUND.getMessage().replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
                 plugin.registerEvent(new UpdateReminder(plugin, this));
             } else {
-                Messenger.consoleMessage(Messenger.message(MsgType.UPDATE_NOT_FOUND));
+                Messenger.consoleMessage(MsgType.UPDATE_NOT_FOUND.getMessage());
             }
         } catch (IOException ignored) {
         }

@@ -1,32 +1,45 @@
 package me.nik.resourceworld.managers;
 
+import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.utils.Messenger;
+
 public enum MsgType {
-    PREFIX,
-    UPDATE_FOUND,
-    DISABLED_COMMAND,
-    DELETING,
-    RESET_COOLDOWN,
-    RESETTING_THE_WORLD,
-    RESETTING_THE_NETHER,
-    RESETTING_THE_END,
-    WORLD_HAS_BEEN_RESET,
-    NETHER_HAS_BEEN_RESET,
-    END_HAS_BEEN_RESET,
-    CONSOLE_MESSAGE,
-    NO_PERMISSION,
-    COOLDOWN_MESSAGE,
-    BLOCK_PLACE,
-    RELOADED,
-    RELOADING,
-    TELEPORT_DELAY,
-    GUI_NAME,
-    WORLDS_GUI_NAME,
-    TELEPORTED_MESSAGE,
-    NOT_EXIST,
-    TELEPORTED_PLAYERS,
-    TELEPORTING_PLAYER,
-    MAIN_WORLD_ERROR,
-    UPDATE_NOT_FOUND,
-    UPDATE_DISABLED,
-    FIXED_MISTAKES
+    PREFIX(Messenger.format(ResourceWorld.getInstance().getLang().getString("prefix"))),
+    UPDATE_FOUND(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("update_found"))),
+    DISABLED_COMMAND(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("disabled_command"))),
+    DELETING(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("deleting"))),
+    RESET_COOLDOWN(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("reset_cooldown"))),
+    RESETTING_THE_WORLD(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("resetting_the_world"))),
+    RESETTING_THE_NETHER(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("resetting_the_nether"))),
+    RESETTING_THE_END(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("resetting_the_end"))),
+    WORLD_HAS_BEEN_RESET(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("world_has_been_reset"))),
+    NETHER_HAS_BEEN_RESET(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("nether_has_been_reset"))),
+    END_HAS_BEEN_RESET(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("end_has_been_reset"))),
+    CONSOLE_MESSAGE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("console_message"))),
+    NO_PERMISSION(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("no_perm"))),
+    COOLDOWN_MESSAGE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("cooldown_message"))),
+    BLOCK_PLACE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("block_place"))),
+    RELOADED(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("reloaded"))),
+    RELOADING(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("reloading"))),
+    TELEPORT_DELAY(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleport_delay"))),
+    GUI_NAME(Messenger.format(ResourceWorld.getInstance().getLang().getString("gui_name"))),
+    WORLDS_GUI_NAME(Messenger.format(ResourceWorld.getInstance().getLang().getString("worlds_gui_name"))),
+    TELEPORTED_MESSAGE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleported_message"))),
+    NOT_EXIST(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("not_exist"))),
+    TELEPORTED_PLAYERS(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleported_players"))),
+    TELEPORTING_PLAYER(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleporting_player"))),
+    MAIN_WORLD_ERROR(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("main_world_error"))),
+    UPDATE_NOT_FOUND(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("update_not_found"))),
+    UPDATE_DISABLED(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("update_disabled"))),
+    FIXED_MISTAKES(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("fixed_mistakes")));
+
+    private final String message;
+
+    MsgType(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }
