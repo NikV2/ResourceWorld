@@ -35,8 +35,6 @@ public class ResetWorld extends BukkitRunnable {
         teleport.setResettingWorld(true);
         if (Config.Setting.WORLD_STORE_TIME.getBoolean()) {
             plugin.getData().set("world.millis", System.currentTimeMillis());
-            plugin.saveData();
-            plugin.reloadData();
         }
         plugin.getData().set("world.papi", System.currentTimeMillis());
         plugin.saveData();
