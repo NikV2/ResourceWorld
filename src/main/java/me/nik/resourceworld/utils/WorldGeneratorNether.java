@@ -1,6 +1,6 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
@@ -13,29 +13,16 @@ public class WorldGeneratorNether {
 
     World world;
 
-    private final String worldName;
-    private final WorldType type;
-    private final World.Environment environment;
-    private final boolean useBorder;
-    private final int border;
-    private final boolean pvp;
-    private final Difficulty difficulty;
-    private final int monsterLimit;
-    private final boolean loadSpawn;
-    private final boolean keepInventory;
-
-    public WorldGeneratorNether(ResourceWorld plugin) {
-        this.worldName = plugin.getConfig().getString("nether_world.settings.world_name");
-        this.type = WorldType.valueOf(plugin.getConfig().getString("nether_world.settings.world_type"));
-        this.environment = World.Environment.valueOf(plugin.getConfig().getString("nether_world.settings.environment"));
-        this.useBorder = plugin.getConfig().getBoolean("nether_world.settings.world_border.enabled");
-        this.border = plugin.getConfig().getInt("nether_world.settings.world_border.size");
-        this.pvp = plugin.getConfig().getBoolean("nether_world.settings.allow_pvp");
-        this.difficulty = Difficulty.valueOf(plugin.getConfig().getString("nether_world.settings.difficulty"));
-        this.monsterLimit = plugin.getConfig().getInt("nether_world.settings.entities.max_monsters");
-        this.loadSpawn = plugin.getConfig().getBoolean("nether_world.settings.keep_spawn_loaded");
-        this.keepInventory = plugin.getConfig().getBoolean("world.settings.keep_inventory_on_death");
-    }
+    private final String worldName = Config.Setting.NETHER_NAME.getString();
+    private final WorldType type = WorldType.valueOf(Config.Setting.NETHER_TYPE.getString());
+    private final World.Environment environment = World.Environment.valueOf(Config.Setting.NETHER_ENVIRONMENT.getString());
+    private final boolean useBorder = Config.Setting.NETHER_BORDER_ENABLED.getBoolean();
+    private final int border = Config.Setting.NETHER_BORDER_SIZE.getInt();
+    private final boolean pvp = Config.Setting.NETHER_PVP.getBoolean();
+    private final Difficulty difficulty = Difficulty.valueOf(Config.Setting.NETHER_DIFFICULTY.getString());
+    private final int monsterLimit = Config.Setting.NETHER_MAX_MONSTERS.getInt();
+    private final boolean loadSpawn = Config.Setting.NETHER_KEEP_SPAWN_LOADED.getBoolean();
+    private final boolean keepInventory = Config.Setting.NETHER_KEEP_INVENTORY.getBoolean();
 
     public void createWorld() {
         try {

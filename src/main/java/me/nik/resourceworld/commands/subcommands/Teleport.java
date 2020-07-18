@@ -3,6 +3,7 @@ package me.nik.resourceworld.commands.subcommands;
 import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldUtils;
@@ -25,13 +26,6 @@ public class Teleport extends SubCommand {
     private final ResourceWorld plugin;
 
     private final HashMap<UUID, Long> cooldown = new HashMap<>();
-    private final int cdtime;
-    final private int delaytime;
-    final private PotionEffect effect;
-    final private int volume;
-    final private int pitch;
-    private final boolean isSoundsEnabled;
-    private final boolean paper;
 
     private boolean resettingWorld = false;
     private boolean resettingNether = false;
@@ -41,14 +35,7 @@ public class Teleport extends SubCommand {
 
     public Teleport(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.cdtime = plugin.getConfig().getInt("teleport.settings.cooldown");
-        this.delaytime = plugin.getConfig().getInt("teleport.settings.delay");
-        this.effect = new PotionEffect(PotionEffectType.getByName(plugin.getConfig().getString("teleport.settings.effects.effect")), plugin.getConfig().getInt("teleport.settings.effects.duration") * 20, plugin.getConfig().getInt("teleport.settings.effects.amplifier"));
-        this.volume = plugin.getConfig().getInt("teleport.settings.sounds.volume");
-        this.pitch = plugin.getConfig().getInt("teleport.settings.sounds.pitch");
-        this.isSoundsEnabled = plugin.getConfig().getBoolean("teleport.settings.sounds.enabled");
-        this.paper = plugin.getConfig().getBoolean("teleport.settings.async");
-        this.teleportUtils = new TeleportUtils(plugin);
+        this.teleportUtils = new TeleportUtils();
     }
 
     public void setResettingWorld(boolean resettingWorld) {
@@ -98,7 +85,7 @@ public class Teleport extends SubCommand {
                     player.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
-                World worldResource = Bukkit.getWorld(plugin.getConfig().getString("world.settings.world_name"));
+                World worldResource = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
                 teleport(player, worldResource);
             } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
                 if (!player.hasPermission("rw.tp.nether")) {
@@ -106,7 +93,7 @@ public class Teleport extends SubCommand {
                     return;
                 }
                 if (WorldUtils.netherExists() || !resettingNether) {
-                    World worldNether = Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.world_name"));
+                    World worldNether = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
                     teleport(player, worldNether);
                 } else {
                     player.sendMessage(MsgType.NOT_EXIST.getMessage());
@@ -117,7 +104,7 @@ public class Teleport extends SubCommand {
                     return;
                 }
                 if (WorldUtils.endExists() || !resettingEnd) {
-                    World worldEnd = Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.world_name"));
+                    World worldEnd = Bukkit.getWorld(Config.Setting.END_NAME.getString());
                     teleport(player, worldEnd);
                 } else {
                     player.sendMessage(MsgType.NOT_EXIST.getMessage());
@@ -129,7 +116,7 @@ public class Teleport extends SubCommand {
                     sender.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
-                World worldResource = Bukkit.getWorld(plugin.getConfig().getString("world.settings.world_name"));
+                World worldResource = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
                 String p = args[1];
                 try {
                     Player player = Bukkit.getPlayer(p);
@@ -143,7 +130,7 @@ public class Teleport extends SubCommand {
                     sender.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
-                World worldNether = Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.world_name"));
+                World worldNether = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
                 String p = args[2];
                 try {
                     Player player = Bukkit.getPlayer(p);
@@ -157,7 +144,7 @@ public class Teleport extends SubCommand {
                     sender.sendMessage(MsgType.NOT_EXIST.getMessage());
                     return;
                 }
-                World worldEnd = Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.world_name"));
+                World worldEnd = Bukkit.getWorld(Config.Setting.END_NAME.getString());
                 String p = args[2];
                 try {
                     Player player = Bukkit.getPlayer(p);
@@ -173,31 +160,31 @@ public class Teleport extends SubCommand {
     private void teleport(Player p, World world) {
         UUID uuid = p.getUniqueId();
         if (cooldown.containsKey(uuid)) {
-            long secondsleft = ((cooldown.get(uuid) / 1000) + cdtime) - (System.currentTimeMillis() / 1000);
+            long secondsleft = ((cooldown.get(uuid) / 1000) + Config.Setting.TELEPORT_COOLDOWN.getInt()) - (System.currentTimeMillis() / 1000);
             if (secondsleft > 0) {
                 p.sendMessage(MsgType.COOLDOWN_MESSAGE.getMessage().replaceAll("%seconds%", String.valueOf(secondsleft)));
                 return;
             }
             cooldown.remove(uuid);
         }
-        if (delaytime < 1) {
+        if (Config.Setting.TELEPORT_DELAY.getInt() < 1) {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
-            if (paper) {
+            if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
                 PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
             } else {
                 p.teleport(teleportUtils.generateLocation(world));
             }
-            p.addPotionEffect(effect);
-            if (isSoundsEnabled) {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
+            if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
                 try {
-                    p.playSound(p.getLocation(), Sound.valueOf(plugin.getConfig().getString("teleport.settings.sounds.sound")), volume, pitch);
+                    p.playSound(p.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
                 } catch (IllegalArgumentException ignored) {
                 }
             }
         } else {
-            p.sendMessage(MsgType.TELEPORT_DELAY.getMessage().replaceAll("%seconds%", String.valueOf(delaytime)));
+            p.sendMessage(MsgType.TELEPORT_DELAY.getMessage().replaceAll("%seconds%", String.valueOf(Config.Setting.TELEPORT_DELAY.getInt())));
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
@@ -205,20 +192,20 @@ public class Teleport extends SubCommand {
 
                 @Override
                 public void run() {
-                    if (paper) {
+                    if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
                         PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
                     } else {
                         p.teleport(teleportUtils.generateLocation(world));
                     }
-                    p.addPotionEffect(effect);
-                    if (isSoundsEnabled) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
+                    if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
                         try {
-                            p.playSound(p.getLocation(), Sound.valueOf(plugin.getConfig().getString("teleport.settings.sounds.sound")), volume, pitch);
+                            p.playSound(p.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
                         } catch (IllegalArgumentException ignored) {
                         }
                     }
                 }
-            }.runTaskLater(plugin, delaytime * 20);
+            }.runTaskLater(plugin, Config.Setting.TELEPORT_DELAY.getInt() * 20);
         }
     }
 

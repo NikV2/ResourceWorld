@@ -2,6 +2,7 @@ package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.Teleport;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.ResetTeleport;
 import me.nik.resourceworld.utils.WorldCommands;
@@ -21,9 +22,9 @@ public class ResetNetherWorld extends BukkitRunnable {
 
     public ResetNetherWorld(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.resetTeleport = new ResetTeleport(plugin);
-        this.worldGeneratorNether = new WorldGeneratorNether(plugin);
-        this.worldCommands = new WorldCommands(plugin);
+        this.resetTeleport = new ResetTeleport();
+        this.worldGeneratorNether = new WorldGeneratorNether();
+        this.worldCommands = new WorldCommands();
         this.teleport = new Teleport(plugin);
     }
 
@@ -31,14 +32,14 @@ public class ResetNetherWorld extends BukkitRunnable {
     public void run() {
         if (!WorldUtils.netherExists()) return;
         teleport.setResettingNether(true);
-        if (plugin.getConfig().getBoolean("nether_world.settings.automated_resets.store_time_on_shutdown")) {
+        if (Config.Setting.NETHER_STORE_TIME.getBoolean()) {
             plugin.getData().set("nether.millis", System.currentTimeMillis());
             plugin.saveData();
             plugin.reloadData();
         }
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_NETHER.getMessage());
         resetTeleport.resetNetherTP();
-        World world = Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.world_name"));
+        World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
         new BukkitRunnable() {

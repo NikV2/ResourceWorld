@@ -2,6 +2,7 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.tasks.ResetByCommand;
 import org.bukkit.Bukkit;
@@ -12,16 +13,10 @@ import java.util.List;
 
 public class Reset extends SubCommand {
 
-    private final String world;
-    private final String nether;
-    private final String end;
     private final ResetByCommand resetByCommand;
 
     public Reset(ResourceWorld plugin) {
         this.resetByCommand = new ResetByCommand(plugin);
-        this.world = plugin.getConfig().getString("world.settings.world_name");
-        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
-        this.end = plugin.getConfig().getString("end_world.settings.world_name");
     }
 
     @Override
@@ -52,19 +47,19 @@ public class Reset extends SubCommand {
     @Override
     public void perform(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            if (worldExists(world)) {
+            if (worldExists(Config.Setting.WORLD_NAME.getString())) {
                 resetByCommand.executeReset();
             } else {
                 sender.sendMessage(MsgType.NOT_EXIST.getMessage());
             }
         } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
-            if (worldExists(nether)) {
+            if (worldExists(Config.Setting.NETHER_NAME.getString())) {
                 resetByCommand.executeNetherReset();
             } else {
                 sender.sendMessage(MsgType.NOT_EXIST.getMessage());
             }
         } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
-            if (worldExists(end)) {
+            if (worldExists(Config.Setting.END_NAME.getString())) {
                 resetByCommand.executeEndReset();
             }
         } else {
@@ -77,10 +72,10 @@ public class Reset extends SubCommand {
 
         if (args.length == 2) {
             List<String> worlds = new ArrayList<>();
-            if (worldExists(nether)) {
+            if (worldExists(Config.Setting.NETHER_NAME.getString())) {
                 worlds.add("nether");
             }
-            if (worldExists(end)) {
+            if (worldExists(Config.Setting.END_NAME.getString())) {
                 worlds.add("end");
             }
             return worlds;

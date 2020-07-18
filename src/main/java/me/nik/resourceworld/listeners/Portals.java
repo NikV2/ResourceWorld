@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,49 +11,36 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class Portals implements Listener {
 
-    private final ResourceWorld plugin;
-
-    private final String world;
-    private final String nether;
-    private final String end;
-
-    public Portals(ResourceWorld plugin) {
-        this.plugin = plugin;
-        this.world = plugin.getConfig().getString("world.settings.world_name");
-        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
-        this.end = plugin.getConfig().getString("end_world.settings.world_name");
-    }
-
     @EventHandler
     public void onPortalNether(PlayerPortalEvent e) {
-        if (!plugin.getConfig().getBoolean("nether_world.settings.enabled")) return;
+        if (!Config.Setting.NETHER_ENABLED.getBoolean()) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
-        if (e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL || e.getFrom().getWorld().getName().equalsIgnoreCase(world)) {
-            if (plugin.getConfig().getBoolean("nether_world.settings.portals.vanilla_portal_ratio")) {
-                e.setTo(new Location(Bukkit.getWorld(nether), e.getFrom().getX() % 8, e.getFrom().getY() % 8, e.getFrom().getZ() % 8));
+        if (e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL || e.getFrom().getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) {
+            if (Config.Setting.NETHER_PORTALS_VANILLA_RATIO.getBoolean()) {
+                e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), e.getFrom().getX() % 8, e.getFrom().getY() % 8, e.getFrom().getZ() % 8));
             } else {
-                e.setTo(new Location(Bukkit.getWorld(nether), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+                e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
             }
-        } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER || e.getFrom().getWorld().getName().equalsIgnoreCase(nether)) {
+        } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER || e.getFrom().getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) {
             if (isSupported()) {
                 e.setTo(e.getTo());
             } else {
-                e.setTo(new Location(Bukkit.getWorld(plugin.getConfig().getString("nether_world.settings.portals.portal_world")), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+                e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_PORTALS_PORTALWORLD.getString()), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
             }
         }
     }
 
     @EventHandler
     public void onPortalEnd(PlayerPortalEvent e) {
-        if (!plugin.getConfig().getBoolean("end_world.settings.enabled")) return;
+        if (!Config.Setting.END_ENABLED.getBoolean()) return;
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL) return;
         if (!(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END)) {
-            e.setTo(new Location(Bukkit.getWorld(end), e.getTo().getX(), e.getTo().getY(), e.getTo().getZ()));
-        } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END || e.getFrom().getWorld().getName().equalsIgnoreCase(end)) {
+            e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_NAME.getString()), e.getTo().getX(), e.getTo().getY(), e.getTo().getZ()));
+        } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END || e.getFrom().getWorld().getName().equalsIgnoreCase(Config.Setting.END_NAME.getString())) {
             if (isSupported()) {
                 e.setTo(e.getTo());
             } else {
-                e.setTo(new Location(Bukkit.getWorld(plugin.getConfig().getString("end_world.settings.portals.portal_world")), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+                e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_PORTALS_PORTALWORLD.getString()), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
             }
         }
     }

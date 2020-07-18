@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners.explosion;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,17 +10,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class ExplosionNether implements Listener {
 
-    private final String nether;
-
-    public ExplosionNether(ResourceWorld plugin) {
-        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplode(EntityExplodeEvent e) {
         Entity entity = e.getEntity();
         String world = entity.getWorld().getName();
-        if (!world.equalsIgnoreCase(nether)) return;
+        if (!world.equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 
@@ -29,7 +23,7 @@ public class ExplosionNether implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)) return;
         Entity entity = e.getEntity();
         String world = entity.getWorld().getName();
-        if (!world.equalsIgnoreCase(nether)) return;
+        if (!world.equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

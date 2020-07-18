@@ -42,9 +42,12 @@ public class Data {
         get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         get().addDefault("world.timer", 0);
         get().addDefault("world.millis", 0);
+        get().addDefault("world.papi", 0);
         get().addDefault("nether.timer", 0);
         get().addDefault("nether.millis", 0);
+        get().addDefault("nether.papi", 0);
         get().addDefault("end.timer", 0);
         get().addDefault("end.millis", 0);
+        get().addDefault("end.papi", 0);
     }
 }

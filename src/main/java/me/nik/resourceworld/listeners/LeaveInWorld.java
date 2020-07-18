@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,32 +11,20 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class LeaveInWorld implements Listener {
 
-    private final String world;
-    private final String nether;
-    private final String end;
-    private final String spawn;
-
-    public LeaveInWorld(ResourceWorld plugin) {
-        this.world = plugin.getConfig().getString("world.settings.world_name");
-        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
-        this.end = plugin.getConfig().getString("end_world.settings.world_name");
-        this.spawn = plugin.getConfig().getString("settings.main_spawn_world");
-    }
-
     @EventHandler(priority = EventPriority.LOW)
     public void onLeave(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         if (isInWorld(p)) {
-            Location loc = Bukkit.getWorld(spawn).getSpawnLocation();
+            Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
             e.getPlayer().teleport(loc);
         }
     }
 
     private boolean isInWorld(Player player) {
-        if (player.getWorld().getName().equalsIgnoreCase(world)) {
+        if (player.getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) {
             return true;
-        } else if (player.getWorld().getName().equalsIgnoreCase(nether)) {
+        } else if (player.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) {
             return true;
-        } else return player.getWorld().getName().equalsIgnoreCase(end);
+        } else return player.getWorld().getName().equalsIgnoreCase(Config.Setting.END_NAME.getString());
     }
 }

@@ -29,7 +29,7 @@ public class CommandManager implements TabExecutor {
         subcommands.add(new Reload(plugin));
         subcommands.add(new Menu(plugin));
         subcommands.add(new Reset(plugin));
-        subcommands.add(new Spawn(plugin));
+        subcommands.add(new Spawn());
     }
 
     @Override
@@ -90,6 +90,7 @@ public class CommandManager implements TabExecutor {
         sender.sendMessage(MsgType.PREFIX.getMessage() + ChatColor.GRAY + "Available Commands");
         sender.sendMessage("");
         for (int i = 0; i < getSubcommands().size(); i++) {
+            if (!sender.hasPermission(getSubcommands().get(i).getPermission())) continue;
             sender.sendMessage(ChatColor.GREEN + getSubcommands().get(i).getSyntax() + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + getSubcommands().get(i).getDescription());
         }
         sender.sendMessage("");

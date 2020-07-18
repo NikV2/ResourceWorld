@@ -2,6 +2,7 @@ package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.Teleport;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
@@ -18,10 +19,6 @@ public class ResetByCommand {
 
     private final ResourceWorld plugin;
 
-    private final String overworld;
-    private final String nether;
-    private final String end;
-
     private final ResetTeleport resetTeleport;
     private final WorldGenerator worldGenerator;
     private final WorldGeneratorNether worldGeneratorNether;
@@ -31,14 +28,11 @@ public class ResetByCommand {
 
     public ResetByCommand(ResourceWorld plugin) {
         this.plugin = plugin;
-        this.overworld = plugin.getConfig().getString("world.settings.world_name");
-        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
-        this.end = plugin.getConfig().getString("end_world.settings.world_name");
-        this.resetTeleport = new ResetTeleport(plugin);
-        this.worldGenerator = new WorldGenerator(plugin);
-        this.worldGeneratorNether = new WorldGeneratorNether(plugin);
-        this.worldGeneratorEnd = new WorldGeneratorEnd(plugin);
-        this.worldCommands = new WorldCommands(plugin);
+        this.resetTeleport = new ResetTeleport();
+        this.worldGenerator = new WorldGenerator();
+        this.worldGeneratorNether = new WorldGeneratorNether();
+        this.worldGeneratorEnd = new WorldGeneratorEnd();
+        this.worldCommands = new WorldCommands();
         this.teleport = new Teleport(plugin);
     }
 
@@ -48,7 +42,7 @@ public class ResetByCommand {
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_WORLD.getMessage());
         resetTeleport.resetTP();
         Messenger.consoleMessage(MsgType.DELETING.getMessage());
-        World world = Bukkit.getWorld(overworld);
+        World world = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
         new BukkitRunnable() {
@@ -80,7 +74,7 @@ public class ResetByCommand {
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_NETHER.getMessage());
         resetTeleport.resetNetherTP();
         Messenger.consoleMessage(MsgType.DELETING.getMessage());
-        World world = Bukkit.getWorld(nether);
+        World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
         new BukkitRunnable() {
@@ -112,7 +106,7 @@ public class ResetByCommand {
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_END.getMessage());
         resetTeleport.resetEndTP();
         Messenger.consoleMessage(MsgType.DELETING.getMessage());
-        World world = Bukkit.getWorld(end);
+        World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
         new BukkitRunnable() {

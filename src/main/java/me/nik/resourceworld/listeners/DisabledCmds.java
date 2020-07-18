@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,21 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.List;
-
 public class DisabledCmds implements Listener {
-
-    private final String world;
-    private final String nether;
-    private final String end;
-    private final List<String> commands;
-
-    public DisabledCmds(ResourceWorld plugin) {
-        this.world = plugin.getConfig().getString("world.settings.world_name");
-        this.nether = plugin.getConfig().getString("nether_world.settings.world_name");
-        this.end = plugin.getConfig().getString("end_world.settings.world_name");
-        this.commands = plugin.getConfig().getStringList("disabled_commands.commands");
-    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
@@ -30,7 +16,7 @@ public class DisabledCmds implements Listener {
         if (p.hasPermission("rw.admin")) return;
         if (isInWorld(p)) {
             if (e.getMessage().equals("/")) return;
-            for (String cmd : commands) {
+            for (String cmd : Config.Setting.DISABLED_COMMANDS_LIST.getStringList()) {
                 if (e.getMessage().contains(cmd)) {
                     e.setCancelled(true);
                     p.sendMessage(MsgType.DISABLED_COMMAND.getMessage());
@@ -40,10 +26,10 @@ public class DisabledCmds implements Listener {
     }
 
     private boolean isInWorld(Player player) {
-        if (player.getWorld().getName().equalsIgnoreCase(world)) {
+        if (player.getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) {
             return true;
-        } else if (player.getWorld().getName().equalsIgnoreCase(nether)) {
+        } else if (player.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) {
             return true;
-        } else return player.getWorld().getName().equalsIgnoreCase(end);
+        } else return player.getWorld().getName().equalsIgnoreCase(Config.Setting.END_NAME.getString());
     }
 }

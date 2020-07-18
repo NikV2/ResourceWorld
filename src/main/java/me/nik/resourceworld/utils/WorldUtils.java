@@ -1,14 +1,11 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 
 public class WorldUtils {
-
-    private static final FileConfiguration config = ResourceWorld.getInstance().getConfig();
 
     /**
      * @param directory The directory to delete
@@ -33,20 +30,20 @@ public class WorldUtils {
      * @return True if the Resource World exists
      */
     public static boolean worldExists() {
-        return Bukkit.getWorld(config.getString("world.settings.world_name")) != null;
+        return Bukkit.getWorld(Config.Setting.WORLD_NAME.getString()) != null;
     }
 
     /**
      * @return True if the Nether World exists
      */
     public static boolean netherExists() {
-        return Bukkit.getWorld(config.getString("nether_world.settings.world_name")) != null;
+        return Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()) != null;
     }
 
     /**
      * @return True if the End World exists
      */
     public static boolean endExists() {
-        return Bukkit.getWorld(config.getString("end_world.settings.world_name")) != null;
+        return Bukkit.getWorld(Config.Setting.END_NAME.getString()) != null;
     }
 }

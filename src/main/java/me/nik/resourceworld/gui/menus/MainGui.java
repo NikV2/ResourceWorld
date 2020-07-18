@@ -35,7 +35,7 @@ public class MainGui extends Menu {
 
         switch (e.getSlot()) {
             case 13:
-                new ResetTeleport(plugin).resetTP();
+                new ResetTeleport().resetTP();
                 p.sendMessage(MsgType.TELEPORTED_PLAYERS.getMessage());
                 break;
             case 15:

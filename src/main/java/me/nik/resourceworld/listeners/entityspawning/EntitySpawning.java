@@ -1,6 +1,6 @@
 package me.nik.resourceworld.listeners.entityspawning;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -13,12 +13,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 
 public class EntitySpawning implements Listener {
 
-    private final String world;
-
-    public EntitySpawning(ResourceWorld plugin) {
-        this.world = plugin.getConfig().getString("world.settings.world_name");
-    }
-
     @EventHandler
     public void onEntitySpawn(CreatureSpawnEvent e) {
         Entity entity = e.getEntity();
@@ -27,7 +21,7 @@ public class EntitySpawning implements Listener {
         if (entity instanceof ArmorStand) return;
         if (entity instanceof Projectile) return;
         if (entity instanceof ItemFrame) return;
-        if (!entity.getWorld().getName().equalsIgnoreCase(world)) return;
+        if (!entity.getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

@@ -10,10 +10,6 @@ import me.nik.resourceworld.listeners.Drowning;
 import me.nik.resourceworld.listeners.GuiListener;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.Portals;
-import me.nik.resourceworld.listeners.blockregen.BlockRegen;
-import me.nik.resourceworld.listeners.blockregen.BlockRegenNether;
-import me.nik.resourceworld.listeners.blockregen.BlockRegenPlace;
-import me.nik.resourceworld.listeners.blockregen.BlockRegenPlaceNether;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawning;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawningEnd;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawningNether;
@@ -24,12 +20,13 @@ import me.nik.resourceworld.listeners.suffocation.Suffocation;
 import me.nik.resourceworld.listeners.suffocation.SuffocationEnd;
 import me.nik.resourceworld.listeners.suffocation.SuffocationNether;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.managers.PapiHook;
+import me.nik.resourceworld.managers.commentedfiles.CommentedFileConfiguration;
 import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
 import me.nik.resourceworld.tasks.UpdateChecker;
-import me.nik.resourceworld.utils.ConfigManager;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
@@ -61,8 +58,7 @@ public final class ResourceWorld extends JavaPlugin {
         storeTimeLeft();
 
         //Reload Files
-        config.reload();
-        config.save();
+        config.reset();
         lang.reload();
         lang.save();
         data.reload();
@@ -71,15 +67,12 @@ public final class ResourceWorld extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        this.config = new Config();
+        this.config = new Config(this);
         this.data = new Data();
         this.lang = new Lang();
 
         //Load Files
         loadFiles();
-
-        //Check for mistakes
-        new ConfigManager(this).checkForMistakes();
 
         //Startup Message
         Messenger.consoleMessage("");
@@ -100,24 +93,17 @@ public final class ResourceWorld extends JavaPlugin {
 
         initializeTasks();
 
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PapiHook(this).register();
+        }
+
         new MetricsLite(this, 6981);
 
         PaperLib.suggestPaper(this);
     }
 
-    @Override
-    public FileConfiguration getConfig() {
-        return config.get();
-    }
-
-    @Override
-    public void saveConfig() {
-        config.save();
-    }
-
-    @Override
-    public void reloadConfig() {
-        config.reload();
+    public CommentedFileConfiguration getConfiguration() {
+        return config.getConfig();
     }
 
     public FileConfiguration getLang() {
@@ -140,81 +126,76 @@ public final class ResourceWorld extends JavaPlugin {
      * Initialize all Existing Tasks.
      */
     private void initializeTasks() {
-        if (isEnabled("settings.check_for_updates")) {
+        if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
             Messenger.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
         }
 
-        if (isEnabled("world.settings.always_day")) {
-            BukkitTask alwaysDay = new AlwaysDay(this).runTaskTimer(this, 1200, 1200);
+        if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) {
+            BukkitTask alwaysDay = new AlwaysDay().runTaskTimer(this, 1200, 1200);
         }
     }
 
     private void manageMillis() {
-        if (isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.store_time_on_shutdown") && data.get().getLong("world.millis") == 0) {
+        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean() && data.get().getLong("world.millis") == 0) {
             data.get().set("world.millis", System.currentTimeMillis());
             data.save();
             data.reload();
         }
-        if (isEnabled("nether_world.settings.enabled") && isEnabled("nether_world.settings.automated_resets.store_time_on_shutdown") && data.get().getLong("nether.millis") == 0) {
+        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean() && data.get().getLong("nether.millis") == 0) {
             data.get().set("nether.millis", System.currentTimeMillis());
             data.save();
             data.reload();
         }
-        if (isEnabled("end_world.settings.enabled") && isEnabled("end_world.settings.automated_resets.store_time_on_shutdown") && data.get().getLong("end.millis") == 0) {
+        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean() && data.get().getLong("end.millis") == 0) {
             data.get().set("end.millis", System.currentTimeMillis());
             data.save();
             data.reload();
         }
+        data.get().set("world.papi", System.currentTimeMillis());
+        data.get().set("nether.papi", System.currentTimeMillis());
+        data.get().set("end.papi", System.currentTimeMillis());
     }
 
     private void storeTimeLeft() {
-        if (isEnabled("world.settings.automated_resets.enabled") && isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.store_time_on_shutdown")) {
-            data.get().set("world.timer", config.get().getInt("world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - data.get().getLong("world.millis")) / 1000D * 20D);
+        if (Config.Setting.WORLD_RESETS_ENABLED.getBoolean() && Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean()) {
+            data.get().set("world.timer", Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000 - (System.currentTimeMillis() - data.get().getLong("world.millis")) / 1000D * 20D);
         }
-        if (isEnabled("nether_world.settings.automated_resets.enabled") && isEnabled("nether_world.settings.enabled") && isEnabled("nether_world.settings.automated_resets.store_time_on_shutdown")) {
-            data.get().set("nether.timer", config.get().getInt("nether_world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - data.get().getLong("nether.millis")) / 1000D * 20D);
+        if (Config.Setting.NETHER_RESETS_ENABLED.getBoolean() && Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean()) {
+            data.get().set("nether.timer", Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000 - (System.currentTimeMillis() - data.get().getLong("nether.millis")) / 1000D * 20D);
         }
-        if (isEnabled("end_world.settings.automated_resets.enabled") && isEnabled("end_world.settings.enabled") && isEnabled("end_world.settings.automated_resets.store_time_on_shutdown")) {
-            data.get().set("end.timer", config.get().getInt("end_world.settings.automated_resets.interval") * 72000 - (System.currentTimeMillis() - data.get().getLong("end.millis")) / 1000D * 20D);
+        if (Config.Setting.END_RESETS_ENABLED.getBoolean() && Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean()) {
+            data.get().set("end.timer", Config.Setting.END_RESETS_INTERVAL.getInt() * 72000 - (System.currentTimeMillis() - data.get().getLong("end.millis")) / 1000D * 20D);
         }
         data.save();
     }
 
-    /**
-     * @param input Path to the boolean
-     * @return Whether or not that boolean is Enabled.
-     */
-    private boolean isEnabled(String input) {
-        return config.get().getBoolean(input);
-    }
-
     private long worldTimer() {
-        if (!isEnabled("world.settings.automated_resets.store_time_on_shutdown")) {
-            return config.get().getInt("world.settings.automated_resets.interval") * 72000;
+        if (!Config.Setting.WORLD_STORE_TIME.getBoolean()) {
+            return Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000;
         } else if (data.get().getLong("world.timer") <= 0) {
-            return config.get().getInt("world.settings.automated_resets.interval") * 72000;
+            return Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000;
         } else {
             return data.get().getLong("world.timer");
         }
     }
 
     private long netherTimer() {
-        if (!isEnabled("nether_world.settings.automated_resets.store_time_on_shutdown")) {
-            return config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
+        if (!Config.Setting.NETHER_STORE_TIME.getBoolean()) {
+            return Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000;
         } else if (data.get().getLong("nether.timer") <= 0) {
-            return config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
+            return Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000;
         } else {
             return data.get().getLong("nether.timer");
         }
     }
 
     private long endTimer() {
-        if (!isEnabled("end_world.settings.automated_resets.store_time_on_shutdown")) {
-            return config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
+        if (!Config.Setting.END_STORE_TIME.getBoolean()) {
+            return Config.Setting.END_RESETS_INTERVAL.getInt() * 72000;
         } else if (data.get().getLong("end.timer") <= 0) {
-            return config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
+            return Config.Setting.END_RESETS_INTERVAL.getInt() * 72000;
         } else {
             return data.get().getLong("end.timer");
         }
@@ -224,14 +205,13 @@ public final class ResourceWorld extends JavaPlugin {
      * Load all the built-in Files.
      */
     private void loadFiles() {
-        config.setup(this);
-        config.addDefaults();
-        config.get().options().copyDefaults(true);
-        config.save();
+        config.setup();
+
         lang.setup(this);
         lang.addDefaults();
         lang.get().options().copyDefaults(true);
         lang.save();
+
         data.setup(this);
         data.addDefaults();
         data.get().options().copyDefaults(true);
@@ -244,56 +224,44 @@ public final class ResourceWorld extends JavaPlugin {
      * If a specific Listener is Disabled in the config.yml, Ignore it.
      */
     private void initializeListeners() {
-        if (isEnabled("world.settings.block_regeneration.enabled")) {
-            registerEvent(new BlockRegen(this));
+        if (Config.Setting.WORLD_DISABLE_SUFFOCATION.getBoolean()) {
+            registerEvent(new Suffocation());
         }
-        if (isEnabled("nether_world.settings.block_regeneration.enabled")) {
-            registerEvent(new BlockRegenNether(this));
+        if (Config.Setting.NETHER_DISABLE_SUFFOCATION.getBoolean()) {
+            registerEvent(new SuffocationNether());
         }
-        if (isEnabled("world.settings.disable_suffocation_damage")) {
-            registerEvent(new Suffocation(this));
+        if (Config.Setting.END_DISABLE_SUFFOCATION.getBoolean()) {
+            registerEvent(new SuffocationEnd());
         }
-        if (isEnabled("nether_world.settings.disable_suffocation_damage")) {
-            registerEvent(new SuffocationNether(this));
+        if (Config.Setting.WORLD_DISABLE_DROWNING.getBoolean()) {
+            registerEvent(new Drowning());
         }
-        if (isEnabled("end_world.settings.disable_suffocation_damage")) {
-            registerEvent(new SuffocationEnd(this));
+        if (Config.Setting.WORLD_DISABLE_ENTITY_SPAWNING.getBoolean()) {
+            registerEvent(new EntitySpawning());
         }
-        if (isEnabled("world.settings.disable_drowning_damage")) {
-            registerEvent(new Drowning(this));
+        if (Config.Setting.NETHER_DISABLE_ENTITY_SPAWNING.getBoolean()) {
+            registerEvent(new EntitySpawningNether());
         }
-        if (isEnabled("world.settings.disable_entity_spawning")) {
-            registerEvent(new EntitySpawning(this));
+        if (Config.Setting.END_DISABLE_ENTITY_SPAWNING.getBoolean()) {
+            registerEvent(new EntitySpawningEnd());
         }
-        if (isEnabled("nether_world.settings.disable_entity_spawning")) {
-            registerEvent(new EntitySpawningNether(this));
+        if (Config.Setting.DISABLED_COMMANDS_ENABLED.getBoolean()) {
+            registerEvent(new DisabledCmds());
         }
-        if (isEnabled("end_world.settings.disable_entity_spawning")) {
-            registerEvent(new EntitySpawningEnd(this));
+        if (Config.Setting.NETHER_PORTALS_ENABLED.getBoolean() || Config.Setting.END_PORTALS_ENABLED.getBoolean()) {
+            registerEvent(new Portals());
         }
-        if (isEnabled("disabled_commands.enabled")) {
-            registerEvent(new DisabledCmds(this));
+        if (Config.Setting.SETTINGS_TELEPORT_TO_SPAWN.getBoolean()) {
+            registerEvent(new LeaveInWorld());
         }
-        if (isEnabled("nether_world.settings.portals.override") || isEnabled("end_world.settings.portals.override")) {
-            registerEvent(new Portals(this));
+        if (Config.Setting.WORLD_DISABLE_EXPLOSIONS.getBoolean()) {
+            registerEvent(new Explosion());
         }
-        if (isEnabled("settings.teleport_to_spawn_on_quit")) {
-            registerEvent(new LeaveInWorld(this));
+        if (Config.Setting.NETHER_DISABLE_EXPLOSIONS.getBoolean()) {
+            registerEvent(new ExplosionNether());
         }
-        if (isEnabled("world.settings.disable_explosion_damage")) {
-            registerEvent(new Explosion(this));
-        }
-        if (isEnabled("nether_world.settings.disable_explosion_damage")) {
-            registerEvent(new ExplosionNether(this));
-        }
-        if (isEnabled("end_world.settings.disable_explosion_damage")) {
-            registerEvent(new ExplosionEnd(this));
-        }
-        if (isEnabled("world.settings.block_regeneration.prevent_placing")) {
-            registerEvent(new BlockRegenPlace(this));
-        }
-        if (isEnabled("nether_world.settings.block_regeneration.prevent_placing")) {
-            registerEvent(new BlockRegenPlaceNether(this));
+        if (Config.Setting.END_DISABLE_EXPLOSIONS.getBoolean()) {
+            registerEvent(new ExplosionEnd());
         }
         //Don't be an idiot Nik, Always register this Listener
         registerEvent(new GuiListener());
@@ -312,16 +280,16 @@ public final class ResourceWorld extends JavaPlugin {
      * Checks if there's any Time saved and Starts the Intervals afterwards.
      */
     private void startIntervals() {
-        if (isEnabled("world.settings.enabled") && isEnabled("world.settings.automated_resets.enabled")) {
-            int interval = config.get().getInt("world.settings.automated_resets.interval") * 72000;
+        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
+            int interval = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000;
             BukkitTask resetWorld = new ResetWorld(this).runTaskTimer(this, worldTimer(), interval);
         }
-        if (isEnabled("nether_world.settings.enabled") && isEnabled("nether_world.settings.automated_resets.enabled")) {
-            int interval = config.get().getInt("nether_world.settings.automated_resets.interval") * 72000;
+        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
+            int interval = Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000;
             BukkitTask resetNether = new ResetNetherWorld(this).runTaskTimer(this, netherTimer(), interval);
         }
-        if (isEnabled("end_world.settings.enabled") && isEnabled("end_world.settings.automated_resets.enabled")) {
-            int interval = config.get().getInt("end_world.settings.automated_resets.interval") * 72000;
+        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_RESETS_ENABLED.getBoolean()) {
+            int interval = Config.Setting.END_RESETS_INTERVAL.getInt() * 72000;
             BukkitTask resetEnd = new ResetEndWorld(this).runTaskTimer(this, endTimer(), interval);
         }
     }
@@ -330,14 +298,14 @@ public final class ResourceWorld extends JavaPlugin {
      * Generates or Loads all the Enabled Worlds
      */
     private void generateWorlds() {
-        if (isEnabled("world.settings.enabled")) {
-            new WorldGenerator(this).createWorld();
+        if (Config.Setting.WORLD_ENABLED.getBoolean()) {
+            new WorldGenerator().createWorld();
         }
-        if (isEnabled("nether_world.settings.enabled")) {
-            new WorldGeneratorNether(this).createWorld();
+        if (Config.Setting.NETHER_ENABLED.getBoolean()) {
+            new WorldGeneratorNether().createWorld();
         }
-        if (isEnabled("end_world.settings.enabled")) {
-            new WorldGeneratorEnd(this).createWorld();
+        if (Config.Setting.END_ENABLED.getBoolean()) {
+            new WorldGeneratorEnd().createWorld();
         }
     }
 }

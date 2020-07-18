@@ -1,7 +1,7 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,12 +11,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class Spawn extends SubCommand {
-
-    private final ResourceWorld plugin;
-
-    public Spawn(ResourceWorld plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public String getName() {
@@ -47,10 +41,10 @@ public class Spawn extends SubCommand {
     public void perform(CommandSender sender, String[] args) {
         if (args.length == 1) {
             Player player = (Player) sender;
-            if (Bukkit.getWorld(plugin.getConfig().getString("settings.main_spawn_world")) == null) {
+            if (Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()) == null) {
                 player.sendMessage(MsgType.MAIN_WORLD_ERROR.getMessage());
             } else {
-                final Location loc = Bukkit.getWorld(plugin.getConfig().getString("settings.main_spawn_world")).getSpawnLocation();
+                final Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
                 player.teleport(loc);
                 player.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
             }

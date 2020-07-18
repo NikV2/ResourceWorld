@@ -1,6 +1,6 @@
 package me.nik.resourceworld.utils;
 
-import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
@@ -12,42 +12,22 @@ import org.bukkit.WorldType;
 public class WorldGenerator {
     World world;
 
-    private final String worldName;
-    private final WorldType type;
-    private final boolean structures;
-    private final World.Environment environment;
-    private final boolean useSeed;
-    private final long seed;
-    private final boolean useBorder;
-    private final int border;
-    private final boolean pvp;
-    private final Difficulty difficulty;
-    private final int animalLimit;
-    private final int monsterLimit;
-    private final int ambientLimit;
-    private final boolean storms;
-    private final boolean loadSpawn;
-    private final boolean keepInventory;
-
-    public WorldGenerator(ResourceWorld plugin) {
-        this.worldName = plugin.getConfig().getString("world.settings.world_name");
-        this.type = WorldType.valueOf(plugin.getConfig().getString("world.settings.world_type"));
-        this.structures = plugin.getConfig().getBoolean("world.settings.generate_structures");
-        this.environment = World.Environment.valueOf(plugin.getConfig().getString("world.settings.environment"));
-        this.useSeed = plugin.getConfig().getBoolean("world.settings.custom_seed.enabled");
-        this.seed = plugin.getConfig().getLong("world.settings.custom_seed.seed");
-        this.useBorder = plugin.getConfig().getBoolean("world.settings.world_border.enabled");
-        this.border = plugin.getConfig().getInt("world.settings.world_border.size");
-        this.pvp = plugin.getConfig().getBoolean("world.settings.allow_pvp");
-        this.difficulty = Difficulty.valueOf(plugin.getConfig().getString("world.settings.difficulty"));
-        this.animalLimit = plugin.getConfig().getInt("world.settings.entities.max_animals");
-        this.monsterLimit = plugin.getConfig().getInt("world.settings.entities.max_monsters");
-        this.ambientLimit = plugin.getConfig().getInt("world.settings.entities.max_ambient_entities");
-        this.storms = plugin.getConfig().getBoolean("world.settings.weather_storms");
-        this.loadSpawn = plugin.getConfig().getBoolean("world.settings.keep_spawn_loaded");
-        this.keepInventory = plugin.getConfig().getBoolean("world.settings.keep_inventory_on_death");
-    }
-
+    private final String worldName = Config.Setting.WORLD_NAME.getString();
+    private final WorldType type = WorldType.valueOf(Config.Setting.WORLD_TYPE.getString());
+    private final boolean structures = Config.Setting.WORLD_GENERATE_STRUCTURES.getBoolean();
+    private final World.Environment environment = World.Environment.valueOf(Config.Setting.WORLD_ENVIRONMENT.getString());
+    private final boolean useSeed = Config.Setting.WORLD_SEED_ENABLED.getBoolean();
+    private final long seed = Config.Setting.WORLD_SEED.getLong();
+    private final boolean useBorder = Config.Setting.WORLD_BORDER_ENABLED.getBoolean();
+    private final int border = Config.Setting.WORLD_BORDER_SIZE.getInt();
+    private final boolean pvp = Config.Setting.WORLD_PVP.getBoolean();
+    private final Difficulty difficulty = Difficulty.valueOf(Config.Setting.WORLD_DIFFICULTY.getString());
+    private final int animalLimit = Config.Setting.WORLD_MAX_ANIMALS.getInt();
+    private final int monsterLimit = Config.Setting.WORLD_MAX_MONSTERS.getInt();
+    private final int ambientLimit = Config.Setting.WORLD_MAX_AMBIENT.getInt();
+    private final boolean storms = Config.Setting.WORLD_WEATHER_STORMS.getBoolean();
+    private final boolean loadSpawn = Config.Setting.WORLD_KEEP_SPAWN_LOADED.getBoolean();
+    private final boolean keepInventory = Config.Setting.WORLD_KEEP_INVENTORY.getBoolean();
 
     public void createWorld() {
         try {

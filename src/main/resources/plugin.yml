@@ -4,6 +4,8 @@ main: me.nik.resourceworld.ResourceWorld
 api-version: 1.13
 authors: [Nik]
 description: Unlimited resources!
+website: https://discord.gg/m7j2Y9H
+softdepend: [PlaceholderAPI]
 commands:
   resource:
     description: Unlimited resources!
