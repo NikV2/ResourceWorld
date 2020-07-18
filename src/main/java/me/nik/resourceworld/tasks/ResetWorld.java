@@ -36,9 +36,6 @@ public class ResetWorld extends BukkitRunnable {
         if (Config.Setting.WORLD_STORE_TIME.getBoolean()) {
             plugin.getData().set("world.millis", System.currentTimeMillis());
         }
-        plugin.getData().set("world.papi", System.currentTimeMillis());
-        plugin.saveData();
-        plugin.reloadData();
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_WORLD.getMessage());
         resetTeleport.resetTP();
         World world = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
@@ -63,6 +60,9 @@ public class ResetWorld extends BukkitRunnable {
                 worldCommands.worldRunCommands();
                 plugin.getServer().broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingWorld(false);
+                plugin.getData().set("world.papi", System.currentTimeMillis());
+                plugin.saveData();
+                plugin.reloadData();
             }
         }.runTaskLater(plugin, 90);
     }

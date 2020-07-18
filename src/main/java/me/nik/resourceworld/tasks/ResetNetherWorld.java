@@ -35,9 +35,6 @@ public class ResetNetherWorld extends BukkitRunnable {
         if (Config.Setting.NETHER_STORE_TIME.getBoolean()) {
             plugin.getData().set("nether.millis", System.currentTimeMillis());
         }
-        plugin.getData().set("nether.papi", System.currentTimeMillis());
-        plugin.saveData();
-        plugin.reloadData();
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_NETHER.getMessage());
         resetTeleport.resetNetherTP();
         World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
@@ -62,6 +59,9 @@ public class ResetNetherWorld extends BukkitRunnable {
                 worldCommands.netherRunCommands();
                 plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingNether(false);
+                plugin.getData().set("nether.papi", System.currentTimeMillis());
+                plugin.saveData();
+                plugin.reloadData();
             }
         }.runTaskLater(plugin, 90);
     }

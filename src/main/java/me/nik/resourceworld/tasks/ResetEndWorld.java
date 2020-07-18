@@ -35,9 +35,6 @@ public class ResetEndWorld extends BukkitRunnable {
         if (Config.Setting.END_STORE_TIME.getBoolean()) {
             plugin.getData().set("end.millis", System.currentTimeMillis());
         }
-        plugin.getData().set("end.papi", System.currentTimeMillis());
-        plugin.saveData();
-        plugin.reloadData();
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_END.getMessage());
         resetTeleport.resetEndTP();
         World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
@@ -62,6 +59,9 @@ public class ResetEndWorld extends BukkitRunnable {
                 worldCommands.endRunCommands();
                 plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingEnd(false);
+                plugin.getData().set("end.papi", System.currentTimeMillis());
+                plugin.saveData();
+                plugin.reloadData();
             }
         }.runTaskLater(plugin, 90);
     }

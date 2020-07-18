@@ -41,9 +41,6 @@ public class ResetByCommand {
         teleport.setResettingWorld(true);
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_WORLD.getMessage());
         resetTeleport.resetTP();
-        plugin.getData().set("world.papi", System.currentTimeMillis());
-        plugin.saveData();
-        plugin.reloadData();
         Messenger.consoleMessage(MsgType.DELETING.getMessage());
         World world = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
         Bukkit.unloadWorld(world, false);
@@ -67,6 +64,9 @@ public class ResetByCommand {
                 worldCommands.worldRunCommands();
                 plugin.getServer().broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingWorld(false);
+                plugin.getData().set("world.papi", System.currentTimeMillis());
+                plugin.saveData();
+                plugin.reloadData();
             }
         }.runTaskLater(plugin, 80);
     }
@@ -76,9 +76,6 @@ public class ResetByCommand {
         teleport.setResettingNether(true);
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_NETHER.getMessage());
         resetTeleport.resetNetherTP();
-        plugin.getData().set("nether.papi", System.currentTimeMillis());
-        plugin.saveData();
-        plugin.reloadData();
         Messenger.consoleMessage(MsgType.DELETING.getMessage());
         World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
         Bukkit.unloadWorld(world, false);
@@ -102,6 +99,9 @@ public class ResetByCommand {
                 worldCommands.netherRunCommands();
                 plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingNether(false);
+                plugin.getData().set("nether.papi", System.currentTimeMillis());
+                plugin.saveData();
+                plugin.reloadData();
             }
         }.runTaskLater(plugin, 80);
     }
@@ -111,9 +111,6 @@ public class ResetByCommand {
         teleport.setResettingEnd(true);
         plugin.getServer().broadcastMessage(MsgType.RESETTING_THE_END.getMessage());
         resetTeleport.resetEndTP();
-        plugin.getData().set("end.papi", System.currentTimeMillis());
-        plugin.saveData();
-        plugin.reloadData();
         Messenger.consoleMessage(MsgType.DELETING.getMessage());
         World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
         Bukkit.unloadWorld(world, false);
@@ -137,6 +134,9 @@ public class ResetByCommand {
                 worldCommands.endRunCommands();
                 plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
                 teleport.setResettingEnd(false);
+                plugin.getData().set("end.papi", System.currentTimeMillis());
+                plugin.saveData();
+                plugin.reloadData();
             }
         }.runTaskLater(plugin, 80);
     }
