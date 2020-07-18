@@ -73,6 +73,12 @@ public class Config {
         SETTINGS_CHECK_FOR_UPDATES("settings.check_for_updates", true, "Should we check for updates on startup?"),
         SETTINGS_SPAWN_WORLD("settings.main_spawn_world", "world", "The world that the player will Teleport to once a Reset Happens"),
         SETTINGS_TELEPORT_TO_SPAWN("settings.teleport_to_spawn_on_quit", true, "If a player quits inside a resource world, Should we teleport him to spawn?"),
+        SETTINGS_DISCORD("settings.discord", "", "Discord integration settings"),
+        SETTINGS_DISCORD_ENABLED("settings.discord.enabled", false, "Would you Resource World to sync with your Discord Server by using a Webhook?"),
+        SETTINGS_DISCORD_URL("settings.discord.url", "", "Insert the channel webhook URL below"),
+        SETTINGS_DISCORD_WORLD("settings.discord.world_reset", true, "Would you like the plugin to Send a Discord Message once a Reset to the Overworld has been made?"),
+        SETTINGS_DISCORD_NETHER("settings.discord.nether_reset", true, "Would you like the plugin to Send a Discord Message once a Reset to the Nether has been made?"),
+        SETTINGS_DISCORD_END("settings.discord.end_reset", true, "Would you like the plugin to Send a Discord Message once a Reset to the End has been made?"),
 
         WORLD("world", "", "Overworld Settings"),
         WORLD_ENABLED("world.enabled", true, "Should we enable this?"),

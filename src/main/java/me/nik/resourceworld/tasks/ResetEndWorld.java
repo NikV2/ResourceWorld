@@ -4,11 +4,14 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.managers.discord.Discord;
 import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -40,29 +43,26 @@ public class ResetEndWorld extends BukkitRunnable {
         World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                try {
-                    WorldUtils.deleteDirectory(world.getWorldFolder());
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+        TaskUtils.taskAsync(() -> {
+            try {
+                WorldUtils.deleteDirectory(world.getWorldFolder());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(plugin);
-        new BukkitRunnable() {
+        });
+        TaskUtils.taskLater(() -> {
 
-            @Override
-            public void run() {
-                worldGeneratorEnd.createWorld();
-                worldCommands.endRunCommands();
-                plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
-                teleport.setResettingEnd(false);
-                plugin.getData().set("end.papi", System.currentTimeMillis());
-                plugin.saveData();
-                plugin.reloadData();
-            }
-        }.runTaskLater(plugin, 90);
+            worldGeneratorEnd.createWorld();
+            worldCommands.endRunCommands();
+            plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
+            teleport.setResettingEnd(false);
+            plugin.getData().set("end.papi", System.currentTimeMillis());
+            plugin.saveData();
+            plugin.reloadData();
+        }, 80);
+        if (Config.Setting.SETTINGS_DISCORD_END.getBoolean()) {
+            Discord discord = new Discord("Resource World", "The Resource End has been Reset!", Color.BLUE);
+            discord.sendNotification();
+        }
     }
 }

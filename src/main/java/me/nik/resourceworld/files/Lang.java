@@ -54,7 +54,6 @@ public class Lang {
         get().addDefault("console_message", "&f&lThis command cannot be executed through the Console :(");
         get().addDefault("no_perm", "&cYou do not have permission to execute this command!");
         get().addDefault("cooldown_message", "&cYou can teleport to the Resource World again in %seconds% seconds.");
-        get().addDefault("block_place", "&cSorry but you cannot place this Block in this World.");
         get().addDefault("reloaded", "&fYou have successfully reloaded the plugin!");
         get().addDefault("reloading", "&fReloading... This may cause lag!");
         get().addDefault("teleport_delay", "&aTeleporting to the Resource World in %seconds% seconds.");
@@ -67,6 +66,5 @@ public class Lang {
         get().addDefault("main_world_error", "&cWe could not teleport you back to the main world, Please contact an Administrator.");
         get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
         get().addDefault("update_disabled", "&f&lUpdate Checker is Disabled, Skipping");
-        get().addDefault("fixed_mistakes", "&c&lEncountered Errors in your Configuration File, Some values have been Reset or Modified. &6&l%mistakes%");
     }
 }

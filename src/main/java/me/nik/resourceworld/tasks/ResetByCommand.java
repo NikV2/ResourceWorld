@@ -4,16 +4,18 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.managers.discord.Discord;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
+import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class ResetByCommand {
 
@@ -45,30 +47,26 @@ public class ResetByCommand {
         World world = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                try {
-                    WorldUtils.deleteDirectory(world.getWorldFolder());
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+        TaskUtils.taskAsync(() -> {
+            try {
+                WorldUtils.deleteDirectory(world.getWorldFolder());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(plugin);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                worldGenerator.createWorld();
-                worldCommands.worldRunCommands();
-                plugin.getServer().broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
-                teleport.setResettingWorld(false);
-                plugin.getData().set("world.papi", System.currentTimeMillis());
-                plugin.saveData();
-                plugin.reloadData();
-            }
-        }.runTaskLater(plugin, 80);
+        });
+        TaskUtils.taskLater(() -> {
+            worldGenerator.createWorld();
+            worldCommands.worldRunCommands();
+            plugin.getServer().broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
+            teleport.setResettingWorld(false);
+            plugin.getData().set("world.papi", System.currentTimeMillis());
+            plugin.saveData();
+            plugin.reloadData();
+        }, 80);
+        if (Config.Setting.SETTINGS_DISCORD_WORLD.getBoolean()) {
+            Discord discord = new Discord("Resource World", "The Resource World has been Reset!", Color.GREEN);
+            discord.sendNotification();
+        }
     }
 
     public void executeNetherReset() {
@@ -80,30 +78,27 @@ public class ResetByCommand {
         World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
-        new BukkitRunnable() {
+        TaskUtils.taskAsync(() -> {
 
-            @Override
-            public void run() {
-                try {
-                    WorldUtils.deleteDirectory(world.getWorldFolder());
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            try {
+                WorldUtils.deleteDirectory(world.getWorldFolder());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(plugin);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                worldGeneratorNether.createWorld();
-                worldCommands.netherRunCommands();
-                plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
-                teleport.setResettingNether(false);
-                plugin.getData().set("nether.papi", System.currentTimeMillis());
-                plugin.saveData();
-                plugin.reloadData();
-            }
-        }.runTaskLater(plugin, 80);
+        });
+        TaskUtils.taskLater(() -> {
+            worldGeneratorNether.createWorld();
+            worldCommands.netherRunCommands();
+            plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
+            teleport.setResettingNether(false);
+            plugin.getData().set("nether.papi", System.currentTimeMillis());
+            plugin.saveData();
+            plugin.reloadData();
+        }, 80);
+        if (Config.Setting.SETTINGS_DISCORD_NETHER.getBoolean()) {
+            Discord discord = new Discord("Resource World", "The Resource Nether has been Reset!", Color.RED);
+            discord.sendNotification();
+        }
     }
 
     public void executeEndReset() {
@@ -115,29 +110,26 @@ public class ResetByCommand {
         World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
-        new BukkitRunnable() {
+        TaskUtils.taskAsync(() -> {
 
-            @Override
-            public void run() {
-                try {
-                    WorldUtils.deleteDirectory(world.getWorldFolder());
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            try {
+                WorldUtils.deleteDirectory(world.getWorldFolder());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(plugin);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                worldGeneratorEnd.createWorld();
-                worldCommands.endRunCommands();
-                plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
-                teleport.setResettingEnd(false);
-                plugin.getData().set("end.papi", System.currentTimeMillis());
-                plugin.saveData();
-                plugin.reloadData();
-            }
-        }.runTaskLater(plugin, 80);
+        });
+        TaskUtils.taskLater(() -> {
+            worldGeneratorEnd.createWorld();
+            worldCommands.endRunCommands();
+            plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
+            teleport.setResettingEnd(false);
+            plugin.getData().set("end.papi", System.currentTimeMillis());
+            plugin.saveData();
+            plugin.reloadData();
+        }, 80);
+        if (Config.Setting.SETTINGS_DISCORD_END.getBoolean()) {
+            Discord discord = new Discord("Resource World", "The Resource End has been Reset!", Color.BLUE);
+            discord.sendNotification();
+        }
     }
 }
