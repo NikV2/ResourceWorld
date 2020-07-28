@@ -28,6 +28,7 @@ public class UpdateChecker extends BukkitRunnable implements Listener {
             newVersion = readLines();
         } catch (IOException e) {
             plugin.getLogger().warning("Couldn't check for updates, Is the server connected to the internet?");
+            return;
         }
 
         if (!plugin.getDescription().getVersion().equals(newVersion)) {
