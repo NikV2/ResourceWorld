@@ -123,9 +123,6 @@ public final class ResourceWorld extends JavaPlugin {
         data.reload();
     }
 
-    /**
-     * Initialize all Existing Tasks.
-     */
     private void initializeTasks() {
         if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
             BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
@@ -202,9 +199,6 @@ public final class ResourceWorld extends JavaPlugin {
         }
     }
 
-    /**
-     * Load all the built-in Files.
-     */
     private void loadFiles() {
         config.setup();
 
@@ -219,13 +213,7 @@ public final class ResourceWorld extends JavaPlugin {
         data.save();
     }
 
-
-    /**
-     * Initialize all the Existing Listeners
-     * If a specific Listener is Disabled in the config.yml, Ignore it.
-     */
     private void initializeListeners() {
-
         PluginManager pm = this.getServer().getPluginManager();
 
         if (Config.Setting.WORLD_DISABLE_SUFFOCATION.getBoolean()) {
@@ -277,9 +265,6 @@ public final class ResourceWorld extends JavaPlugin {
         pm.registerEvents(new GuiListener(), this);
     }
 
-    /**
-     * Checks if there's any Time saved and Starts the Intervals afterwards.
-     */
     private void startIntervals() {
         if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
             int interval = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000;
@@ -295,9 +280,6 @@ public final class ResourceWorld extends JavaPlugin {
         }
     }
 
-    /**
-     * Generates or Loads all the Enabled Worlds
-     */
     private void generateWorlds() {
         if (Config.Setting.WORLD_ENABLED.getBoolean()) {
             new WorldGenerator().createWorld();
