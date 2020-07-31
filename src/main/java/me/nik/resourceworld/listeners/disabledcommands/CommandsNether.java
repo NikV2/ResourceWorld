@@ -1,4 +1,4 @@
-package me.nik.resourceworld.listeners;
+package me.nik.resourceworld.listeners.disabledcommands;
 
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
@@ -8,28 +8,20 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class DisabledCmds implements Listener {
+public class CommandsNether implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
         if (p.hasPermission("rw.admin")) return;
-        if (isInWorld(p)) {
+        if (p.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) {
             if (e.getMessage().equals("/")) return;
-            for (String cmd : Config.Setting.DISABLED_COMMANDS_LIST.getStringList()) {
+            for (String cmd : Config.Setting.NETHER_DISABLED_COMMANDS_LIST.getStringList()) {
                 if (e.getMessage().contains(cmd)) {
                     e.setCancelled(true);
                     p.sendMessage(MsgType.DISABLED_COMMAND.getMessage());
                 }
             }
         }
-    }
-
-    private boolean isInWorld(Player player) {
-        if (player.getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) {
-            return true;
-        } else if (player.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) {
-            return true;
-        } else return player.getWorld().getName().equalsIgnoreCase(Config.Setting.END_NAME.getString());
     }
 }

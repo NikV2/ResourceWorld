@@ -5,11 +5,13 @@ import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.files.Lang;
-import me.nik.resourceworld.listeners.DisabledCmds;
 import me.nik.resourceworld.listeners.Drowning;
 import me.nik.resourceworld.listeners.GuiListener;
 import me.nik.resourceworld.listeners.LeaveInWorld;
 import me.nik.resourceworld.listeners.Portals;
+import me.nik.resourceworld.listeners.disabledcommands.CommandsEnd;
+import me.nik.resourceworld.listeners.disabledcommands.CommandsNether;
+import me.nik.resourceworld.listeners.disabledcommands.CommandsWorld;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawning;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawningEnd;
 import me.nik.resourceworld.listeners.entityspawning.EntitySpawningNether;
@@ -32,10 +34,9 @@ import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -224,56 +225,56 @@ public final class ResourceWorld extends JavaPlugin {
      * If a specific Listener is Disabled in the config.yml, Ignore it.
      */
     private void initializeListeners() {
+
+        PluginManager pm = this.getServer().getPluginManager();
+
         if (Config.Setting.WORLD_DISABLE_SUFFOCATION.getBoolean()) {
-            registerEvent(new Suffocation());
+            pm.registerEvents(new Suffocation(), this);
         }
         if (Config.Setting.NETHER_DISABLE_SUFFOCATION.getBoolean()) {
-            registerEvent(new SuffocationNether());
+            pm.registerEvents(new SuffocationNether(), this);
         }
         if (Config.Setting.END_DISABLE_SUFFOCATION.getBoolean()) {
-            registerEvent(new SuffocationEnd());
+            pm.registerEvents(new SuffocationEnd(), this);
         }
         if (Config.Setting.WORLD_DISABLE_DROWNING.getBoolean()) {
-            registerEvent(new Drowning());
+            pm.registerEvents(new Drowning(), this);
         }
         if (Config.Setting.WORLD_DISABLE_ENTITY_SPAWNING.getBoolean()) {
-            registerEvent(new EntitySpawning());
+            pm.registerEvents(new EntitySpawning(), this);
+        }
+        if (Config.Setting.WORLD_DISABLED_COMMANDS_ENABLED.getBoolean()) {
+            pm.registerEvents(new CommandsWorld(), this);
         }
         if (Config.Setting.NETHER_DISABLE_ENTITY_SPAWNING.getBoolean()) {
-            registerEvent(new EntitySpawningNether());
+            pm.registerEvents(new EntitySpawningNether(), this);
         }
         if (Config.Setting.END_DISABLE_ENTITY_SPAWNING.getBoolean()) {
-            registerEvent(new EntitySpawningEnd());
-        }
-        if (Config.Setting.DISABLED_COMMANDS_ENABLED.getBoolean()) {
-            registerEvent(new DisabledCmds());
+            pm.registerEvents(new EntitySpawningEnd(), this);
         }
         if (Config.Setting.NETHER_PORTALS_ENABLED.getBoolean() || Config.Setting.END_PORTALS_ENABLED.getBoolean()) {
-            registerEvent(new Portals());
+            pm.registerEvents(new Portals(), this);
+        }
+        if (Config.Setting.NETHER_DISABLED_COMMANDS_ENABLED.getBoolean()) {
+            pm.registerEvents(new CommandsNether(), this);
         }
         if (Config.Setting.SETTINGS_TELEPORT_TO_SPAWN.getBoolean()) {
-            registerEvent(new LeaveInWorld());
+            pm.registerEvents(new LeaveInWorld(), this);
         }
         if (Config.Setting.WORLD_DISABLE_EXPLOSIONS.getBoolean()) {
-            registerEvent(new Explosion());
+            pm.registerEvents(new Explosion(), this);
+        }
+        if (Config.Setting.END_DISABLED_COMMANDS_ENABLED.getBoolean()) {
+            pm.registerEvents(new CommandsEnd(), this);
         }
         if (Config.Setting.NETHER_DISABLE_EXPLOSIONS.getBoolean()) {
-            registerEvent(new ExplosionNether());
+            pm.registerEvents(new ExplosionNether(), this);
         }
         if (Config.Setting.END_DISABLE_EXPLOSIONS.getBoolean()) {
-            registerEvent(new ExplosionEnd());
+            pm.registerEvents(new ExplosionEnd(), this);
         }
         //Don't be an idiot Nik, Always register this Listener
-        registerEvent(new GuiListener());
-    }
-
-    /**
-     * Registers the specified Listener
-     *
-     * @param listener The listener to register
-     */
-    public void registerEvent(Listener listener) {
-        Bukkit.getServer().getPluginManager().registerEvents(listener, this);
+        pm.registerEvents(new GuiListener(), this);
     }
 
     /**

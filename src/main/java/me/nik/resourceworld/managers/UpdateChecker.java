@@ -33,7 +33,7 @@ public class UpdateChecker extends BukkitRunnable implements Listener {
 
         if (!plugin.getDescription().getVersion().equals(newVersion)) {
             Messenger.consoleMessage(MsgType.UPDATE_FOUND.getMessage().replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
-            plugin.registerEvent(this);
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
         } else {
             Messenger.consoleMessage(MsgType.UPDATE_NOT_FOUND.getMessage());
         }

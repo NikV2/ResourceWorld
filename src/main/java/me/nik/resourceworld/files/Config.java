@@ -113,6 +113,9 @@ public class Config {
         WORLD_COMMANDS("world.commands_after_reset", "", "Execute specific commands after the world generates"),
         WORLD_COMMANDS_ENABLED("world.commands_after_reset.enabled", false, "Should we enable this?"),
         WORLD_COMMANDS_COMMANDS("world.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource World\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
+        WORLD_DISABLED_COMMANDS("world.disabled_commands", "", "Disabled Commands Settings"),
+        WORLD_DISABLED_COMMANDS_ENABLED("world.disabled_commands.enabled", false, "Should we enable this?"),
+        WORLD_DISABLED_COMMANDS_LIST("world.disabled_commands.commands", Arrays.asList("/sethome", "/claim", "/setwarp", "/tpahere"), "Commands listed below will be Disabled if they're executed inside this World"),
 
         NETHER("nether", "", "Nether Settings"),
         NETHER_ENABLED("nether.enabled", false, "Should we enable this?"),
@@ -142,6 +145,9 @@ public class Config {
         NETHER_COMMANDS("nether.commands_after_reset", "", "Execute specific commands after the world generates"),
         NETHER_COMMANDS_ENABLED("nether.commands_after_reset.enabled", false, "Should we enable this?"),
         NETHER_COMMANDS_COMMANDS("nether.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource Nether\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
+        NETHER_DISABLED_COMMANDS("nether.disabled_commands", "", "Disabled Commands Settings"),
+        NETHER_DISABLED_COMMANDS_ENABLED("nether.disabled_commands.enabled", false, "Should we enable this?"),
+        NETHER_DISABLED_COMMANDS_LIST("nether.disabled_commands.commands", Arrays.asList("/sethome", "/claim", "/setwarp", "/tpahere"), "Commands listed below will be Disabled if they're executed inside this World"),
 
         END("end", "", "End Settings"),
         END_ENABLED("end.enabled", false, "Should we enable this?"),
@@ -170,6 +176,9 @@ public class Config {
         END_COMMANDS("end.commands_after_reset", "", "Execute specific commands after the world generates"),
         END_COMMANDS_ENABLED("end.commands_after_reset.enabled", false, "Should we enable this?"),
         END_COMMANDS_COMMANDS("end.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource End\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
+        END_DISABLED_COMMANDS("end.disabled_commands", "", "Disabled Commands Settings"),
+        END_DISABLED_COMMANDS_ENABLED("end.disabled_commands.enabled", false, "Should we enable this?"),
+        END_DISABLED_COMMANDS_LIST("end.disabled_commands.commands", Arrays.asList("/sethome", "/claim", "/setwarp", "/tpahere"), "Commands listed below will be Disabled if they're executed inside this World"),
 
         TELEPORT("teleport_settings", "", "Teleport Settings"),
         TELEPORT_ASYNC("teleport_settings.async", true, "If you're running Paper, Leave this enabled for Asynchronous Teleportation"),
@@ -182,11 +191,7 @@ public class Config {
         TELEPORT_EFFECT_AMPLIFIER("teleport_settings.effects.amplifier", 2, "The amplifier of the Effect"),
         TELEPORT_SOUNDS("teleport_settings.sounds", "", "Sound Properties"),
         TELEPORT_SOUND_ENABLED("teleport_settings.sounds.enabled", false, "Would you like it to play a sound after a player Teleports to the Resource Worlds?"),
-        TELEPORT_SOUND("teleport_settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT", "You should pick a sound that exists on your server's version API", "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html"),
-
-        DISABLED_COMMANDS("disabled_commands", "", "Disabled Commands Settings"),
-        DISABLED_COMMANDS_ENABLED("disabled_commands.enabled", false, "Should we enable this?"),
-        DISABLED_COMMANDS_LIST("disabled_commands.commands", Arrays.asList("/sethome", "/claim", "/setwarp", "/tpahere"), "Commands listed below will be Disabled if they're executed inside the Resource World");
+        TELEPORT_SOUND("teleport_settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT", "You should pick a sound that exists on your server's version API", "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
 
         private final String key;
         private final Object defaultValue;

@@ -1,27 +1,32 @@
 package me.nik.resourceworld.listeners.entityspawning;
 
 import me.nik.resourceworld.files.Config;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 
 public class EntitySpawning implements Listener {
 
     @EventHandler
     public void onEntitySpawn(CreatureSpawnEvent e) {
-        Entity entity = e.getEntity();
-        if (entity instanceof Item) return;
+        LivingEntity entity = e.getEntity();
         if (entity instanceof Player) return;
-        if (entity instanceof ArmorStand) return;
-        if (entity instanceof Projectile) return;
-        if (entity instanceof ItemFrame) return;
         if (!entity.getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) return;
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent e) {
+        if (!e.getWorld().getName().equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) return;
+        for (Entity entity : e.getChunk().getEntities()) {
+            if (!(entity instanceof LivingEntity)) continue;
+            LivingEntity ent = (LivingEntity) entity;
+            if (ent instanceof Player) continue;
+            ent.remove();
+        }
     }
 }
