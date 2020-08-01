@@ -4,7 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.utils.MiscUtils;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 public class PapiHook extends PlaceholderExpansion {
 
@@ -40,11 +40,7 @@ public class PapiHook extends PlaceholderExpansion {
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, String identifier) {
-
-        if (player == null) {
-            return "";
-        }
+    public String onRequest(OfflinePlayer player, String identifier) {
 
         switch (identifier) {
             case "world":
