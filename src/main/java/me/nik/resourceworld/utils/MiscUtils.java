@@ -39,4 +39,60 @@ public class MiscUtils {
 
         return (sb.toString());
     }
+
+    /**
+     * Convert a millisecond duration to a string format
+     *
+     * @param millis A duration to convert to a string form
+     * @return A string of the form "X Days".
+     */
+    public static String getDays(long millis) {
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        if (days != 0) {
+            return days + " Days";
+        }
+        return "";
+    }
+
+    /**
+     * Convert a millisecond duration to a string format
+     *
+     * @param millis A duration to convert to a string form
+     * @return A string of the form "X Hours".
+     */
+    public static String getHours(long millis) {
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        if (hours != 0) {
+            return hours + " Hours";
+        }
+        return "";
+    }
+
+    /**
+     * Convert a millisecond duration to a string format
+     *
+     * @param millis A duration to convert to a string form
+     * @return A string of the form "X Minutes".
+     */
+    public static String getMinutes(long millis) {
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        if (minutes != 0) {
+            return minutes + " Minutes";
+        }
+        return "";
+    }
+
+    /**
+     * Convert a millisecond duration to a string format
+     *
+     * @param millis A duration to convert to a string form
+     * @return A string of the form "X Seconds".
+     */
+    public static String getSeconds(long millis) {
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+        if (seconds != 0) {
+            return seconds + " Seconds";
+        }
+        return "";
+    }
 }
