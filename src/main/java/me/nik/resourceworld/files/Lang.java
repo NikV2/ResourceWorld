@@ -54,6 +54,7 @@ public class Lang {
         get().addDefault("console_message", "&f&lThis command cannot be executed through the Console :(");
         get().addDefault("no_perm", "&cYou do not have permission to execute this command!");
         get().addDefault("cooldown_message", "&cYou can teleport to the Resource World again in %seconds% seconds.");
+        get().addDefault("cooldown_spawn", "&cYou can teleport to spawn again in %seconds% seconds.");
         get().addDefault("reloaded", "&fYou have successfully reloaded the plugin!");
         get().addDefault("reloading", "&fReloading... This may cause lag!");
         get().addDefault("teleport_delay", "&aTeleporting to the Resource World in %seconds% seconds.");

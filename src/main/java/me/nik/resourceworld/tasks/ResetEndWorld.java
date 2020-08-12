@@ -28,7 +28,7 @@ public class ResetEndWorld extends BukkitRunnable {
         this.resetTeleport = new ResetTeleport();
         this.worldGeneratorEnd = new WorldGeneratorEnd();
         this.worldCommands = new WorldCommands();
-        this.teleport = new Teleport(plugin);
+        this.teleport = new Teleport();
     }
 
     @Override

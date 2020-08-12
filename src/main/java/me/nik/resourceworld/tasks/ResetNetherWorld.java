@@ -28,7 +28,7 @@ public class ResetNetherWorld extends BukkitRunnable {
         this.resetTeleport = new ResetTeleport();
         this.worldGeneratorNether = new WorldGeneratorNether();
         this.worldCommands = new WorldCommands();
-        this.teleport = new Teleport(plugin);
+        this.teleport = new Teleport();
     }
 
     @Override

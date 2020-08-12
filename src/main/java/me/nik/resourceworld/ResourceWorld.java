@@ -8,7 +8,6 @@ import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.listeners.Drowning;
 import me.nik.resourceworld.listeners.GuiListener;
 import me.nik.resourceworld.listeners.LeaveInWorld;
-import me.nik.resourceworld.listeners.Portals;
 import me.nik.resourceworld.listeners.disabledcommands.CommandsEnd;
 import me.nik.resourceworld.listeners.disabledcommands.CommandsNether;
 import me.nik.resourceworld.listeners.disabledcommands.CommandsWorld;
@@ -18,6 +17,8 @@ import me.nik.resourceworld.listeners.entityspawning.EntitySpawningNether;
 import me.nik.resourceworld.listeners.explosion.Explosion;
 import me.nik.resourceworld.listeners.explosion.ExplosionEnd;
 import me.nik.resourceworld.listeners.explosion.ExplosionNether;
+import me.nik.resourceworld.listeners.portals.PortalEnd;
+import me.nik.resourceworld.listeners.portals.PortalNether;
 import me.nik.resourceworld.listeners.suffocation.Suffocation;
 import me.nik.resourceworld.listeners.suffocation.SuffocationEnd;
 import me.nik.resourceworld.listeners.suffocation.SuffocationNether;
@@ -240,9 +241,6 @@ public final class ResourceWorld extends JavaPlugin {
         if (Config.Setting.END_DISABLE_ENTITY_SPAWNING.getBoolean()) {
             pm.registerEvents(new EntitySpawningEnd(), this);
         }
-        if (Config.Setting.NETHER_PORTALS_ENABLED.getBoolean() || Config.Setting.END_PORTALS_ENABLED.getBoolean()) {
-            pm.registerEvents(new Portals(), this);
-        }
         if (Config.Setting.NETHER_DISABLED_COMMANDS_ENABLED.getBoolean()) {
             pm.registerEvents(new CommandsNether(), this);
         }
@@ -260,6 +258,12 @@ public final class ResourceWorld extends JavaPlugin {
         }
         if (Config.Setting.END_DISABLE_EXPLOSIONS.getBoolean()) {
             pm.registerEvents(new ExplosionEnd(), this);
+        }
+        if (Config.Setting.NETHER_PORTALS_ENABLED.getBoolean()) {
+            pm.registerEvents(new PortalNether(), this);
+        }
+        if (Config.Setting.END_PORTALS_ENABLED.getBoolean()) {
+            pm.registerEvents(new PortalEnd(), this);
         }
         //Don't be an idiot Nik, Always register this Listener
         pm.registerEvents(new GuiListener(), this);

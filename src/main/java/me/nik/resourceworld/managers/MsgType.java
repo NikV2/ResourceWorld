@@ -17,6 +17,7 @@ public enum MsgType {
     CONSOLE_MESSAGE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("console_message"))),
     NO_PERMISSION(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("no_perm"))),
     COOLDOWN_MESSAGE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("cooldown_message"))),
+    COOLDOWN_SPAWN(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("cooldown_spawn"))),
     RELOADED(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("reloaded"))),
     RELOADING(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("reloading"))),
     TELEPORT_DELAY(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleport_delay"))),

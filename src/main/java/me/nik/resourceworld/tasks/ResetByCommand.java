@@ -35,7 +35,7 @@ public class ResetByCommand {
         this.worldGeneratorNether = new WorldGeneratorNether();
         this.worldGeneratorEnd = new WorldGeneratorEnd();
         this.worldCommands = new WorldCommands();
-        this.teleport = new Teleport(plugin);
+        this.teleport = new Teleport();
     }
 
     public void executeReset() {

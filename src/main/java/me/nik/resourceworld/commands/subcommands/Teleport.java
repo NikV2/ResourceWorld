@@ -1,7 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
 import io.papermc.lib.PaperLib;
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
@@ -23,8 +22,6 @@ import java.util.UUID;
 
 public class Teleport extends SubCommand {
 
-    private final ResourceWorld plugin;
-
     private final HashMap<UUID, Long> cooldown = new HashMap<>();
 
     private boolean resettingWorld = false;
@@ -33,8 +30,7 @@ public class Teleport extends SubCommand {
 
     private final TeleportUtils teleportUtils;
 
-    public Teleport(ResourceWorld plugin) {
-        this.plugin = plugin;
+    public Teleport() {
         this.teleportUtils = new TeleportUtils();
     }
 

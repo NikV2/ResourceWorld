@@ -8,9 +8,13 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class Spawn extends SubCommand {
+
+    private final HashMap<UUID, Long> cooldown = new HashMap<>();
 
     @Override
     public String getName() {
@@ -43,11 +47,21 @@ public class Spawn extends SubCommand {
             Player player = (Player) sender;
             if (Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()) == null) {
                 player.sendMessage(MsgType.MAIN_WORLD_ERROR.getMessage());
-            } else {
-                final Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
-                player.teleport(loc);
-                player.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
+                return;
             }
+            final UUID uuid = player.getUniqueId();
+            if (cooldown.containsKey(uuid)) {
+                long secondsleft = ((cooldown.get(uuid) / 1000) + Config.Setting.SETTINGS_SPAWN_COOLDOWN.getInt()) - (System.currentTimeMillis() / 1000);
+                if (secondsleft > 0) {
+                    player.sendMessage(MsgType.COOLDOWN_SPAWN.getMessage().replace("%seconds%", String.valueOf(secondsleft)));
+                    return;
+                }
+                cooldown.remove(uuid);
+            }
+            final Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
+            player.teleport(loc);
+            player.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
+            cooldown.put(uuid, System.currentTimeMillis());
         }
     }
 

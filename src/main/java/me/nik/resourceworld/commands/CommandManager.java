@@ -25,7 +25,7 @@ public class CommandManager implements TabExecutor {
     public CommandManager(ResourceWorld plugin) {
         this.plugin = plugin;
 
-        subcommands.add(new Teleport(plugin));
+        subcommands.add(new Teleport());
         subcommands.add(new Reload(plugin));
         subcommands.add(new Menu(plugin));
         subcommands.add(new Reset(plugin));

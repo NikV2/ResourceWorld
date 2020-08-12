@@ -29,7 +29,7 @@ public class ResetWorld extends BukkitRunnable {
         this.resetTeleport = new ResetTeleport();
         this.worldGenerator = new WorldGenerator();
         this.worldCommands = new WorldCommands();
-        this.teleport = new Teleport(plugin);
+        this.teleport = new Teleport();
     }
 
     @Override
