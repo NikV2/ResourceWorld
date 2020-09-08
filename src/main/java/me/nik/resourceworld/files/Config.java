@@ -184,6 +184,7 @@ public class Config {
         END_DISABLED_COMMANDS_LIST("end.disabled_commands.commands", Arrays.asList("/sethome", "/claim", "/setwarp", "/tpahere"), "Commands listed below will be Disabled if they're executed inside this World"),
 
         TELEPORT("teleport_settings", "", "Teleport Settings"),
+        TELEPORT_PRICE("teleport_settings.price", 100, "The price needed for a player to Teleport to a Resource World (Requires Vault)"),
         TELEPORT_ASYNC("teleport_settings.async", true, "If you're running Paper, Leave this enabled for Asynchronous Teleportation"),
         TELEPORT_COOLDOWN("teleport_settings.cooldown", 60, "Interval is in Seconds, So by default: 1 Minute"),
         TELEPORT_DELAY("teleport_settings.delay", 3, "The delay between Teleportations"),
@@ -270,6 +271,8 @@ public class Config {
                 return (byte) this.value;
             } else if (this.value instanceof Float) {
                 return (float) this.value;
+            } else if (this.value instanceof Long) {
+                return (long) this.value;
             }
 
             return (double) this.value;

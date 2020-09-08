@@ -25,6 +25,8 @@ public enum MsgType {
     WORLDS_GUI_NAME(Messenger.format(ResourceWorld.getInstance().getLang().getString("worlds_gui_name"))),
     TELEPORTED_MESSAGE(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleported_message"))),
     NOT_EXIST(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("not_exist"))),
+    TELEPORT_PAID(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleport_paid"))),
+    TELEPORT_ERROR(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleport_error"))),
     TELEPORTED_PLAYERS(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleported_players"))),
     TELEPORTING_PLAYER(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleporting_player"))),
     MAIN_WORLD_ERROR(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("main_world_error"))),

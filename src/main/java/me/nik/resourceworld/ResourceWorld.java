@@ -35,15 +35,18 @@ import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
 
     private static ResourceWorld plugin;
+    private static Economy econ = null;
 
     private Config config;
     private Data data;
@@ -52,6 +55,14 @@ public final class ResourceWorld extends JavaPlugin {
     public static ResourceWorld getInstance() {
         return plugin;
     }
+
+    private final String[] STARTUP_MESSAGE = {
+            " ",
+            ChatColor.GREEN + "Resource World v" + this.getDescription().getVersion(),
+            " ",
+            ChatColor.WHITE + "     Author: Nik",
+            " "
+    };
 
     @Override
     public void onDisable() {
@@ -66,6 +77,10 @@ public final class ResourceWorld extends JavaPlugin {
         data.reload();
     }
 
+    public static Economy getEconomy() {
+        return econ;
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -76,12 +91,11 @@ public final class ResourceWorld extends JavaPlugin {
         //Load Files
         loadFiles();
 
+        //Load Vault if found
+        setupEconomy();
+
         //Startup Message
-        Messenger.consoleMessage("");
-        Messenger.consoleMessage("            " + ChatColor.GREEN + "Resource World v" + this.getDescription().getVersion());
-        Messenger.consoleMessage("");
-        Messenger.consoleMessage("                   " + ChatColor.WHITE + "Author: Nik");
-        Messenger.consoleMessage("");
+        this.getServer().getConsoleSender().sendMessage(STARTUP_MESSAGE);
 
         getCommand("resource").setExecutor(new CommandManager(this));
 
@@ -102,6 +116,13 @@ public final class ResourceWorld extends JavaPlugin {
         new MetricsLite(this, 6981);
 
         PaperLib.suggestPaper(this);
+    }
+
+    private void setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) return;
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) return;
+        econ = rsp.getProvider();
     }
 
     public CommentedFileConfiguration getConfiguration() {

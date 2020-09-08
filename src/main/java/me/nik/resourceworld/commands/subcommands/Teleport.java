@@ -1,12 +1,14 @@
 package me.nik.resourceworld.commands.subcommands;
 
 import io.papermc.lib.PaperLib;
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldUtils;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -163,6 +165,7 @@ public class Teleport extends SubCommand {
             }
             cooldown.remove(uuid);
         }
+        if (!dealWithCash(p)) return;
         if (Config.Setting.TELEPORT_DELAY.getInt() < 1) {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
@@ -198,6 +201,19 @@ public class Teleport extends SubCommand {
                     }
                 }
             }, Config.Setting.TELEPORT_DELAY.getInt() * 20);
+        }
+    }
+
+    private boolean dealWithCash(Player player) {
+        if (ResourceWorld.getEconomy() == null || Config.Setting.TELEPORT_PRICE.getDouble() < 1) return true;
+        double price = Config.Setting.TELEPORT_PRICE.getDouble();
+        EconomyResponse res = ResourceWorld.getEconomy().withdrawPlayer(player, price);
+        if (res.transactionSuccess()) {
+            player.sendMessage(MsgType.TELEPORT_PAID.getMessage().replace("%price%", ResourceWorld.getEconomy().format(res.amount)));
+            return true;
+        } else {
+            player.sendMessage(MsgType.TELEPORT_ERROR.getMessage());
+            return false;
         }
     }
 

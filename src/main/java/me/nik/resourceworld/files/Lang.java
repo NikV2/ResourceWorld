@@ -62,6 +62,8 @@ public class Lang {
         get().addDefault("worlds_gui_name", "&2&lReset A Resource World");
         get().addDefault("teleported_message", "&fYou have been Teleported back to spawn!");
         get().addDefault("not_exist", "&cThe Resource World is currently under Maintenance, Please try again later!");
+        get().addDefault("teleport_paid", "&a%price% &fHave been taken from your balance.");
+        get().addDefault("teleport_error", "&cYou do not have enough money to Teleport to the Resource World.");
         get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
         get().addDefault("teleporting_player", "&aTeleporting %player% to %world%.");
         get().addDefault("main_world_error", "&cWe could not teleport you back to the main world, Please contact an Administrator.");
