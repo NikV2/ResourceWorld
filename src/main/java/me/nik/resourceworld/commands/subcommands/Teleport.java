@@ -205,6 +205,7 @@ public class Teleport extends SubCommand {
     }
 
     private boolean dealWithCash(Player player) {
+        if (player.hasPermission("rw.admin")) return true;
         if (ResourceWorld.getEconomy() == null || Config.Setting.TELEPORT_PRICE.getDouble() < 1) return true;
         double price = Config.Setting.TELEPORT_PRICE.getDouble();
         EconomyResponse res = ResourceWorld.getEconomy().withdrawPlayer(player, price);
