@@ -22,9 +22,24 @@ public class TeleportUtils {
         World.Environment environment = world.getEnvironment();
         Location randomLocation = null;
 
-        int x = random.nextInt(Config.Setting.TELEPORT_MAX_RANGE.getInt());
+        int x;
         int y = 100;
-        int z = random.nextInt(Config.Setting.TELEPORT_MAX_RANGE.getInt());
+        int z;
+
+        switch (environment) {
+            case NETHER:
+                x = random.nextInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
+                z = random.nextInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
+                break;
+            case THE_END:
+                x = random.nextInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
+                z = random.nextInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
+                break;
+            default:
+                x = random.nextInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
+                z = random.nextInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
+                break;
+        }
 
         if (environment == World.Environment.THE_END) {
             randomLocation = new Location(world, x, y, z);
