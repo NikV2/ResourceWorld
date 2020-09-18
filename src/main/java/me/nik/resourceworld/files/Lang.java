@@ -56,7 +56,6 @@ public class Lang {
         get().addDefault("cooldown_message", "&cYou can teleport to the Resource World again in %seconds% seconds.");
         get().addDefault("cooldown_spawn", "&cYou can teleport to spawn again in %seconds% seconds.");
         get().addDefault("reloaded", "&fYou have successfully reloaded the plugin!");
-        get().addDefault("reloading", "&fReloading... This may cause lag!");
         get().addDefault("teleport_delay", "&aTeleporting to the Resource World in %seconds% seconds.");
         get().addDefault("gui_name", "&2&lResource World Menu");
         get().addDefault("worlds_gui_name", "&2&lReset A Resource World");

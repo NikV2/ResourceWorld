@@ -40,9 +40,8 @@ public class MainGui extends Menu {
                 break;
             case 15:
                 p.closeInventory();
-                p.sendMessage(MsgType.RELOADING.getMessage());
-                plugin.getServer().getPluginManager().disablePlugin(plugin);
-                plugin.getServer().getPluginManager().enablePlugin(plugin);
+                plugin.onDisable();
+                plugin.onEnable();
                 p.sendMessage(MsgType.RELOADED.getMessage());
                 break;
             case 30:

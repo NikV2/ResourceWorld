@@ -43,9 +43,8 @@ public class Reload extends SubCommand {
     @Override
     public void perform(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            sender.sendMessage(MsgType.RELOADING.getMessage());
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-            plugin.getServer().getPluginManager().enablePlugin(plugin);
+            plugin.onDisable();
+            plugin.onEnable();
             sender.sendMessage(MsgType.RELOADED.getMessage());
         }
     }
