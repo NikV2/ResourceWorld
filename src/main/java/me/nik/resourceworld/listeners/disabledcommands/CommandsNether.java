@@ -14,7 +14,7 @@ public class CommandsNether implements Listener {
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
         if (p.hasPermission("rw.admin")) return;
-        if (p.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) {
+        if (p.getWorld().getName().equals(Config.Setting.NETHER_NAME.getString())) {
             if (e.getMessage().equals("/")) return;
             for (String cmd : Config.Setting.NETHER_DISABLED_COMMANDS_LIST.getStringList()) {
                 if (e.getMessage().contains(cmd)) {

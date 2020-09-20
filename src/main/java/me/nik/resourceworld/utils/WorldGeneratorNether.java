@@ -41,8 +41,7 @@ public class WorldGeneratorNether {
             resourceNether.setMonsterSpawnLimit(monsterLimit);
             resourceNether.setKeepSpawnInMemory(loadSpawn);
             Bukkit.getWorlds().add(resourceNether);
-            if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
-                return;
+            if (MiscUtils.isLegacy()) return;
             if (keepInventory) {
                 resourceNether.setGameRule(GameRule.KEEP_INVENTORY, true);
             }

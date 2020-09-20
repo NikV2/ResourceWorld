@@ -53,8 +53,7 @@ public class WorldGenerator {
             resourceWorld.setStorm(storms);
             resourceWorld.setKeepSpawnInMemory(loadSpawn);
             Bukkit.getWorlds().add(resourceWorld);
-            if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
-                return;
+            if (MiscUtils.isLegacy()) return;
             if (keepInventory) {
                 resourceWorld.setGameRule(GameRule.KEEP_INVENTORY, true);
             }

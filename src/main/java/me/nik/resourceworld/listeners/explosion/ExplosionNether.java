@@ -14,7 +14,7 @@ public class ExplosionNether implements Listener {
     public void onExplode(EntityExplodeEvent e) {
         Entity entity = e.getEntity();
         String world = entity.getWorld().getName();
-        if (!world.equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
+        if (!world.equals(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 
@@ -23,7 +23,7 @@ public class ExplosionNether implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)) return;
         Entity entity = e.getEntity();
         String world = entity.getWorld().getName();
-        if (!world.equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
+        if (!world.equals(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

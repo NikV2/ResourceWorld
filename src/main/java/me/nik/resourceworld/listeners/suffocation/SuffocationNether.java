@@ -14,7 +14,7 @@ public class SuffocationNether implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION)) return;
         Player p = (Player) e.getEntity();
         String world = p.getWorld().getName();
-        if (!world.equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
+        if (!world.equals(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

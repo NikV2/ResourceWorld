@@ -7,11 +7,7 @@ import java.io.File;
 
 public class WorldUtils {
 
-    /**
-     * @param directory The directory to delete
-     * @return Whether or not it has been deleted - exists (Usually never used)
-     */
-    public static boolean deleteDirectory(File directory) {
+    public static void deleteDirectory(File directory) {
         if (directory.exists()) {
             File[] files = directory.listFiles();
             if (files != null)
@@ -23,7 +19,6 @@ public class WorldUtils {
                     }
                 }
         }
-        return directory.delete();
     }
 
     /**

@@ -15,13 +15,13 @@ public class EntitySpawningNether implements Listener {
     public void onEntitySpawn(CreatureSpawnEvent e) {
         LivingEntity entity = e.getEntity();
         if (entity instanceof Player) return;
-        if (!entity.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
+        if (!entity.getWorld().getName().equals(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
-        if (!e.getWorld().getName().equalsIgnoreCase(Config.Setting.NETHER_NAME.getString())) return;
+        if (!e.getWorld().getName().equals(Config.Setting.NETHER_NAME.getString())) return;
         for (Entity entity : e.getChunk().getEntities()) {
             if (!(entity instanceof LivingEntity)) continue;
             LivingEntity ent = (LivingEntity) entity;

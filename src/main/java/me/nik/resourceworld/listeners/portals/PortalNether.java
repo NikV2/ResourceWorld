@@ -19,10 +19,12 @@ public class PortalNether implements Listener {
         if (Config.Setting.NETHER_PORTALS_ONLY_RESOURCE.getBoolean() && !e.getFrom().getWorld().getName().equals(Config.Setting.WORLD_NAME.getString()))
             return;
 
+        Location from = e.getFrom();
+
         if (Config.Setting.NETHER_PORTALS_VANILLA_RATIO.getBoolean()) {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), e.getFrom().getX() % 8, e.getFrom().getY() % 8, e.getFrom().getZ() % 8));
+            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX() % 8, from.getY() % 8, from.getZ() % 8));
         } else {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX(), from.getY(), from.getZ()));
         }
     }
 
@@ -32,6 +34,8 @@ public class PortalNether implements Listener {
         if (e.getFrom().getWorld().getEnvironment() != World.Environment.NETHER) return;
         if (!e.getFrom().getWorld().getName().equals(Config.Setting.NETHER_NAME.getString())) return;
 
-        e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_PORTALS_PORTALWORLD.getString()), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+        Location from = e.getFrom();
+
+        e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_PORTALS_PORTALWORLD.getString()), from.getX(), from.getY(), from.getZ()));
     }
 }

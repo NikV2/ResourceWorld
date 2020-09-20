@@ -19,8 +19,10 @@ public class PortalEnd implements Listener {
         if (Config.Setting.END_PORTALS_ONLY_RESOURCE.getBoolean() && !e.getFrom().getWorld().getName().equals(Config.Setting.WORLD_NAME.getString()))
             return;
 
+        Location to = e.getTo();
+
         try {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_NAME.getString()), e.getTo().getX(), e.getTo().getY(), e.getTo().getZ()));
+            e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_NAME.getString()), to.getX(), to.getY(), to.getZ()));
         } catch (NullPointerException ignored) {
             Location loc = Bukkit.getWorld(Config.Setting.END_NAME.getString()).getHighestBlockAt(Bukkit.getWorld(Config.Setting.END_NAME.getString()).getSpawnLocation()).getLocation();
             e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_NAME.getString()), loc.getX(), loc.getY(), loc.getZ()));
@@ -33,6 +35,8 @@ public class PortalEnd implements Listener {
         if (e.getFrom().getWorld().getEnvironment() != World.Environment.THE_END) return;
         if (!e.getFrom().getWorld().getName().equals(Config.Setting.END_NAME.getString())) return;
 
-        e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_PORTALS_PORTALWORLD.getString()), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+        Location from = e.getFrom();
+
+        e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_PORTALS_PORTALWORLD.getString()), from.getX(), from.getY(), from.getZ()));
     }
 }

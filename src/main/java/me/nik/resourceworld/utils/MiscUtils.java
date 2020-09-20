@@ -1,5 +1,7 @@
 package me.nik.resourceworld.utils;
 
+import org.bukkit.Bukkit;
+
 import java.util.concurrent.TimeUnit;
 
 public class MiscUtils {
@@ -94,5 +96,13 @@ public class MiscUtils {
             return seconds + " Seconds";
         }
         return "";
+    }
+
+    public static boolean isLegacy() {
+        return Bukkit.getVersion().contains("1.8")
+                || Bukkit.getVersion().contains("1.9")
+                || Bukkit.getVersion().contains("1.10")
+                || Bukkit.getVersion().contains("1.11")
+                || Bukkit.getVersion().contains("1.12");
     }
 }

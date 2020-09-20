@@ -40,8 +40,7 @@ public class WorldGeneratorEnd {
             resourceEnd.setMonsterSpawnLimit(monsterLimit);
             resourceEnd.setKeepSpawnInMemory(loadSpawn);
             Bukkit.getWorlds().add(resourceEnd);
-            if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11") || Bukkit.getVersion().contains("1.12"))
-                return;
+            if (MiscUtils.isLegacy()) return;
             if (keepInventory) {
                 resourceEnd.setGameRule(GameRule.KEEP_INVENTORY, true);
             }

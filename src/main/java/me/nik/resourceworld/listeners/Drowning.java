@@ -14,7 +14,7 @@ public class Drowning implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.DROWNING)) return;
         Player p = (Player) e.getEntity();
         String world = p.getWorld().getName();
-        if (!world.equalsIgnoreCase(Config.Setting.WORLD_NAME.getString())) return;
+        if (!world.equals(Config.Setting.WORLD_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

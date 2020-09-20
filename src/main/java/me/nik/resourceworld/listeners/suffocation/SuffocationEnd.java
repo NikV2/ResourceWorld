@@ -14,7 +14,7 @@ public class SuffocationEnd implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION)) return;
         Player p = (Player) e.getEntity();
         String world = p.getWorld().getName();
-        if (!world.equalsIgnoreCase(Config.Setting.END_NAME.getString())) return;
+        if (!world.equals(Config.Setting.END_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

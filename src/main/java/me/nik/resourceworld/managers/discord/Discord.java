@@ -23,7 +23,7 @@ public class Discord {
 
     public void sendNotification(String fieldName, String fieldValue) {
         if (!enabled) return;
-        if (url == null || url.equals("")) return;
+        if (url == null || url.isEmpty()) return;
         TaskUtils.taskLaterAsync(() -> {
             DiscordWebhook discord = new DiscordWebhook(url);
             discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
@@ -39,7 +39,7 @@ public class Discord {
 
     public void sendNotification(String fieldName, String fieldValue, String fieldNameTwo, String fieldValueTwo) {
         if (!enabled) return;
-        if (url == null || url.equals("")) return;
+        if (url == null || url.isEmpty()) return;
         TaskUtils.taskLaterAsync(() -> {
             DiscordWebhook discord = new DiscordWebhook(url);
             discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
@@ -56,7 +56,7 @@ public class Discord {
 
     public void sendNotification(String fieldName, String fieldValue, String fieldNameTwo, String fieldValueTwo, String fieldNameThree, String fieldValueThree) {
         if (!enabled) return;
-        if (url == null || url.equals("")) return;
+        if (url == null || url.isEmpty()) return;
         TaskUtils.taskLaterAsync(() -> {
             DiscordWebhook discord = new DiscordWebhook(url);
             discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
@@ -74,7 +74,7 @@ public class Discord {
 
     public void sendNotification() {
         if (!enabled) return;
-        if (url == null || url.equals("")) return;
+        if (url == null || url.isEmpty()) return;
         TaskUtils.taskLaterAsync(() -> {
             DiscordWebhook discord = new DiscordWebhook(url);
             discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
