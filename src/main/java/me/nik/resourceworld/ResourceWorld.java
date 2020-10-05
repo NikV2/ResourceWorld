@@ -38,10 +38,10 @@ import me.nik.resourceworld.utils.WorldGeneratorNether;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public final class ResourceWorld extends JavaPlugin {
 
@@ -75,6 +75,10 @@ public final class ResourceWorld extends JavaPlugin {
         lang.reload();
         lang.save();
         data.reload();
+
+        HandlerList.unregisterAll(this);
+        this.getServer().getScheduler().cancelTasks(this);
+        plugin = null;
     }
 
     public static Economy getEconomy() {
@@ -147,13 +151,13 @@ public final class ResourceWorld extends JavaPlugin {
 
     private void initializeTasks() {
         if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
-            BukkitTask updateChecker = new UpdateChecker(this).runTaskAsynchronously(this);
+            new UpdateChecker(this).runTaskAsynchronously(this);
         } else {
             Messenger.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
         }
 
         if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) {
-            BukkitTask alwaysDay = new AlwaysDay().runTaskTimer(this, 1200, 1200);
+            new AlwaysDay().runTaskTimer(this, 1200, 1200);
         }
     }
 
@@ -293,15 +297,15 @@ public final class ResourceWorld extends JavaPlugin {
     private void startIntervals() {
         if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
             int interval = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000;
-            BukkitTask resetWorld = new ResetWorld(this).runTaskTimer(this, worldTimer(), interval);
+            new ResetWorld(this).runTaskTimer(this, worldTimer(), interval);
         }
         if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
             int interval = Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000;
-            BukkitTask resetNether = new ResetNetherWorld(this).runTaskTimer(this, netherTimer(), interval);
+            new ResetNetherWorld(this).runTaskTimer(this, netherTimer(), interval);
         }
         if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_RESETS_ENABLED.getBoolean()) {
             int interval = Config.Setting.END_RESETS_INTERVAL.getInt() * 72000;
-            BukkitTask resetEnd = new ResetEndWorld(this).runTaskTimer(this, endTimer(), interval);
+            new ResetEndWorld(this).runTaskTimer(this, endTimer(), interval);
         }
     }
 

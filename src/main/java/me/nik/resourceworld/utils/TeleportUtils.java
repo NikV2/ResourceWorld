@@ -18,7 +18,6 @@ public class TeleportUtils {
      * @return A random location
      */
     public Location generateLocation(World world) {
-        Random random = new Random();
         World.Environment environment = world.getEnvironment();
         Location randomLocation = null;
 
@@ -28,9 +27,9 @@ public class TeleportUtils {
 
         switch (environment) {
             case NETHER:
-                x = random.nextInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
+                x = randomInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
                 y = 80;
-                z = random.nextInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
+                z = randomInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
                 boolean safe = false;
                 while (!safe) {
                     randomLocation = new Location(world, x, y, z);
@@ -44,8 +43,8 @@ public class TeleportUtils {
                 }
                 return randomLocation;
             case THE_END:
-                x = random.nextInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
-                z = random.nextInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
+                x = randomInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
+                z = randomInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
                 randomLocation = new Location(world, x, y, z);
                 y = randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 1;
                 randomLocation.setY(y);
@@ -55,8 +54,8 @@ public class TeleportUtils {
                 }
                 return randomLocation;
             default:
-                x = random.nextInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
-                z = random.nextInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
+                x = randomInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
+                z = randomInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
                 boolean safee = false;
                 while (!safee) {
                     randomLocation = new Location(world, x, y, z);
@@ -90,5 +89,13 @@ public class TeleportUtils {
             return false;
         }
         return !feet.getLocation().add(0, -1, 0).getBlock().isLiquid();
+    }
+
+    private int randomInt(int random) {
+        Random r = new Random();
+
+        int min = -random;
+
+        return r.nextInt((random - min) + 1) + min;
     }
 }
