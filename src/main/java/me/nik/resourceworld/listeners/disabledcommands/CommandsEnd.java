@@ -1,5 +1,6 @@
 package me.nik.resourceworld.listeners.disabledcommands;
 
+import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ public class CommandsEnd implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
-        if (p.hasPermission("rw.admin")) return;
+        if (p.hasPermission(Permissions.ADMIN)) return;
         if (p.getWorld().getName().equals(Config.Setting.END_NAME.getString())) {
             if (e.getMessage().equals("/")) return;
             for (String cmd : Config.Setting.END_DISABLED_COMMANDS_LIST.getStringList()) {

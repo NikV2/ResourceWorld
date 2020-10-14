@@ -6,7 +6,6 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.managers.discord.Discord;
 import me.nik.resourceworld.utils.ResetTeleport;
-import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
 import me.nik.resourceworld.utils.WorldUtils;
@@ -43,24 +42,18 @@ public class ResetNetherWorld extends BukkitRunnable {
         World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
         Bukkit.unloadWorld(world, false);
         Bukkit.getWorlds().remove(world);
-        TaskUtils.taskAsync(() -> {
-
-            try {
-                WorldUtils.deleteDirectory(world.getWorldFolder());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        });
-        TaskUtils.taskLater(() -> {
-
-            worldGeneratorNether.createWorld();
-            worldCommands.netherRunCommands();
-            plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
-            teleport.setResettingNether(false);
-            plugin.getData().set("nether.papi", System.currentTimeMillis());
-            plugin.saveData();
-            plugin.reloadData();
-        }, 80);
+        try {
+            WorldUtils.deleteDirectory(world.getWorldFolder());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        worldGeneratorNether.createWorld();
+        worldCommands.netherRunCommands();
+        plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
+        teleport.setResettingNether(false);
+        plugin.getData().set("nether.papi", System.currentTimeMillis());
+        plugin.saveData();
+        plugin.reloadData();
         if (Config.Setting.SETTINGS_DISCORD_NETHER.getBoolean()) {
             Discord discord = new Discord("Resource World", "The Resource Nether has been Reset!", Color.RED);
             discord.sendNotification();

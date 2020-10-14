@@ -13,10 +13,10 @@ public class LeaveInWorld implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onLeave(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         if (isInWorld(p)) {
             Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
-            e.getPlayer().teleport(loc);
+            p.teleport(loc);
         }
     }
 

@@ -14,6 +14,8 @@ public abstract class SubCommand {
 
     protected abstract String getPermission();
 
+    protected abstract int maxArguments();
+
     protected abstract boolean canConsoleExecute();
 
     protected abstract void perform(CommandSender sender, String[] args);

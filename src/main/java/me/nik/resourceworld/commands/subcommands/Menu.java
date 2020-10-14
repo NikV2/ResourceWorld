@@ -1,5 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
+import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
@@ -34,7 +35,12 @@ public class Menu extends SubCommand {
 
     @Override
     public String getPermission() {
-        return "rw.admin";
+        return Permissions.ADMIN;
+    }
+
+    @Override
+    protected int maxArguments() {
+        return 1;
     }
 
     @Override

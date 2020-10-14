@@ -1,7 +1,7 @@
 package me.nik.resourceworld.files;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.managers.commentedfiles.CommentedFileConfiguration;
+import me.nik.resourceworld.files.commentedfiles.CommentedFileConfiguration;
 
 import java.io.File;
 import java.util.Arrays;

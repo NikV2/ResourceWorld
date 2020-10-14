@@ -47,6 +47,10 @@ public class CommandManager implements TabExecutor {
                         sender.sendMessage(MsgType.NO_PERMISSION.getMessage());
                         return true;
                     }
+                    if (args.length < subCommand.maxArguments()) {
+                        helpMessage(sender);
+                        return true;
+                    }
                     subCommand.perform(sender, args);
                     return true;
                 }

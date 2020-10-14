@@ -1,5 +1,6 @@
 package me.nik.resourceworld.commands.subcommands;
 
+import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
@@ -33,7 +34,12 @@ public class Spawn extends SubCommand {
 
     @Override
     public String getPermission() {
-        return "rw.tp";
+        return Permissions.TELEPORT;
+    }
+
+    @Override
+    protected int maxArguments() {
+        return 1;
     }
 
     @Override

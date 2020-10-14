@@ -1,4 +1,4 @@
-package me.nik.resourceworld.managers.commentedfiles;
+package me.nik.resourceworld.files.commentedfiles;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
