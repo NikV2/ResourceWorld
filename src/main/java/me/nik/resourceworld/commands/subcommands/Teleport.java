@@ -87,7 +87,7 @@ public class Teleport extends SubCommand {
 
             switch (args.length) {
                 case 1:
-                    if (WorldUtils.worldExists() && resettingWorld) {
+                    if (WorldUtils.worldExists() && !resettingWorld) {
                         World worldResource = Bukkit.getWorld(Config.Setting.WORLD_NAME.getString());
                         teleport(player, worldResource);
                     } else {
