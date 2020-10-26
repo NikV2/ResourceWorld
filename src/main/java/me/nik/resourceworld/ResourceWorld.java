@@ -1,6 +1,5 @@
 package me.nik.resourceworld;
 
-import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
@@ -92,22 +91,22 @@ public final class ResourceWorld extends JavaPlugin {
         this.data = new Data();
         this.lang = new Lang();
 
+        //Startup Message
+        this.getServer().getConsoleSender().sendMessage(STARTUP_MESSAGE);
+
         //Load Files
         loadFiles();
 
         //Load Vault if found
         setupEconomy();
 
-        //Startup Message
-        this.getServer().getConsoleSender().sendMessage(STARTUP_MESSAGE);
-
         getCommand("resource").setExecutor(new CommandManager(this));
-
-        manageMillis();
 
         initializeListeners();
 
         generateWorlds();
+
+        manageMillis();
 
         startIntervals();
 
@@ -118,8 +117,6 @@ public final class ResourceWorld extends JavaPlugin {
         }
 
         new MetricsLite(this, 6981);
-
-        PaperLib.suggestPaper(this);
     }
 
     private void setupEconomy() {
@@ -162,17 +159,17 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void manageMillis() {
-        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean() && data.get().getLong("world.millis") == 0) {
+        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean() && data.get().getLong("world.millis") <= 0) {
             data.get().set("world.millis", System.currentTimeMillis());
             data.save();
             data.reload();
         }
-        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean() && data.get().getLong("nether.millis") == 0) {
+        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean() && data.get().getLong("nether.millis") <= 0) {
             data.get().set("nether.millis", System.currentTimeMillis());
             data.save();
             data.reload();
         }
-        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean() && data.get().getLong("end.millis") == 0) {
+        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean() && data.get().getLong("end.millis") <= 0) {
             data.get().set("end.millis", System.currentTimeMillis());
             data.save();
             data.reload();
@@ -240,7 +237,7 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void initializeListeners() {
-        PluginManager pm = this.getServer().getPluginManager();
+        final PluginManager pm = this.getServer().getPluginManager();
 
         if (Config.Setting.WORLD_DISABLE_SUFFOCATION.getBoolean()) {
             pm.registerEvents(new Suffocation(), this);

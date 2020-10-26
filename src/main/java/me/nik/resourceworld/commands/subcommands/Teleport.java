@@ -6,8 +6,8 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.utils.LocationFinder;
 import me.nik.resourceworld.utils.TaskUtils;
-import me.nik.resourceworld.utils.TeleportUtils;
 import me.nik.resourceworld.utils.WorldUtils;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -31,10 +31,10 @@ public class Teleport extends SubCommand {
     private static boolean resettingEnd = false;
     private final Map<UUID, Long> cooldown = new HashMap<>();
 
-    private final TeleportUtils teleportUtils;
+    private final LocationFinder locationFinder;
 
     public Teleport() {
-        this.teleportUtils = new TeleportUtils();
+        this.locationFinder = new LocationFinder();
     }
 
     public void setResettingWorld(boolean resettingWorld) {
@@ -83,7 +83,7 @@ public class Teleport extends SubCommand {
     public void perform(CommandSender sender, String[] args) {
 
         if (sender instanceof Player) {
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
 
             switch (args.length) {
                 case 1:
@@ -190,9 +190,9 @@ public class Teleport extends SubCommand {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
             if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
-                PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
+                PaperLib.teleportAsync(p, locationFinder.generateLocation(world));
             } else {
-                p.teleport(teleportUtils.generateLocation(world));
+                p.teleport(locationFinder.generateLocation(world));
             }
             p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
             if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
@@ -208,9 +208,9 @@ public class Teleport extends SubCommand {
             }
             TaskUtils.taskLater(() -> {
                 if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
-                    PaperLib.teleportAsync(p, teleportUtils.generateLocation(world));
+                    PaperLib.teleportAsync(p, locationFinder.generateLocation(world));
                 } else {
-                    p.teleport(teleportUtils.generateLocation(world));
+                    p.teleport(locationFinder.generateLocation(world));
                 }
                 p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
                 if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {

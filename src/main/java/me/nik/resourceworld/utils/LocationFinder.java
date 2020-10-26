@@ -9,7 +9,7 @@ import org.bukkit.block.BlockFace;
 
 import java.util.Random;
 
-public class TeleportUtils {
+public class LocationFinder {
 
     /**
      * Checks for a safe location within that world
@@ -18,7 +18,7 @@ public class TeleportUtils {
      * @return A random location
      */
     public Location generateLocation(World world) {
-        World.Environment environment = world.getEnvironment();
+        final World.Environment environment = world.getEnvironment();
         Location randomLocation = null;
 
         int x;
@@ -73,15 +73,16 @@ public class TeleportUtils {
 
     private boolean isLocationSafe(Location location) {
 
-        Block feet = location.getBlock();
+        final Block feet = location.getBlock();
         if (feet.getType().isSolid() && feet.getLocation().add(0, 1, 0).getBlock().getType().isSolid()) {
             return false;
         }
-        Block head = feet.getRelative(BlockFace.UP);
-        if (head.getType().isSolid()) {
+
+        if (feet.getRelative(BlockFace.UP).getType().isSolid()) {
             return false;
         }
-        Block ground = feet.getRelative(BlockFace.DOWN);
+
+        final Block ground = feet.getRelative(BlockFace.DOWN);
         if (!ground.getType().isSolid()) {
             return false;
         }
