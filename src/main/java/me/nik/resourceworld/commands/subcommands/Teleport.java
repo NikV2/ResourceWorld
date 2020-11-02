@@ -66,7 +66,7 @@ public class Teleport extends SubCommand {
 
     @Override
     public String getPermission() {
-        return Permissions.TELEPORT;
+        return Permissions.TELEPORT.getPermission();
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Teleport extends SubCommand {
                     break;
                 case 2:
                     if (args[1].equalsIgnoreCase("nether")) {
-                        if (!player.hasPermission(Permissions.TELEPORT_NETHER)) {
+                        if (!player.hasPermission(Permissions.TELEPORT_NETHER.getPermission())) {
                             player.sendMessage(MsgType.NO_PERMISSION.getMessage());
                             break;
                         }
@@ -108,7 +108,7 @@ public class Teleport extends SubCommand {
                         }
                         break;
                     } else if (args[1].equalsIgnoreCase("end")) {
-                        if (!player.hasPermission(Permissions.TELEPORT_END)) {
+                        if (!player.hasPermission(Permissions.TELEPORT_END.getPermission())) {
                             player.sendMessage(MsgType.NO_PERMISSION.getMessage());
                             return;
                         }

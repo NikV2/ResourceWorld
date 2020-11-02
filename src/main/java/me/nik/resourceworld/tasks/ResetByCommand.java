@@ -7,7 +7,6 @@ import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.managers.discord.Discord;
 import me.nik.resourceworld.utils.Messenger;
 import me.nik.resourceworld.utils.ResetTeleport;
-import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGenerator;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
@@ -24,7 +23,6 @@ public class ResetByCommand {
     private final WorldGenerator worldGenerator;
     private final WorldGeneratorNether worldGeneratorNether;
     private final WorldGeneratorEnd worldGeneratorEnd;
-    private final WorldCommands worldCommands;
     private final Teleport teleport;
 
     public ResetByCommand(ResourceWorld plugin) {
@@ -33,7 +31,6 @@ public class ResetByCommand {
         this.worldGenerator = new WorldGenerator();
         this.worldGeneratorNether = new WorldGeneratorNether();
         this.worldGeneratorEnd = new WorldGeneratorEnd();
-        this.worldCommands = new WorldCommands();
         this.teleport = new Teleport();
     }
 
@@ -52,7 +49,7 @@ public class ResetByCommand {
             e.printStackTrace();
         }
         worldGenerator.createWorld();
-        worldCommands.worldRunCommands();
+        WorldUtils.runWorldCommands();
         plugin.getServer().broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
         teleport.setResettingWorld(false);
         plugin.getData().set("world.papi", System.currentTimeMillis());
@@ -79,7 +76,7 @@ public class ResetByCommand {
             e.printStackTrace();
         }
         worldGeneratorNether.createWorld();
-        worldCommands.netherRunCommands();
+        WorldUtils.runNetherCommands();
         plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
         teleport.setResettingNether(false);
         plugin.getData().set("nether.papi", System.currentTimeMillis());
@@ -106,7 +103,7 @@ public class ResetByCommand {
             e.printStackTrace();
         }
         worldGeneratorEnd.createWorld();
-        worldCommands.endRunCommands();
+        WorldUtils.runEndCommands();
         plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
         teleport.setResettingEnd(false);
         plugin.getData().set("end.papi", System.currentTimeMillis());

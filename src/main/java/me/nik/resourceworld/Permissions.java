@@ -1,12 +1,18 @@
 package me.nik.resourceworld;
 
-public final class Permissions {
+public enum Permissions {
+    ADMIN("rw.admin"),
+    TELEPORT("rw.tp"),
+    TELEPORT_NETHER("rw.tp.nether"),
+    TELEPORT_END("rw.tp.end");
 
-    public static final String ADMIN = "rw.admin";
+    private final String permission;
 
-    public static final String TELEPORT = "rw.tp";
+    Permissions(String permission) {
+        this.permission = permission;
+    }
 
-    public static final String TELEPORT_NETHER = "rw.tp.nether";
-
-    public static final String TELEPORT_END = "rw.tp.end";
+    public String getPermission() {
+        return this.permission;
+    }
 }

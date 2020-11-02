@@ -37,7 +37,7 @@ public class Reset extends SubCommand {
 
     @Override
     public String getPermission() {
-        return Permissions.ADMIN;
+        return Permissions.ADMIN.getPermission();
     }
 
     @Override

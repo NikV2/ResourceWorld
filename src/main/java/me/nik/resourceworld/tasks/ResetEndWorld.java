@@ -6,7 +6,6 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.managers.discord.Discord;
 import me.nik.resourceworld.utils.ResetTeleport;
-import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGeneratorEnd;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
@@ -19,14 +18,12 @@ public class ResetEndWorld extends BukkitRunnable {
     private final ResourceWorld plugin;
     private final ResetTeleport resetTeleport;
     private final WorldGeneratorEnd worldGeneratorEnd;
-    private final WorldCommands worldCommands;
     private final Teleport teleport;
 
     public ResetEndWorld(ResourceWorld plugin) {
         this.plugin = plugin;
         this.resetTeleport = new ResetTeleport();
         this.worldGeneratorEnd = new WorldGeneratorEnd();
-        this.worldCommands = new WorldCommands();
         this.teleport = new Teleport();
     }
 
@@ -48,7 +45,7 @@ public class ResetEndWorld extends BukkitRunnable {
             e.printStackTrace();
         }
         worldGeneratorEnd.createWorld();
-        worldCommands.endRunCommands();
+        WorldUtils.runEndCommands();
         plugin.getServer().broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
         teleport.setResettingEnd(false);
         plugin.getData().set("end.papi", System.currentTimeMillis());

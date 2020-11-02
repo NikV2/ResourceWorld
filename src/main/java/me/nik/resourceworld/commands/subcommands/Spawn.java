@@ -34,7 +34,7 @@ public class Spawn extends SubCommand {
 
     @Override
     public String getPermission() {
-        return Permissions.TELEPORT;
+        return Permissions.TELEPORT.getPermission();
     }
 
     @Override

@@ -5,7 +5,28 @@ import org.bukkit.Bukkit;
 
 import java.io.File;
 
-public class WorldUtils {
+public final class WorldUtils {
+
+    public static void runWorldCommands() {
+        if (!Config.Setting.WORLD_COMMANDS_ENABLED.getBoolean()) return;
+        for (String cmd : Config.Setting.WORLD_COMMANDS_COMMANDS.getStringList()) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        }
+    }
+
+    public static void runNetherCommands() {
+        if (!Config.Setting.NETHER_COMMANDS_ENABLED.getBoolean()) return;
+        for (String cmd : Config.Setting.NETHER_COMMANDS_COMMANDS.getStringList()) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        }
+    }
+
+    public static void runEndCommands() {
+        if (!Config.Setting.END_COMMANDS_ENABLED.getBoolean()) return;
+        for (String cmd : Config.Setting.END_COMMANDS_COMMANDS.getStringList()) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        }
+    }
 
     public static void deleteDirectory(File directory) {
         if (directory.exists()) {

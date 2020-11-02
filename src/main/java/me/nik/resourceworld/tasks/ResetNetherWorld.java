@@ -6,7 +6,6 @@ import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.managers.discord.Discord;
 import me.nik.resourceworld.utils.ResetTeleport;
-import me.nik.resourceworld.utils.WorldCommands;
 import me.nik.resourceworld.utils.WorldGeneratorNether;
 import me.nik.resourceworld.utils.WorldUtils;
 import org.bukkit.Bukkit;
@@ -19,14 +18,12 @@ public class ResetNetherWorld extends BukkitRunnable {
     private final ResourceWorld plugin;
     private final ResetTeleport resetTeleport;
     private final WorldGeneratorNether worldGeneratorNether;
-    private final WorldCommands worldCommands;
     private final Teleport teleport;
 
     public ResetNetherWorld(ResourceWorld plugin) {
         this.plugin = plugin;
         this.resetTeleport = new ResetTeleport();
         this.worldGeneratorNether = new WorldGeneratorNether();
-        this.worldCommands = new WorldCommands();
         this.teleport = new Teleport();
     }
 
@@ -48,7 +45,7 @@ public class ResetNetherWorld extends BukkitRunnable {
             e.printStackTrace();
         }
         worldGeneratorNether.createWorld();
-        worldCommands.netherRunCommands();
+        WorldUtils.runNetherCommands();
         plugin.getServer().broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
         teleport.setResettingNether(false);
         plugin.getData().set("nether.papi", System.currentTimeMillis());
