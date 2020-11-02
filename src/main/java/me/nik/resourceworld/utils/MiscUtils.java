@@ -6,6 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MiscUtils {
 
+    private MiscUtils() {
+    }
+
     private static final boolean legacy = Bukkit.getVersion().contains("1.8")
             || Bukkit.getVersion().contains("1.9")
             || Bukkit.getVersion().contains("1.10")

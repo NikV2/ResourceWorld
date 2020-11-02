@@ -5,6 +5,9 @@ import org.bukkit.ChatColor;
 
 public class Messenger {
 
+    private Messenger() {
+    }
+
     /**
      * @param msg The message to format
      * @return The formatted message

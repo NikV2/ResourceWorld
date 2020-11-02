@@ -6,6 +6,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class TaskUtils {
 
+    private TaskUtils() {
+    }
+
     private static final ResourceWorld plugin = ResourceWorld.getInstance();
 
     public static BukkitTask taskTimer(Runnable runnable, long delay, long interval) {

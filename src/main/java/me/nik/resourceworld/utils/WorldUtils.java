@@ -7,6 +7,9 @@ import java.io.File;
 
 public final class WorldUtils {
 
+    private WorldUtils() {
+    }
+
     public static void runWorldCommands() {
         if (!Config.Setting.WORLD_COMMANDS_ENABLED.getBoolean()) return;
         for (String cmd : Config.Setting.WORLD_COMMANDS_COMMANDS.getStringList()) {
