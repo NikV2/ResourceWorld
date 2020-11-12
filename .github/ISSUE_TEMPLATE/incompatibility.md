@@ -1,16 +1,11 @@
 ---
 name: Incompatibility
 about: Report a plugin that does not run well with this one.
-title: ''
+title: "[INCOMPATIBILITY]"
 labels: Incompatibility
-assignees: ''
+assignees: NikV2
 
 ---
-
-**Discord**
-Provide your Discord username and ID (ie: User#4252)
-Make sure you're Verified on our Discord otherwise this will
-Be marked as Invalid.
 
 **Does the issue still persist on the default config?**
 Yes/No
