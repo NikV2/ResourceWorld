@@ -19,5 +19,4 @@ Yes/No
 **Server Environment & Version**
 Your server software (ie Paper 1.12.2)
 
-**Additional Information**
-Add any other context about the error here.
+**Additional Information (Optional)**
