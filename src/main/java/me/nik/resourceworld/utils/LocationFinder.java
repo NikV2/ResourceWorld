@@ -28,7 +28,7 @@ public class LocationFinder {
         switch (environment) {
             case NETHER:
                 x = randomInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
-                y = 80;
+                y = 60;
                 z = randomInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
                 boolean safe = false;
                 while (!safe) {
@@ -89,6 +89,21 @@ public class LocationFinder {
         if (ground.isLiquid()) {
             return false;
         }
+
+        if (location.getWorld().getEnvironment() == World.Environment.NETHER) {
+            final double expand = 0.35;
+            for (double x = -expand; x <= expand; x += expand) {
+                for (double z = -expand; z <= expand; z += expand) {
+                    Block block1 = location.clone().add(z, 0, x).getBlock();
+                    Block block2 = location.clone().add(z, -0.001, x).getBlock();
+                    //Gotta do contains due to the material name changes between 1.8-1.16, Not efficient.
+                    //TODO: Use enums for material names and initialize them on startup instead of this lazy ass method
+                    if (block1.getType().name().contains("LAVA") || block2.getType().name().contains("LAVA"))
+                        return true;
+                }
+            }
+        }
+
         return !feet.getLocation().add(0, -1, 0).getBlock().isLiquid();
     }
 
