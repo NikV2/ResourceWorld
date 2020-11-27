@@ -1,17 +1,14 @@
 ---
-name: Bug Report
-about: Make a bug report.
-title: "[BUG]"
-labels: Bug
+name: Error
+about: Report an error.
+title: "[ERROR]"
+labels: Error
 assignees: NikV2
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior.
+**Error(s)**
+Provide a Pastebin link with your error.
 
 **Does the issue still persist on the default config?**
 Yes/No
