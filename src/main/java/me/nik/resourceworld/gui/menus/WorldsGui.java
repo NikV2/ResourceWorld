@@ -1,12 +1,10 @@
 package me.nik.resourceworld.gui.menus;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.gui.Menu;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
 import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.tasks.ResetByCommand;
-import me.nik.resourceworld.utils.WorldUtils;
+import me.nik.resourceworld.managers.custom.ResourceWorldType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,21 +30,18 @@ public class WorldsGui extends Menu {
         Player p = (Player) e.getWhoClicked();
         switch (e.getSlot()) {
             case 13:
-                if (WorldUtils.worldExists()) {
+                if (this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_WORLD).reset()) {
                     p.closeInventory();
-                    new ResetByCommand(plugin).executeReset();
                 }
                 break;
             case 11:
-                if (Config.Setting.NETHER_ENABLED.getBoolean()) {
+                if (this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_NETHER).reset()) {
                     p.closeInventory();
-                    new ResetByCommand(plugin).executeNetherReset();
                 }
                 break;
             case 15:
-                if (Config.Setting.END_ENABLED.getBoolean()) {
+                if (this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_END).reset()) {
                     p.closeInventory();
-                    new ResetByCommand(plugin).executeEndReset();
                 }
                 break;
             case 31:

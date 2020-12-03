@@ -7,7 +7,6 @@ public enum MsgType {
     PREFIX(Messenger.format(ResourceWorld.getInstance().getLang().getString("prefix"))),
     UPDATE_FOUND(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("update_found"))),
     DISABLED_COMMAND(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("disabled_command"))),
-    DELETING(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("deleting"))),
     RESETTING_THE_WORLD(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("resetting_the_world"))),
     RESETTING_THE_NETHER(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("resetting_the_nether"))),
     RESETTING_THE_END(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("resetting_the_end"))),
@@ -27,7 +26,6 @@ public enum MsgType {
     TELEPORT_PAID(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleport_paid"))),
     TELEPORT_ERROR(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleport_error"))),
     TELEPORTED_PLAYERS(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleported_players"))),
-    TELEPORTING_PLAYER(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("teleporting_player"))),
     MAIN_WORLD_ERROR(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("main_world_error"))),
     UPDATE_NOT_FOUND(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("update_not_found"))),
     UPDATE_DISABLED(PREFIX.getMessage() + Messenger.format(ResourceWorld.getInstance().getLang().getString("update_disabled")));

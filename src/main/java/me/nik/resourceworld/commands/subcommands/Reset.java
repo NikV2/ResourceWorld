@@ -5,7 +5,7 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.tasks.ResetByCommand;
+import me.nik.resourceworld.managers.custom.ResourceWorldType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class Reset extends SubCommand {
 
-    private final ResetByCommand resetByCommand;
+    private final ResourceWorld plugin;
 
     public Reset(ResourceWorld plugin) {
-        this.resetByCommand = new ResetByCommand(plugin);
+        this.plugin = plugin;
     }
 
     @Override
@@ -52,24 +52,26 @@ public class Reset extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            if (worldExists(Config.Setting.WORLD_NAME.getString())) {
-                resetByCommand.executeReset();
-            } else {
-                sender.sendMessage(MsgType.NOT_EXIST.getMessage());
-            }
-        } else if (args.length == 2 && args[1].equalsIgnoreCase("nether")) {
-            if (worldExists(Config.Setting.NETHER_NAME.getString())) {
-                resetByCommand.executeNetherReset();
-            } else {
-                sender.sendMessage(MsgType.NOT_EXIST.getMessage());
-            }
-        } else if (args.length == 2 && args[1].equalsIgnoreCase("end")) {
-            if (worldExists(Config.Setting.END_NAME.getString())) {
-                resetByCommand.executeEndReset();
-            }
-        } else {
-            sender.sendMessage(MsgType.NOT_EXIST.getMessage());
+        switch (args.length) {
+            case 1:
+                if (!this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_WORLD).reset()) {
+                    sender.sendMessage(MsgType.NOT_EXIST.getMessage());
+                }
+                break;
+            case 2:
+                switch (args[1].toLowerCase()) {
+                    case "nether":
+                        if (!this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_NETHER).reset()) {
+                            sender.sendMessage(MsgType.NOT_EXIST.getMessage());
+                        }
+                        break;
+                    case "end":
+                        if (!this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_END).reset()) {
+                            sender.sendMessage(MsgType.NOT_EXIST.getMessage());
+                        }
+                        break;
+                }
+                break;
         }
     }
 
@@ -78,19 +80,15 @@ public class Reset extends SubCommand {
 
         if (args.length == 2) {
             List<String> worlds = new ArrayList<>();
-            if (worldExists(Config.Setting.NETHER_NAME.getString())) {
+            if (Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()) != null) {
                 worlds.add("nether");
             }
-            if (worldExists(Config.Setting.END_NAME.getString())) {
+            if (Bukkit.getWorld(Config.Setting.END_NAME.getString()) != null) {
                 worlds.add("end");
             }
             return worlds;
         }
 
         return null;
-    }
-
-    private boolean worldExists(String world) {
-        return Bukkit.getWorld(world) != null;
     }
 }
