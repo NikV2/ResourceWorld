@@ -47,25 +47,25 @@ public class PapiHook extends PlaceholderExpansion {
                 if (!Config.Setting.WORLD_ENABLED.getBoolean() && !Config.Setting.WORLD_RESETS_ENABLED.getBoolean())
                     return "";
                 if (Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-                    return MiscUtils.getDurationBreakdown((Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 3600000L + plugin.getData().getLong("world.millis")) - System.currentTimeMillis());
+                    return MiscUtils.getDurationBreakdown((Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 3600000 + plugin.getData().getLong("world.millis")) - System.currentTimeMillis());
                 } else {
-                    return MiscUtils.getDurationBreakdown((Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 3600000L + plugin.getData().getLong("world.papi")) - System.currentTimeMillis());
+                    return MiscUtils.getDurationBreakdown((Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 3600000 + plugin.getData().getLong("world.papi")) - System.currentTimeMillis());
                 }
             case "nether":
                 if (!Config.Setting.NETHER_ENABLED.getBoolean() && !Config.Setting.NETHER_RESETS_ENABLED.getBoolean())
                     return "";
                 if (Config.Setting.NETHER_STORE_TIME.getBoolean()) {
-                    return MiscUtils.getDurationBreakdown((Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 3600000L + plugin.getData().getLong("world.millis")) - System.currentTimeMillis());
+                    return MiscUtils.getDurationBreakdown((Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 3600000 + plugin.getData().getLong("nether.millis")) - System.currentTimeMillis());
                 } else {
-                    return MiscUtils.getDurationBreakdown((Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 3600000L + plugin.getData().getLong("world.papi")) - System.currentTimeMillis());
+                    return MiscUtils.getDurationBreakdown((Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 3600000 + plugin.getData().getLong("nether.papi")) - System.currentTimeMillis());
                 }
             case "end":
                 if (!Config.Setting.END_ENABLED.getBoolean() && !Config.Setting.END_RESETS_ENABLED.getBoolean())
                     return "";
                 if (Config.Setting.END_STORE_TIME.getBoolean()) {
-                    return MiscUtils.getDurationBreakdown((Config.Setting.END_RESETS_INTERVAL.getInt() * 3600000L + plugin.getData().getLong("world.millis")) - System.currentTimeMillis());
+                    return MiscUtils.getDurationBreakdown((Config.Setting.END_RESETS_INTERVAL.getInt() * 3600000 + plugin.getData().getLong("end.millis")) - System.currentTimeMillis());
                 } else {
-                    return MiscUtils.getDurationBreakdown((Config.Setting.END_RESETS_INTERVAL.getInt() * 3600000L + plugin.getData().getLong("world.papi")) - System.currentTimeMillis());
+                    return MiscUtils.getDurationBreakdown((Config.Setting.END_RESETS_INTERVAL.getInt() * 3600000 + plugin.getData().getLong("end.papi")) - System.currentTimeMillis());
                 }
         }
         return null;
