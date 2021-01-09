@@ -21,60 +21,10 @@ public class Discord {
         this.color = color;
     }
 
-    public void sendNotification(String fieldName, String fieldValue) {
-        if (!enabled) return;
-        if (url == null || url.isEmpty()) return;
-        TaskUtils.taskLaterAsync(() -> {
-            DiscordWebhook discord = new DiscordWebhook(url);
-            discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
-                    .setDescription(description)
-                    .setColor(color)
-                    .addField(fieldName, fieldValue));
-            try {
-                discord.execute();
-            } catch (IOException ignored) {
-            }
-        }, 20);
-    }
-
-    public void sendNotification(String fieldName, String fieldValue, String fieldNameTwo, String fieldValueTwo) {
-        if (!enabled) return;
-        if (url == null || url.isEmpty()) return;
-        TaskUtils.taskLaterAsync(() -> {
-            DiscordWebhook discord = new DiscordWebhook(url);
-            discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
-                    .setDescription(description)
-                    .setColor(color)
-                    .addField(fieldName, fieldValue)
-                    .addField(fieldNameTwo, fieldValueTwo));
-            try {
-                discord.execute();
-            } catch (IOException ignored) {
-            }
-        }, 20);
-    }
-
-    public void sendNotification(String fieldName, String fieldValue, String fieldNameTwo, String fieldValueTwo, String fieldNameThree, String fieldValueThree) {
-        if (!enabled) return;
-        if (url == null || url.isEmpty()) return;
-        TaskUtils.taskLaterAsync(() -> {
-            DiscordWebhook discord = new DiscordWebhook(url);
-            discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
-                    .setDescription(description)
-                    .setColor(color)
-                    .addField(fieldName, fieldValue)
-                    .addField(fieldNameTwo, fieldValueTwo)
-                    .addField(fieldNameThree, fieldValueThree));
-            try {
-                discord.execute();
-            } catch (IOException ignored) {
-            }
-        }, 20);
-    }
-
     public void sendNotification() {
         if (!enabled) return;
         if (url == null || url.isEmpty()) return;
+
         TaskUtils.taskLaterAsync(() -> {
             DiscordWebhook discord = new DiscordWebhook(url);
             discord.addEmbed(new DiscordWebhook.EmbedObject().setTitle(title)
