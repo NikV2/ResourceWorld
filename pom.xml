@@ -6,7 +6,7 @@
 
     <groupId>me.nik</groupId>
     <artifactId>ResourceWorld</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <packaging>jar</packaging>
 
     <name>ResourceWorld</name>
