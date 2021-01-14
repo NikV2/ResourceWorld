@@ -328,7 +328,7 @@ public final class ResourceWorld extends JavaPlugin {
             pm.registerEvents(new CommandsNether(), this);
         }
         if (Config.Setting.SETTINGS_TELEPORT_TO_SPAWN.getBoolean()) {
-            pm.registerEvents(new LeaveInWorld(), this);
+            pm.registerEvents(new LeaveInWorld(this), this);
         }
         if (Config.Setting.WORLD_DISABLE_EXPLOSIONS.getBoolean()) {
             pm.registerEvents(new Explosion(), this);

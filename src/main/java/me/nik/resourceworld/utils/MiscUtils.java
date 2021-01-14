@@ -1,6 +1,8 @@
 package me.nik.resourceworld.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +51,43 @@ public class MiscUtils {
         }
 
         return (sb.toString());
+    }
+
+    /**
+     * Convert a location to a string seperated by a comma
+     * So you can later grab it and convert it to a location by splitting the comma
+     *
+     * @param location The location
+     * @return The location as a string
+     */
+    public static String locationToString(final Location location) {
+        return location.getX() + "," +
+                location.getY() + "," +
+                location.getZ() + "," +
+                location.getWorld().getName();
+    }
+
+    /**
+     * Convert a string to a location
+     *
+     * @param location The location as a string
+     * @return The bukkit location
+     */
+    public static Location stringToLocation(final String location) {
+        final String[] data = location.split(",");
+
+        try {
+            final double x = Double.parseDouble(data[0]);
+            final double y = Double.parseDouble(data[1]);
+            final double z = Double.parseDouble(data[2]);
+            final World world = Bukkit.getWorld(data[3]);
+
+            return new Location(world, x, y, z);
+        } catch (NumberFormatException | NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static boolean isLegacy() {

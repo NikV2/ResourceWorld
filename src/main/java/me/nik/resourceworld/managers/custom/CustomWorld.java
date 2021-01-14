@@ -175,6 +175,7 @@ public class CustomWorld {
 
         plugin.saveData();
         plugin.reloadData();
+        plugin.saveData();
 
         return true;
     }

@@ -1,10 +1,12 @@
 package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.Permissions;
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
-import org.bukkit.Bukkit;
+import me.nik.resourceworld.managers.custom.CustomWorld;
+import me.nik.resourceworld.utils.MiscUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,6 +18,12 @@ import java.util.UUID;
 public class Spawn extends SubCommand {
 
     private final HashMap<UUID, Long> cooldown = new HashMap<>();
+
+    private final ResourceWorld plugin;
+
+    public Spawn(ResourceWorld plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public String getName() {
@@ -49,26 +57,41 @@ public class Spawn extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            Player player = (Player) sender;
-            if (Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()) == null) {
-                player.sendMessage(MsgType.MAIN_WORLD_ERROR.getMessage());
+
+        Player p = (Player) sender;
+
+        final String playerWorld = p.getWorld().getName();
+
+        for (CustomWorld rw : this.plugin.getResourceWorlds().values()) {
+            if (!rw.getName().equals(playerWorld)) {
+                p.sendMessage(MsgType.RESOURCEWORLD_SPAWN_TELEPORT.getMessage());
                 return;
             }
-            final UUID uuid = player.getUniqueId();
+        }
+
+        Location spawn = MiscUtils.stringToLocation(this.plugin.getData().getString("main_spawn"));
+
+        if (spawn == null) {
+            p.sendMessage(MsgType.MAIN_WORLD_ERROR.getMessage());
+            return;
+        }
+
+        if (!p.hasPermission(Permissions.ADMIN.getPermission())) {
+            final UUID uuid = p.getUniqueId();
             if (cooldown.containsKey(uuid)) {
                 long secondsleft = ((cooldown.get(uuid) / 1000) + Config.Setting.SETTINGS_SPAWN_COOLDOWN.getInt()) - (System.currentTimeMillis() / 1000);
                 if (secondsleft > 0) {
-                    player.sendMessage(MsgType.COOLDOWN_SPAWN.getMessage().replace("%seconds%", String.valueOf(secondsleft)));
+                    p.sendMessage(MsgType.COOLDOWN_SPAWN.getMessage().replace("%seconds%", String.valueOf(secondsleft)));
                     return;
                 }
                 cooldown.remove(uuid);
             }
-            final Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
-            player.teleport(loc);
-            player.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
+
             cooldown.put(uuid, System.currentTimeMillis());
         }
+
+        p.teleport(spawn);
+        p.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
     }
 
     @Override

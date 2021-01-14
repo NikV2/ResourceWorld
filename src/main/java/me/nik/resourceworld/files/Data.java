@@ -1,5 +1,7 @@
 package me.nik.resourceworld.files;
 
+import me.nik.resourceworld.utils.MiscUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,6 +12,8 @@ import java.io.IOException;
 public class Data {
     private File file;
     private FileConfiguration data;
+
+    //TODO: Make values cached to improve perfomance, Or transfer these into my new config system
 
     public void setup(JavaPlugin plugin) {
         file = new File(plugin.getDataFolder(), "data.yml");
@@ -49,5 +53,6 @@ public class Data {
         get().addDefault("end.timer", 0);
         get().addDefault("end.millis", 0);
         get().addDefault("end.papi", 0);
+        get().addDefault("main_spawn", MiscUtils.locationToString(Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation()));
     }
 }
