@@ -1,7 +1,5 @@
 package me.nik.resourceworld.files;
 
-import me.nik.resourceworld.utils.MiscUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,6 +51,5 @@ public class Data {
         get().addDefault("end.timer", 0);
         get().addDefault("end.millis", 0);
         get().addDefault("end.papi", 0);
-        get().addDefault("main_spawn", MiscUtils.locationToString(Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation()));
     }
 }

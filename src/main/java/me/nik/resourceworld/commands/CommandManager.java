@@ -4,8 +4,6 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.subcommands.Menu;
 import me.nik.resourceworld.commands.subcommands.Reload;
 import me.nik.resourceworld.commands.subcommands.Reset;
-import me.nik.resourceworld.commands.subcommands.SetSpawn;
-import me.nik.resourceworld.commands.subcommands.Spawn;
 import me.nik.resourceworld.commands.subcommands.Teleport;
 import me.nik.resourceworld.managers.MsgType;
 import org.bukkit.ChatColor;
@@ -30,8 +28,6 @@ public class CommandManager implements TabExecutor {
         subcommands.add(new Reload(plugin));
         subcommands.add(new Menu(plugin));
         subcommands.add(new Reset(plugin));
-        subcommands.add(new Spawn(plugin));
-        subcommands.add(new SetSpawn(plugin));
     }
 
     @Override

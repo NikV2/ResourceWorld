@@ -1,8 +1,9 @@
 package me.nik.resourceworld.listeners;
 
 import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.custom.CustomWorld;
-import me.nik.resourceworld.utils.MiscUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class LeaveInWorld implements Listener {
         for (CustomWorld rw : this.plugin.getResourceWorlds().values()) {
             if (!rw.getName().equals(world)) continue;
 
-            Location loc = MiscUtils.stringToLocation(this.plugin.getData().getString("main_spawn"));
+            Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
 
             if (loc != null) {
                 p.teleport(loc);
