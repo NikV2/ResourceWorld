@@ -74,6 +74,7 @@ public class Config {
         SETTINGS_SPAWN_WORLD("settings.main_spawn_world", "world", "The world that the player will Teleport to once a Reset Happens"),
         SETTINGS_TELEPORT_TO_SPAWN("settings.teleport_to_spawn_on_quit", true, "If a player quits inside a resource world, Should we teleport him to spawn?"),
         SETTINGS_SPAWN_COOLDOWN("settings.spawn_cooldown", 30, "The /resource spawn command cooldown (Interval in seconds)"),
+        SETTINGS_RESET_FORMAT("settings.reset_format", "%days% days %hours% hours %minutes% minutes %seconds% seconds", "Sets the format of the remaining time."),
         SETTINGS_DISCORD("settings.discord", "", "Discord integration settings"),
         SETTINGS_DISCORD_ENABLED("settings.discord.enabled", false, "Would you Resource World to sync with your Discord Server by using a Webhook?"),
         SETTINGS_DISCORD_URL("settings.discord.url", "", "Insert the channel webhook URL below"),

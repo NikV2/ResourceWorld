@@ -1,6 +1,8 @@
 package me.nik.resourceworld.utils;
 
+import me.nik.resourceworld.files.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -30,27 +32,43 @@ public class MiscUtils {
         millis -= TimeUnit.HOURS.toMillis(hours);
         final long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
         millis -= TimeUnit.MINUTES.toMillis(minutes);
+
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        StringBuilder sb = new StringBuilder(64);
+        String format = Config.Setting.SETTINGS_RESET_FORMAT.getString();
         if (days > 0) {
-            sb.append(days);
-            sb.append(" Days ");
-        }
-        if (hours > 0) {
-            sb.append(hours);
-            sb.append(" Hours ");
-        }
-        if (minutes > 0) {
-            sb.append(minutes);
-            sb.append(" Minutes ");
-        }
-        if (seconds > 0) {
-            sb.append(seconds);
-            sb.append(" Seconds");
+            format = format.replace("%days%", String.valueOf(days));
+
+        }else{
+            format = format.replace("%days%", String.valueOf(0));
+
         }
 
-        return (sb.toString());
+        if (hours > 0) {
+            format = format.replace("%hours%", String.valueOf(hours));
+
+        }else{
+            format = format.replace("%hours%", String.valueOf(0));
+
+        }
+
+        if (minutes > 0) {
+            format = format.replace("%minutes%", String.valueOf(minutes));
+
+        }else{
+            format = format.replace("%minutes%", String.valueOf(0));
+
+        }
+
+        if (seconds > 0) {
+            format = format.replace("%seconds%", String.valueOf(seconds));
+
+        }else{
+            format = format.replace("%seconds%", String.valueOf(0));
+
+        }
+
+        return (ChatColor.translateAlternateColorCodes('&', format));
     }
 
     /**
