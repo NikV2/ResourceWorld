@@ -1,11 +1,13 @@
 package me.nik.resourceworld.utils;
 
+import me.nik.resourceworld.managers.custom.ResourceWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class Messenger {
 
     private Messenger() {
+        throw new ResourceWorldException("This is a static class dummy!");
     }
 
     /**

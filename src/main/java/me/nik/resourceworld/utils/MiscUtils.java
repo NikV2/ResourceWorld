@@ -1,8 +1,8 @@
 package me.nik.resourceworld.utils;
 
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.custom.ResourceWorldException;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class MiscUtils {
 
     private MiscUtils() {
+        throw new ResourceWorldException("This is a static class dummy!");
     }
 
     private static final boolean legacy = Bukkit.getVersion().contains("1.8")
@@ -37,38 +38,38 @@ public class MiscUtils {
 
         String format = Config.Setting.SETTINGS_RESET_FORMAT.getString();
         if (days > 0) {
+
             format = format.replace("%days%", String.valueOf(days));
+        } else {
 
-        }else{
             format = format.replace("%days%", String.valueOf(0));
-
         }
 
         if (hours > 0) {
+
             format = format.replace("%hours%", String.valueOf(hours));
+        } else {
 
-        }else{
             format = format.replace("%hours%", String.valueOf(0));
-
         }
 
         if (minutes > 0) {
+
             format = format.replace("%minutes%", String.valueOf(minutes));
+        } else {
 
-        }else{
             format = format.replace("%minutes%", String.valueOf(0));
-
         }
 
         if (seconds > 0) {
+
             format = format.replace("%seconds%", String.valueOf(seconds));
+        } else {
 
-        }else{
             format = format.replace("%seconds%", String.valueOf(0));
-
         }
 
-        return (ChatColor.translateAlternateColorCodes('&', format));
+        return Messenger.format(format);
     }
 
     /**

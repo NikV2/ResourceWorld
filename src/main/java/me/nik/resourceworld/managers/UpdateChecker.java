@@ -1,5 +1,6 @@
 package me.nik.resourceworld.managers;
 
+import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.event.EventHandler;
@@ -45,12 +46,19 @@ public class UpdateChecker extends BukkitRunnable implements Listener {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-        return reader.readLine();
+        final String line = reader.readLine();
+
+        reader.close();
+
+        return line;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if (!e.getPlayer().hasPermission("rw.admin")) return;
-        e.getPlayer().sendMessage(MsgType.UPDATE_FOUND.getMessage().replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
+        if (!e.getPlayer().hasPermission(Permissions.ADMIN.getPermission())) return;
+
+        e.getPlayer().sendMessage(MsgType.UPDATE_FOUND.getMessage()
+                .replace("%current%", plugin.getDescription().getVersion())
+                .replace("%new%", newVersion));
     }
 }

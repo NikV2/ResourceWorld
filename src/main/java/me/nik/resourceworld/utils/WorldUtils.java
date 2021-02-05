@@ -1,10 +1,13 @@
 package me.nik.resourceworld.utils;
 
+import me.nik.resourceworld.managers.custom.ResourceWorldException;
+
 import java.io.File;
 
 public final class WorldUtils {
 
     private WorldUtils() {
+        throw new ResourceWorldException("This is a static class dummy!");
     }
 
     public static void deleteDirectory(File directory) {

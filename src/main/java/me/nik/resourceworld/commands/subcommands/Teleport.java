@@ -114,16 +114,18 @@ public class Teleport extends SubCommand {
      * This is ugly, but i'm lazy to re-code this
      */
     private void teleport(Player p, World world) {
-        UUID uuid = p.getUniqueId();
+        final UUID uuid = p.getUniqueId();
         if (cooldown.containsKey(uuid)) {
-            long secondsleft = ((cooldown.get(uuid) / 1000) + Config.Setting.TELEPORT_COOLDOWN.getInt()) - (System.currentTimeMillis() / 1000);
+            long secondsleft = ((cooldown.get(uuid) / 1000L) + Config.Setting.TELEPORT_COOLDOWN.getInt()) - (System.currentTimeMillis() / 1000L);
             if (secondsleft > 0) {
                 p.sendMessage(MsgType.COOLDOWN_MESSAGE.getMessage().replaceAll("%seconds%", String.valueOf(secondsleft)));
                 return;
             }
             cooldown.remove(uuid);
         }
+
         if (!dealWithCash(p)) return;
+
         if (Config.Setting.TELEPORT_DELAY.getInt() < 1) {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());

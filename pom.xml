@@ -6,7 +6,7 @@
 
     <groupId>me.nik</groupId>
     <artifactId>ResourceWorld</artifactId>
-    <version>1.9.3</version>
+    <version>1.9.4</version>
     <packaging>jar</packaging>
 
     <name>ResourceWorld</name>
@@ -45,7 +45,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>io.papermc.lib</pattern>
-                                    <shadedPattern>me.nik.resourceworld.paperlib</shadedPattern>
+                                    <shadedPattern>resourceworld_libs.paperlib</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -95,14 +95,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
             <scope>compile</scope>
         </dependency>
 
