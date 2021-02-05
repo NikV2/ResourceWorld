@@ -1,6 +1,5 @@
-package me.nik.resourceworld.listeners;
+package me.nik.resourceworld.gui;
 
-import me.nik.resourceworld.gui.Menu;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,5 +23,4 @@ public class GuiListener implements Listener {
         Menu menu = (Menu) holder;
         menu.handleMenu(e);
     }
-
 }

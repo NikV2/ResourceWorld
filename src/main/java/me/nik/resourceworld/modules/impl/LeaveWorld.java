@@ -1,25 +1,23 @@
-package me.nik.resourceworld.listeners;
+package me.nik.resourceworld.modules.impl;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.custom.CustomWorld;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class LeaveInWorld implements Listener {
+public class LeaveWorld extends ListenerModule {
 
-    private final ResourceWorld plugin;
-
-    public LeaveInWorld(ResourceWorld plugin) {
-        this.plugin = plugin;
+    public LeaveWorld(ResourceWorld plugin) {
+        super(Config.Setting.SETTINGS_TELEPORT_TO_SPAWN.getBoolean(), plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onLeave(PlayerQuitEvent e) {
 
         final Player p = e.getPlayer();

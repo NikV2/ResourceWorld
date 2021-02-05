@@ -1,20 +1,25 @@
-package me.nik.resourceworld.listeners.explosion;
+package me.nik.resourceworld.modules.impl.explosion;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-public class ExplosionNether implements Listener {
+public class ExplosionEnd extends ListenerModule {
+
+    public ExplosionEnd(ResourceWorld plugin) {
+        super(Config.Setting.END_DISABLE_EXPLOSIONS.getBoolean(), plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplode(EntityExplodeEvent e) {
         Entity entity = e.getEntity();
         String world = entity.getWorld().getName();
-        if (!world.equals(Config.Setting.NETHER_NAME.getString())) return;
+        if (!world.equals(Config.Setting.END_NAME.getString())) return;
         e.setCancelled(true);
     }
 
@@ -23,7 +28,7 @@ public class ExplosionNether implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)) return;
         Entity entity = e.getEntity();
         String world = entity.getWorld().getName();
-        if (!world.equals(Config.Setting.NETHER_NAME.getString())) return;
+        if (!world.equals(Config.Setting.END_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

@@ -1,12 +1,17 @@
-package me.nik.resourceworld.listeners.suffocation;
+package me.nik.resourceworld.modules.impl.suffocation;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class SuffocationEnd implements Listener {
+public class SuffocationEnd extends ListenerModule {
+
+    public SuffocationEnd(ResourceWorld plugin) {
+        super(Config.Setting.END_DISABLE_SUFFOCATION.getBoolean(), plugin);
+    }
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {

@@ -1,15 +1,20 @@
-package me.nik.resourceworld.listeners.entityspawning;
+package me.nik.resourceworld.modules.impl.entityspawning;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-public class EntitySpawning implements Listener {
+public class EntitySpawning extends ListenerModule {
+
+    public EntitySpawning(ResourceWorld plugin) {
+        super(Config.Setting.WORLD_DISABLE_ENTITY_SPAWNING.getBoolean(), plugin);
+    }
 
     @EventHandler
     public void onEntitySpawn(CreatureSpawnEvent e) {

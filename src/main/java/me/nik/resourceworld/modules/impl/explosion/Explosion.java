@@ -1,14 +1,19 @@
-package me.nik.resourceworld.listeners.explosion;
+package me.nik.resourceworld.modules.impl.explosion;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-public class Explosion implements Listener {
+public class Explosion extends ListenerModule {
+
+    public Explosion(ResourceWorld plugin) {
+        super(Config.Setting.WORLD_DISABLE_EXPLOSIONS.getBoolean(), plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onExplode(EntityExplodeEvent e) {

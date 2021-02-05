@@ -1,12 +1,17 @@
-package me.nik.resourceworld.listeners.suffocation;
+package me.nik.resourceworld.modules.impl.suffocation;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class Suffocation implements Listener {
+public class SuffocationNether extends ListenerModule {
+
+    public SuffocationNether(ResourceWorld plugin) {
+        super(Config.Setting.NETHER_DISABLE_SUFFOCATION.getBoolean(), plugin);
+    }
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
@@ -14,7 +19,7 @@ public class Suffocation implements Listener {
         if (!(e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION)) return;
         Player p = (Player) e.getEntity();
         String world = p.getWorld().getName();
-        if (!world.equals(Config.Setting.WORLD_NAME.getString())) return;
+        if (!world.equals(Config.Setting.NETHER_NAME.getString())) return;
         e.setCancelled(true);
     }
 }

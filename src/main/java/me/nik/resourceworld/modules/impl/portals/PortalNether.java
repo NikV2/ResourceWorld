@@ -1,15 +1,20 @@
-package me.nik.resourceworld.listeners.portals;
+package me.nik.resourceworld.modules.impl.portals;
 
+import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class PortalNether implements Listener {
+public class PortalNether extends ListenerModule {
+
+    public PortalNether(ResourceWorld plugin) {
+        super(Config.Setting.NETHER_PORTALS_ENABLED.getBoolean(), plugin);
+    }
 
     @EventHandler
     public void onPortalWorld(PlayerPortalEvent e) {
