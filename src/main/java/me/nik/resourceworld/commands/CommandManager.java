@@ -19,7 +19,7 @@ public class CommandManager implements TabExecutor {
 
     private final ResourceWorld plugin;
 
-    private final ArrayList<SubCommand> subcommands = new ArrayList<>();
+    private final List<SubCommand> subcommands = new ArrayList<>();
 
     public CommandManager(ResourceWorld plugin) {
         this.plugin = plugin;
@@ -65,7 +65,7 @@ public class CommandManager implements TabExecutor {
         return true;
     }
 
-    public ArrayList<SubCommand> getSubcommands() {
+    public List<SubCommand> getSubcommands() {
         return subcommands;
     }
 

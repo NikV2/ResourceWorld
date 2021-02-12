@@ -78,7 +78,7 @@ public final class ResourceWorld extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        //Dis initialize modules
+        //DisInitialize modules
         this.modules.forEach(ListenerModule::disInit);
 
         //Store Time Left
@@ -141,47 +141,53 @@ public final class ResourceWorld extends JavaPlugin {
         this.resourceWorlds.clear();
 
         if (Config.Setting.WORLD_ENABLED.getBoolean()) {
-            this.resourceWorlds.put(ResourceWorldType.RESOURCE_WORLD, new CustomWorld(Config.Setting.WORLD_NAME.getString(),
-                    Difficulty.valueOf(Config.Setting.WORLD_DIFFICULTY.getString()),
-                    WorldType.valueOf(Config.Setting.WORLD_TYPE.getString()),
-                    World.Environment.valueOf(Config.Setting.WORLD_ENVIRONMENT.getString()),
-                    Config.Setting.WORLD_GENERATE_STRUCTURES.getBoolean(),
-                    Config.Setting.WORLD_SEED_ENABLED.getBoolean(),
-                    Config.Setting.WORLD_SEED.getLong(),
-                    Config.Setting.WORLD_BORDER_ENABLED.getBoolean(),
-                    Config.Setting.WORLD_BORDER_SIZE.getInt(),
-                    Config.Setting.WORLD_PVP.getBoolean(),
-                    Config.Setting.WORLD_KEEP_INVENTORY.getBoolean(),
+            this.resourceWorlds.put(
+                    ResourceWorldType.RESOURCE_WORLD,
+                    new CustomWorld(Config.Setting.WORLD_NAME.getString(),
+                            Difficulty.valueOf(Config.Setting.WORLD_DIFFICULTY.getString()),
+                            WorldType.valueOf(Config.Setting.WORLD_TYPE.getString()),
+                            World.Environment.valueOf(Config.Setting.WORLD_ENVIRONMENT.getString()),
+                            Config.Setting.WORLD_GENERATE_STRUCTURES.getBoolean(),
+                            Config.Setting.WORLD_SEED_ENABLED.getBoolean(),
+                            Config.Setting.WORLD_SEED.getLong(),
+                            Config.Setting.WORLD_BORDER_ENABLED.getBoolean(),
+                            Config.Setting.WORLD_BORDER_SIZE.getInt(),
+                            Config.Setting.WORLD_PVP.getBoolean(),
+                            Config.Setting.WORLD_KEEP_INVENTORY.getBoolean(),
                     ResourceWorldType.RESOURCE_WORLD));
         }
 
         if (Config.Setting.NETHER_ENABLED.getBoolean()) {
-            this.resourceWorlds.put(ResourceWorldType.RESOURCE_NETHER, new CustomWorld(Config.Setting.NETHER_NAME.getString(),
-                    Difficulty.valueOf(Config.Setting.NETHER_DIFFICULTY.getString()),
-                    WorldType.valueOf(Config.Setting.NETHER_TYPE.getString()),
-                    World.Environment.valueOf(Config.Setting.NETHER_ENVIRONMENT.getString()),
-                    Config.Setting.NETHER_GENERATE_STRUCTURES.getBoolean(),
-                    Config.Setting.NETHER_SEED_ENABLED.getBoolean(),
-                    Config.Setting.NETHER_SEED.getLong(),
-                    Config.Setting.NETHER_BORDER_ENABLED.getBoolean(),
-                    Config.Setting.NETHER_BORDER_SIZE.getInt(),
-                    Config.Setting.NETHER_PVP.getBoolean(),
-                    Config.Setting.NETHER_KEEP_INVENTORY.getBoolean(),
+            this.resourceWorlds.put(
+                    ResourceWorldType.RESOURCE_NETHER,
+                    new CustomWorld(Config.Setting.NETHER_NAME.getString(),
+                            Difficulty.valueOf(Config.Setting.NETHER_DIFFICULTY.getString()),
+                            WorldType.valueOf(Config.Setting.NETHER_TYPE.getString()),
+                            World.Environment.valueOf(Config.Setting.NETHER_ENVIRONMENT.getString()),
+                            Config.Setting.NETHER_GENERATE_STRUCTURES.getBoolean(),
+                            Config.Setting.NETHER_SEED_ENABLED.getBoolean(),
+                            Config.Setting.NETHER_SEED.getLong(),
+                            Config.Setting.NETHER_BORDER_ENABLED.getBoolean(),
+                            Config.Setting.NETHER_BORDER_SIZE.getInt(),
+                            Config.Setting.NETHER_PVP.getBoolean(),
+                            Config.Setting.NETHER_KEEP_INVENTORY.getBoolean(),
                     ResourceWorldType.RESOURCE_NETHER));
         }
 
         if (Config.Setting.END_ENABLED.getBoolean()) {
-            this.resourceWorlds.put(ResourceWorldType.RESOURCE_END, new CustomWorld(Config.Setting.END_NAME.getString(),
-                    Difficulty.valueOf(Config.Setting.END_DIFFICULTY.getString()),
-                    WorldType.valueOf(Config.Setting.END_TYPE.getString()),
-                    World.Environment.valueOf(Config.Setting.END_ENVIRONMENT.getString()),
-                    Config.Setting.END_GENERATE_STRUCTURES.getBoolean(),
-                    Config.Setting.END_SEED_ENABLED.getBoolean(),
-                    Config.Setting.END_SEED.getLong(),
-                    Config.Setting.END_BORDER_ENABLED.getBoolean(),
-                    Config.Setting.END_BORDER_SIZE.getInt(),
-                    Config.Setting.END_PVP.getBoolean(),
-                    Config.Setting.END_KEEP_INVENTORY.getBoolean(),
+            this.resourceWorlds.put(
+                    ResourceWorldType.RESOURCE_END,
+                    new CustomWorld(Config.Setting.END_NAME.getString(),
+                            Difficulty.valueOf(Config.Setting.END_DIFFICULTY.getString()),
+                            WorldType.valueOf(Config.Setting.END_TYPE.getString()),
+                            World.Environment.valueOf(Config.Setting.END_ENVIRONMENT.getString()),
+                            Config.Setting.END_GENERATE_STRUCTURES.getBoolean(),
+                            Config.Setting.END_SEED_ENABLED.getBoolean(),
+                            Config.Setting.END_SEED.getLong(),
+                            Config.Setting.END_BORDER_ENABLED.getBoolean(),
+                            Config.Setting.END_BORDER_SIZE.getInt(),
+                            Config.Setting.END_PVP.getBoolean(),
+                            Config.Setting.END_KEEP_INVENTORY.getBoolean(),
                     ResourceWorldType.RESOURCE_END));
         }
 
@@ -308,7 +314,7 @@ public final class ResourceWorld extends JavaPlugin {
     private void initializeListeners() {
         final PluginManager pm = this.getServer().getPluginManager();
 
-        //Initialize listener modules
+        //Load listener modules
         this.modules.add(new LeaveWorld(this));
         this.modules.add(new Drowning(this));
         this.modules.add(new Suffocation(this));
