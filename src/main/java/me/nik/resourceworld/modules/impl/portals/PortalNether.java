@@ -27,7 +27,7 @@ public class PortalNether extends ListenerModule {
         Location from = e.getFrom();
 
         if (Config.Setting.NETHER_PORTALS_VANILLA_RATIO.getBoolean()) {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX() % 8, from.getY() % 8, from.getZ() % 8));
+            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX() / 8, from.getY() / 8, from.getZ() / 8));
         } else {
             e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX(), from.getY(), from.getZ()));
         }
