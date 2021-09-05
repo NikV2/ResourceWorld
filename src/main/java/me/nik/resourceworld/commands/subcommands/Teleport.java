@@ -10,10 +10,12 @@ import me.nik.resourceworld.utils.LocationFinder;
 import me.nik.resourceworld.utils.TaskUtils;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -130,37 +132,35 @@ public class Teleport extends SubCommand {
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
-            if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
-                PaperLib.teleportAsync(p, locationFinder.generateLocation(world));
-            } else {
-                p.teleport(locationFinder.generateLocation(world));
-            }
-            p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
-            if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
-                try {
-                    p.playSound(p.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
-                } catch (IllegalArgumentException ignored) {
-                }
-            }
+            doTeleport(p, world);
         } else {
             p.sendMessage(MsgType.TELEPORT_DELAY.getMessage().replaceAll("%seconds%", String.valueOf(Config.Setting.TELEPORT_DELAY.getInt())));
             if (!p.hasPermission("rw.admin")) {
                 cooldown.put(uuid, System.currentTimeMillis());
             }
-            TaskUtils.taskLater(() -> {
-                if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
-                    PaperLib.teleportAsync(p, locationFinder.generateLocation(world));
-                } else {
-                    p.teleport(locationFinder.generateLocation(world));
-                }
-                p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
-                if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
-                    try {
-                        p.playSound(p.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
-                    } catch (IllegalArgumentException ignored) {
-                    }
-                }
-            }, Config.Setting.TELEPORT_DELAY.getLong() * 20L);
+            TaskUtils.taskLater(() -> doTeleport(p, world), Config.Setting.TELEPORT_DELAY.getLong() * 20L);
+        }
+    }
+
+    private void doTeleport(Player p, World world) {
+        Location target = locationFinder.generateLocation(world);
+        PlayerTeleportEvent event = new PlayerTeleportEvent(p, p.getLocation(), target, PlayerTeleportEvent.TeleportCause.COMMAND);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+
+        if (Config.Setting.TELEPORT_ASYNC.getBoolean()) {
+            PaperLib.teleportAsync(p, target);
+        } else {
+            p.teleport(target);
+        }
+        p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()), Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20, Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
+        if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
+            try {
+                p.playSound(p.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
+            } catch (IllegalArgumentException ignored) {
+            }
         }
     }
 
