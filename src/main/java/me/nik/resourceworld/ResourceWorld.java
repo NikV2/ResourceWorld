@@ -39,6 +39,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,13 +67,13 @@ public final class ResourceWorld extends JavaPlugin {
 
     private final Map<ResourceWorldType, CustomWorld> resourceWorlds = new HashMap<>();
 
-    private final List<ListenerModule> modules = new ArrayList<>();
+    private final List<ListenerModule> listenerModules = new ArrayList<>();
 
     @Override
     public void onDisable() {
 
         //DisInitialize modules
-        this.modules.forEach(ListenerModule::shutdown);
+        this.listenerModules.forEach(ListenerModule::shutdown);
 
         //Store Time Left
         storeTimeLeft();
@@ -305,21 +306,24 @@ public final class ResourceWorld extends JavaPlugin {
     }
 
     private void initializeListeners() {
+
         final PluginManager pm = this.getServer().getPluginManager();
 
         //Load listener modules
-        this.modules.add(new LeaveWorld(this));
-        this.modules.add(new Suffocation(this));
-        this.modules.add(new SuffocationEnd(this));
-        this.modules.add(new SuffocationNether(this));
-        this.modules.add(new PortalEnd(this));
-        this.modules.add(new PortalNether(this));
-        this.modules.add(new CommandsEnd(this));
-        this.modules.add(new CommandsNether(this));
-        this.modules.add(new CommandsWorld(this));
+        this.listenerModules.addAll(Arrays.asList(
+                new LeaveWorld(this),
+                new Suffocation(this),
+                new SuffocationEnd(this),
+                new SuffocationNether(this),
+                new PortalEnd(this),
+                new PortalNether(this),
+                new CommandsEnd(this),
+                new CommandsNether(this),
+                new CommandsWorld(this)
+        ));
 
         //Initialize them
-        this.modules.forEach(ListenerModule::load);
+        this.listenerModules.forEach(ListenerModule::load);
 
         //Don't be an idiot Nik, Always register this Listener
         pm.registerEvents(new GuiListener(), this);
