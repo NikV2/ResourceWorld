@@ -59,7 +59,7 @@ public class MainGui extends Menu {
                 break;
             case 30:
                 p.closeInventory();
-                p.sendMessage(ChatColor.BLUE + ">> " + ChatColor.WHITE + "https://discordapp.com/invite/m7j2Y9H" + ChatColor.BLUE + " <<");
+                p.sendMessage(ChatColor.BLUE + ">> " + ChatColor.WHITE + "https://github.com/NikV2/ResourceWorld/issues/new/choose" + ChatColor.BLUE + " <<");
                 break;
             case 49:
                 p.closeInventory();
