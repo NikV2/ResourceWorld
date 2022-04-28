@@ -57,7 +57,7 @@ public class Reset extends SubCommand {
     public void perform(CommandSender sender, String[] args) {
 
         //General check to make sure they don't try to mess with this.
-        if (System.currentTimeMillis() - this.lastResetMillis < 5000L) return;
+        if (System.currentTimeMillis() - this.lastResetMillis < 10000L) return;
 
         this.lastResetMillis = System.currentTimeMillis();
 
