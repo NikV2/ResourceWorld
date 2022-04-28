@@ -23,11 +23,6 @@ public class Config {
             "+----------------------------------------------------------------------------------------------+"
     };
 
-    /**
-     * Credits to Nicole for this amazing Commented File Configuration
-     * https://github.com/Esophose/PlayerParticles
-     */
-
     private final ResourceWorld plugin;
     private CommentedFileConfiguration configuration;
 
@@ -73,14 +68,7 @@ public class Config {
         SETTINGS_CHECK_FOR_UPDATES("settings.check_for_updates", true, "Should we check for updates on startup?"),
         SETTINGS_SPAWN_WORLD("settings.main_spawn_world", "world", "The world that the player will Teleport to once a Reset Happens"),
         SETTINGS_TELEPORT_TO_SPAWN("settings.teleport_to_spawn_on_quit", true, "If a player quits inside a resource world, Should we teleport him to spawn?"),
-        SETTINGS_SPAWN_COOLDOWN("settings.spawn_cooldown", 30, "The /resource spawn command cooldown (Interval in seconds)"),
         SETTINGS_RESET_FORMAT("settings.reset_format", "%days% days %hours% hours %minutes% minutes %seconds% seconds", "Sets the format of the remaining time."),
-        SETTINGS_DISCORD("settings.discord", "", "Discord integration settings"),
-        SETTINGS_DISCORD_ENABLED("settings.discord.enabled", false, "Would you Resource World to sync with your Discord Server by using a Webhook?"),
-        SETTINGS_DISCORD_URL("settings.discord.url", "", "Insert the channel webhook URL below"),
-        SETTINGS_DISCORD_WORLD("settings.discord.world_reset", true, "Would you like the plugin to Send a Discord Message once a Reset to the Overworld has been made?"),
-        SETTINGS_DISCORD_NETHER("settings.discord.nether_reset", true, "Would you like the plugin to Send a Discord Message once a Reset to the Nether has been made?"),
-        SETTINGS_DISCORD_END("settings.discord.end_reset", true, "Would you like the plugin to Send a Discord Message once a Reset to the End has been made?"),
 
         WORLD("world", "", "Overworld Settings"),
         WORLD_ENABLED("world.enabled", true, "Should we enable this?"),
@@ -97,15 +85,12 @@ public class Config {
         WORLD_PVP("world.allow_pvp", true, "Should PvP be enabled?"),
         WORLD_ALWAYS_DAY("world.always_day", false, "Should it always be day in the Resource World?"),
         WORLD_DISABLE_SUFFOCATION("world.disable_suffocation_damage", true, "Should we disable suffocation damage?"),
-        WORLD_DISABLE_DROWNING("world.disable_drowning_damage", false, "Should we disable drowning damage?"),
-        WORLD_DISABLE_EXPLOSIONS("world.disable_explosion_damage", false, "Should we disable explosion damage?"),
         WORLD_DIFFICULTY("world.difficulty", "NORMAL", "Options: EASY , NORMAL , HARD , PEACEFUL"),
         WORLD_KEEP_INVENTORY("world.keep_inventory_on_death", false, "Should players keep their Inventory items if they die inside the Resource World?"),
         WORLD_RESETS("world.automated_resets", "", "World Reset Properties"),
         WORLD_RESETS_ENABLED("world.automated_resets.enabled", false, "Would you like the Resource World to Automatically Reset?"),
         WORLD_RESETS_INTERVAL("world.automated_resets.interval", 8, "The Interval between Resource World Resets. (In Hours)"),
         WORLD_STORE_TIME("world.automated_resets.store_time_on_shutdown", true, "Do you wan't the plugin to store the remaining reset time once the server shuts down? and use the remaining time once it starts up again?"),
-        WORLD_DISABLE_ENTITY_SPAWNING("world.disable_entity_spawning", false, "Should we disable Entity Spawning?"),
         WORLD_COMMANDS("world.commands_after_reset", "", "Execute specific commands after the world generates"),
         WORLD_COMMANDS_ENABLED("world.commands_after_reset.enabled", false, "Should we enable this?"),
         WORLD_COMMANDS_COMMANDS("world.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource World\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
@@ -132,14 +117,12 @@ public class Config {
         NETHER_BORDER_SIZE("nether.world_border.size", 4500, "The border size (Note that if you set the World Border for example to 2000, It will be 1000 in one side and 1000 in the opposite one)"),
         NETHER_PVP("nether.allow_pvp", true, "Should PvP be enabled?"),
         NETHER_DISABLE_SUFFOCATION("nether.disable_suffocation_damage", true, "Should we disable suffocation damage?"),
-        NETHER_DISABLE_EXPLOSIONS("nether.disable_explosion_damage", false, "Should we disable explosion damage?"),
         NETHER_DIFFICULTY("nether.difficulty", "NORMAL", "Options: EASY , NORMAL , HARD , PEACEFUL"),
         NETHER_KEEP_INVENTORY("nether.keep_inventory_on_death", false, "Should players keep their Inventory items if they die inside the Resource World?"),
         NETHER_RESETS("nether.automated_resets", "", "World Reset Properties"),
         NETHER_RESETS_ENABLED("nether.automated_resets.enabled", false, "Would you like the Resource World to Automatically Reset?"),
         NETHER_RESETS_INTERVAL("nether.automated_resets.interval", 4, "The Interval between Resource World Resets. (In Hours)"),
         NETHER_STORE_TIME("nether.automated_resets.store_time_on_shutdown", true, "Do you wan't the plugin to store the remaining reset time once the server shuts down? and use the remaining time once it starts up again?"),
-        NETHER_DISABLE_ENTITY_SPAWNING("nether.disable_entity_spawning", false, "Should we disable Entity Spawning?"),
         NETHER_COMMANDS("nether.commands_after_reset", "", "Execute specific commands after the world generates"),
         NETHER_COMMANDS_ENABLED("nether.commands_after_reset.enabled", false, "Should we enable this?"),
         NETHER_COMMANDS_COMMANDS("nether.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource Nether\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
@@ -165,14 +148,12 @@ public class Config {
         END_BORDER_SIZE("end.world_border.size", 4500, "The border size (Note that if you set the World Border for example to 2000, It will be 1000 in one side and 1000 in the opposite one)"),
         END_PVP("end.allow_pvp", true, "Should PvP be enabled?"),
         END_DISABLE_SUFFOCATION("end.disable_suffocation_damage", true, "Should we disable suffocation damage?"),
-        END_DISABLE_EXPLOSIONS("end.disable_explosion_damage", false, "Should we disable explosion damage?"),
         END_DIFFICULTY("end.difficulty", "NORMAL", "Options: EASY , NORMAL , HARD , PEACEFUL"),
         END_KEEP_INVENTORY("end.keep_inventory_on_death", false, "Should players keep their Inventory items if they die inside the Resource World?"),
         END_RESETS("end.automated_resets", "", "World Reset Properties"),
         END_RESETS_ENABLED("end.automated_resets.enabled", false, "Would you like the Resource World to Automatically Reset?"),
         END_RESETS_INTERVAL("end.automated_resets.interval", 6, "The Interval between Resource World Resets. (In Hours)"),
         END_STORE_TIME("end.automated_resets.store_time_on_shutdown", true, "Do you wan't the plugin to store the remaining reset time once the server shuts down? and use the remaining time once it starts up again?"),
-        END_DISABLE_ENTITY_SPAWNING("end.disable_entity_spawning", false, "Should we disable Entity Spawning?"),
         END_COMMANDS("end.commands_after_reset", "", "Execute specific commands after the world generates"),
         END_COMMANDS_ENABLED("end.commands_after_reset.enabled", false, "Should we enable this?"),
         END_COMMANDS_COMMANDS("end.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource End\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
@@ -182,7 +163,6 @@ public class Config {
 
         TELEPORT("teleport_settings", "", "Teleport Settings"),
         TELEPORT_PRICE("teleport_settings.price", 100, "The price needed for a player to Teleport to a Resource World (Requires Vault)"),
-        TELEPORT_ASYNC("teleport_settings.async", true, "If you're running Paper, Leave this enabled for Asynchronous Teleportation"),
         TELEPORT_COOLDOWN("teleport_settings.cooldown", 60, "Interval is in Seconds, So by default: 1 Minute"),
         TELEPORT_DELAY("teleport_settings.delay", 3, "The delay between Teleportations"),
         TELEPORT_WORLD_MAX_RANGE("teleport_settings.world_max_teleport_range", 800, "The maximum X, Z The player will be teleported in the Resource World", "DO NOT Set this value higher than your World Border"),

@@ -11,8 +11,6 @@ public class Data {
     private File file;
     private FileConfiguration data;
 
-    //TODO: Make values cached to improve perfomance, Or transfer these into my new config system
-
     public void setup(JavaPlugin plugin) {
         file = new File(plugin.getDataFolder(), "data.yml");
         if (!file.exists()) {
@@ -40,7 +38,6 @@ public class Data {
     }
 
     public void addDefaults() {
-        //lang.yml
         get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         get().addDefault("world.timer", 0);
         get().addDefault("world.millis", 0);

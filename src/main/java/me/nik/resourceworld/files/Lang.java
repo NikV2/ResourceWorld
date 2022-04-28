@@ -38,15 +38,10 @@ public class Lang {
     }
 
     public void addDefaults() {
-        //lang.yml
         get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
         get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
         get().addDefault("update_found", "&aThere is an Update available, Your version &f%current%&a new version &f%new%");
-        get().addDefault("resourceworld_spawn_teleport", "&cYou need to be in a Resource World to teleport back to spawn!");
-        get().addDefault("spawn_set", "&fSet the main world's spawn location to %location%");
-        get().addDefault("invalid_spawn", "&cYou can not set the main world's spawn location inside a Resource World!");
         get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
-        get().addDefault("reset_cooldown", "&cWARNING! You cannot reset the Resource World yet, You must wait %seconds% seconds.");
         get().addDefault("resetting_the_world", "&fCleaning up the Resource World, This may cause Lag!");
         get().addDefault("resetting_the_nether", "&fCleaning up the Nether World, This may cause Lag!");
         get().addDefault("resetting_the_end", "&fCleaning up the End World, This may cause Lag!");
@@ -66,7 +61,6 @@ public class Lang {
         get().addDefault("teleport_paid", "&a%price% &fHave been taken from your balance.");
         get().addDefault("teleport_error", "&cYou do not have enough money to Teleport to the Resource World.");
         get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
-        get().addDefault("main_world_error", "&cWe could not teleport you back to the main world, Please contact an Administrator.");
         get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
         get().addDefault("update_disabled", "&f&lUpdate Checker is Disabled, Skipping");
     }

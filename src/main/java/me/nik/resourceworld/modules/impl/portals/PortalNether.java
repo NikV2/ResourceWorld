@@ -18,26 +18,40 @@ public class PortalNether extends ListenerModule {
 
     @EventHandler
     public void onPortalWorld(PlayerPortalEvent e) {
-        if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
-        if (e.getFrom().getWorld().getEnvironment() != World.Environment.NORMAL) return;
+        if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL || e.getFrom().getWorld().getEnvironment() != World.Environment.NORMAL)
+            return;
 
         if (Config.Setting.NETHER_PORTALS_ONLY_RESOURCE.getBoolean() && !e.getFrom().getWorld().getName().equals(Config.Setting.WORLD_NAME.getString()))
             return;
 
+        World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
+
+        if (world == null) return;
+
         Location from = e.getFrom();
 
+        double x, y, z;
+
         if (Config.Setting.NETHER_PORTALS_VANILLA_RATIO.getBoolean()) {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX() / 8, from.getY() / 8, from.getZ() / 8));
+
+            x = from.getX() / 8;
+            y = from.getY() / 8;
+            z = from.getZ() / 8;
+
         } else {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.NETHER_NAME.getString()), from.getX(), from.getY(), from.getZ()));
+
+            x = from.getX();
+            y = from.getY();
+            z = from.getZ();
         }
+
+        e.setTo(new Location(world, x, y, z));
     }
 
     @EventHandler
     public void onPortalNether(PlayerPortalEvent e) {
-        if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return;
-        if (e.getFrom().getWorld().getEnvironment() != World.Environment.NETHER) return;
-        if (!e.getFrom().getWorld().getName().equals(Config.Setting.NETHER_NAME.getString())) return;
+        if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL || !e.getFrom().getWorld().getName().equals(Config.Setting.NETHER_NAME.getString()))
+            return;
 
         Location from = e.getFrom();
 

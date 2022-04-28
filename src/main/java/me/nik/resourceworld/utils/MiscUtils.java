@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class MiscUtils {
@@ -14,11 +15,25 @@ public class MiscUtils {
         throw new ResourceWorldException("This is a static class dummy!");
     }
 
-    private static final boolean legacy = Bukkit.getVersion().contains("1.8")
+    private static final boolean LEGACY = Bukkit.getVersion().contains("1.8")
             || Bukkit.getVersion().contains("1.9")
             || Bukkit.getVersion().contains("1.10")
             || Bukkit.getVersion().contains("1.11")
             || Bukkit.getVersion().contains("1.12");
+
+    public static void deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (files != null)
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteDirectory(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+        }
+    }
 
     /**
      * Convert a millisecond duration to a string format
@@ -27,19 +42,24 @@ public class MiscUtils {
      * @return A string of the form "X Days Y Hours Z Minutes A Seconds".
      */
     public static String getDurationBreakdown(long millis) {
+
         final long days = TimeUnit.MILLISECONDS.toDays(millis);
         millis -= TimeUnit.DAYS.toMillis(days);
+
         final long hours = TimeUnit.MILLISECONDS.toHours(millis);
         millis -= TimeUnit.HOURS.toMillis(hours);
+
         final long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
         millis -= TimeUnit.MINUTES.toMillis(minutes);
 
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         String format = Config.Setting.SETTINGS_RESET_FORMAT.getString();
+
         if (days > 0) {
 
             format = format.replace("%days%", String.valueOf(days));
+
         } else {
 
             format = format.replace("%days%", String.valueOf(0));
@@ -48,6 +68,7 @@ public class MiscUtils {
         if (hours > 0) {
 
             format = format.replace("%hours%", String.valueOf(hours));
+
         } else {
 
             format = format.replace("%hours%", String.valueOf(0));
@@ -56,6 +77,7 @@ public class MiscUtils {
         if (minutes > 0) {
 
             format = format.replace("%minutes%", String.valueOf(minutes));
+
         } else {
 
             format = format.replace("%minutes%", String.valueOf(0));
@@ -64,6 +86,7 @@ public class MiscUtils {
         if (seconds > 0) {
 
             format = format.replace("%seconds%", String.valueOf(seconds));
+
         } else {
 
             format = format.replace("%seconds%", String.valueOf(0));
@@ -110,6 +133,6 @@ public class MiscUtils {
     }
 
     public static boolean isLegacy() {
-        return legacy;
+        return LEGACY;
     }
 }

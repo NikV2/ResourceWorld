@@ -25,13 +25,12 @@ public class LeaveWorld extends ListenerModule {
         final String world = p.getWorld().getName();
 
         for (CustomWorld rw : this.plugin.getResourceWorlds().values()) {
+
             if (!rw.getName().equals(world)) continue;
 
             Location loc = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
 
-            if (loc != null) {
-                p.teleport(loc);
-            }
+            if (loc != null) p.teleport(loc);
         }
     }
 }

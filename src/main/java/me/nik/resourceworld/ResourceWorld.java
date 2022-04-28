@@ -13,17 +13,10 @@ import me.nik.resourceworld.managers.custom.CustomWorld;
 import me.nik.resourceworld.managers.custom.ResourceWorldType;
 import me.nik.resourceworld.metrics.MetricsLite;
 import me.nik.resourceworld.modules.ListenerModule;
-import me.nik.resourceworld.modules.impl.Drowning;
 import me.nik.resourceworld.modules.impl.LeaveWorld;
 import me.nik.resourceworld.modules.impl.disabledcommands.CommandsEnd;
 import me.nik.resourceworld.modules.impl.disabledcommands.CommandsNether;
 import me.nik.resourceworld.modules.impl.disabledcommands.CommandsWorld;
-import me.nik.resourceworld.modules.impl.entityspawning.EntitySpawning;
-import me.nik.resourceworld.modules.impl.entityspawning.EntitySpawningEnd;
-import me.nik.resourceworld.modules.impl.entityspawning.EntitySpawningNether;
-import me.nik.resourceworld.modules.impl.explosion.Explosion;
-import me.nik.resourceworld.modules.impl.explosion.ExplosionEnd;
-import me.nik.resourceworld.modules.impl.explosion.ExplosionNether;
 import me.nik.resourceworld.modules.impl.portals.PortalEnd;
 import me.nik.resourceworld.modules.impl.portals.PortalNether;
 import me.nik.resourceworld.modules.impl.suffocation.Suffocation;
@@ -79,7 +72,7 @@ public final class ResourceWorld extends JavaPlugin {
     public void onDisable() {
 
         //DisInitialize modules
-        this.modules.forEach(ListenerModule::disInit);
+        this.modules.forEach(ListenerModule::shutdown);
 
         //Store Time Left
         storeTimeLeft();
@@ -316,24 +309,17 @@ public final class ResourceWorld extends JavaPlugin {
 
         //Load listener modules
         this.modules.add(new LeaveWorld(this));
-        this.modules.add(new Drowning(this));
         this.modules.add(new Suffocation(this));
         this.modules.add(new SuffocationEnd(this));
         this.modules.add(new SuffocationNether(this));
         this.modules.add(new PortalEnd(this));
         this.modules.add(new PortalNether(this));
-        this.modules.add(new Explosion(this));
-        this.modules.add(new ExplosionEnd(this));
-        this.modules.add(new ExplosionNether(this));
-        this.modules.add(new EntitySpawning(this));
-        this.modules.add(new EntitySpawningEnd(this));
-        this.modules.add(new EntitySpawningNether(this));
         this.modules.add(new CommandsEnd(this));
         this.modules.add(new CommandsNether(this));
         this.modules.add(new CommandsWorld(this));
 
         //Initialize them
-        this.modules.forEach(ListenerModule::init);
+        this.modules.forEach(ListenerModule::load);
 
         //Don't be an idiot Nik, Always register this Listener
         pm.registerEvents(new GuiListener(), this);

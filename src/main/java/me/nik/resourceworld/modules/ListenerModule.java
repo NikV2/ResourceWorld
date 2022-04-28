@@ -14,13 +14,13 @@ public abstract class ListenerModule implements Listener {
         this.plugin = plugin;
     }
 
-    public void init() {
-        if (!enabled) return;
+    public void load() {
+        if (!this.enabled) return;
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 
-    public void disInit() {
-        if (!enabled) return;
+    public void shutdown() {
+        if (!this.enabled) return;
         HandlerList.unregisterAll(this);
     }
 }

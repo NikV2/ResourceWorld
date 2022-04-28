@@ -50,10 +50,7 @@ public class Menu extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            Player p = (Player) sender;
-            new MainGui(new PlayerMenuUtility(p), plugin).open();
-        }
+        new MainGui(new PlayerMenuUtility((Player) sender), plugin).open();
     }
 
     @Override

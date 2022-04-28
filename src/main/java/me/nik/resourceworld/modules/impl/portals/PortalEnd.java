@@ -18,27 +18,38 @@ public class PortalEnd extends ListenerModule {
 
     @EventHandler
     public void onPortalWorld(PlayerPortalEvent e) {
-        if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL) return;
-        if (e.getFrom().getWorld().getEnvironment() != World.Environment.NORMAL) return;
+        if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL || e.getFrom().getWorld().getEnvironment() != World.Environment.NORMAL)
+            return;
 
         if (Config.Setting.END_PORTALS_ONLY_RESOURCE.getBoolean() && !e.getFrom().getWorld().getName().equals(Config.Setting.WORLD_NAME.getString()))
             return;
 
+        World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
+
+        if (world == null) return;
+
         Location to = e.getTo();
 
         try {
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_NAME.getString()), to.getX(), to.getY(), to.getZ()));
+
+            e.setTo(new Location(world, to.getX(), to.getY(), to.getZ()));
+
         } catch (NullPointerException ignored) {
-            Location loc = Bukkit.getWorld(Config.Setting.END_NAME.getString()).getHighestBlockAt(Bukkit.getWorld(Config.Setting.END_NAME.getString()).getSpawnLocation()).getLocation();
-            e.setTo(new Location(Bukkit.getWorld(Config.Setting.END_NAME.getString()), loc.getX(), loc.getY(), loc.getZ()));
+            /*
+            I don't know why i did this, this is from two years ago.
+            I'm guessing there's a good reason for it?
+             */
+
+            Location loc = world.getHighestBlockAt(world.getSpawnLocation()).getLocation();
+
+            e.setTo(new Location(world, loc.getX(), loc.getY(), loc.getZ()));
         }
     }
 
     @EventHandler
     public void onPortalEnd(PlayerPortalEvent e) {
-        if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL) return;
-        if (e.getFrom().getWorld().getEnvironment() != World.Environment.THE_END) return;
-        if (!e.getFrom().getWorld().getName().equals(Config.Setting.END_NAME.getString())) return;
+        if (e.getCause() != PlayerTeleportEvent.TeleportCause.END_PORTAL
+                || !e.getFrom().getWorld().getName().equals(Config.Setting.END_NAME.getString())) return;
 
         Location from = e.getFrom();
 

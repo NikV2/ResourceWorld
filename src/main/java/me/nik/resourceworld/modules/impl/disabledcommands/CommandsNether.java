@@ -18,15 +18,21 @@ public class CommandsNether extends ListenerModule {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
+
         Player p = e.getPlayer();
-        if (p.hasPermission(Permissions.ADMIN.getPermission())) return;
-        if (p.getWorld().getName().equals(Config.Setting.NETHER_NAME.getString())) {
-            if (e.getMessage().equals("/")) return;
-            for (String cmd : Config.Setting.NETHER_DISABLED_COMMANDS_LIST.getStringList()) {
-                if (e.getMessage().contains(cmd)) {
-                    e.setCancelled(true);
-                    p.sendMessage(MsgType.DISABLED_COMMAND.getMessage());
-                }
+
+        if (p.hasPermission(Permissions.ADMIN.getPermission()) || !p.getWorld().getName().equals(Config.Setting.NETHER_NAME.getString()) || e.getMessage().equals("/"))
+            return;
+
+        for (String cmd : Config.Setting.NETHER_DISABLED_COMMANDS_LIST.getStringList()) {
+
+            if (e.getMessage().contains(cmd)) {
+
+                e.setCancelled(true);
+
+                p.sendMessage(MsgType.DISABLED_COMMAND.getMessage());
+
+                break;
             }
         }
     }

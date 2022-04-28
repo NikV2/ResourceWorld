@@ -15,11 +15,10 @@ public class Suffocation extends ListenerModule {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
-        if (!(e.getEntity() instanceof Player)) return;
-        if (!(e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION)) return;
+        if (!(e.getEntity() instanceof Player) || !(e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION)) return;
+
         Player p = (Player) e.getEntity();
-        String world = p.getWorld().getName();
-        if (!world.equals(Config.Setting.WORLD_NAME.getString())) return;
-        e.setCancelled(true);
+
+        if (p.getWorld().getName().equals(Config.Setting.WORLD_NAME.getString())) e.setCancelled(true);
     }
 }

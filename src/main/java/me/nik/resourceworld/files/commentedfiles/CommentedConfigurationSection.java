@@ -8,6 +8,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -391,4 +393,23 @@ public class CommentedConfigurationSection implements ConfigurationSection {
         this.config.addDefault(s, o);
     }
 
+    @NotNull
+    @Override
+    public List<String> getComments(@NotNull String path) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getInlineComments(@NotNull String path) {
+        return null;
+    }
+
+    @Override
+    public void setComments(@NotNull String path, @Nullable List<String> comments) {
+    }
+
+    @Override
+    public void setInlineComments(@NotNull String path, @Nullable List<String> comments) {
+    }
 }
