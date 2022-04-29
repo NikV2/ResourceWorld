@@ -30,6 +30,46 @@ public class CommandManager implements TabExecutor {
         subcommands.add(new Reset(plugin));
     }
 
+    private static final String INFO_MESSAGE = MsgType.PREFIX.getMessage()
+            + ChatColor.GRAY + "You're running " + ChatColor.WHITE
+            + ResourceWorld.getInstance().getDescription().getName() + ChatColor.GRAY + " version "
+            + ChatColor.GREEN + "v" + ResourceWorld.getInstance().getDescription().getVersion()
+            + ChatColor.GRAY + " by" + ChatColor.WHITE + " Nik";
+
+    public List<SubCommand> getSubcommands() {
+        return subcommands;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            ArrayList<String> subcommandsArgs = new ArrayList<>();
+            for (int i = 0; i < getSubcommands().size(); i++) {
+                subcommandsArgs.add(getSubcommands().get(i).getName());
+            }
+            return subcommandsArgs;
+        } else if (args.length == 2) {
+            for (int i = 0; i < getSubcommands().size(); i++) {
+                if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
+                    return getSubcommands().get(i).getSubcommandArguments(sender, args);
+                }
+            }
+        }
+        return null;
+    }
+
+    private void helpMessage(CommandSender sender) {
+        sender.sendMessage("");
+        sender.sendMessage(MsgType.PREFIX.getMessage() + ChatColor.GRAY + "Available Commands");
+        sender.sendMessage("");
+        this.subcommands.stream().filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
+                .forEach(subCommand -> sender.sendMessage(ChatColor.GREEN
+                        + subCommand.getSyntax()
+                        + ChatColor.DARK_GRAY + " - "
+                        + ChatColor.GRAY + subCommand.getDescription()));
+        sender.sendMessage("");
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 0) {
@@ -76,7 +116,7 @@ public class CommandManager implements TabExecutor {
 
         } else {
 
-            pluginInfo(sender);
+            sender.sendMessage(INFO_MESSAGE);
 
             return true;
         }
@@ -84,47 +124,5 @@ public class CommandManager implements TabExecutor {
         helpMessage(sender);
 
         return true;
-    }
-
-    public List<SubCommand> getSubcommands() {
-        return subcommands;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) {
-            ArrayList<String> subcommandsArgs = new ArrayList<>();
-            for (int i = 0; i < getSubcommands().size(); i++) {
-                subcommandsArgs.add(getSubcommands().get(i).getName());
-            }
-            return subcommandsArgs;
-        } else if (args.length == 2) {
-            for (int i = 0; i < getSubcommands().size(); i++) {
-                if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
-                    return getSubcommands().get(i).getSubcommandArguments(sender, args);
-                }
-            }
-        }
-        return null;
-    }
-
-    private void helpMessage(CommandSender sender) {
-        sender.sendMessage("");
-        sender.sendMessage(MsgType.PREFIX.getMessage() + ChatColor.GRAY + "Available Commands");
-        sender.sendMessage("");
-        this.subcommands.stream().filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
-                .forEach(subCommand -> sender.sendMessage(ChatColor.GREEN
-                        + subCommand.getSyntax()
-                        + ChatColor.DARK_GRAY + " - "
-                        + ChatColor.GRAY + subCommand.getDescription()));
-        sender.sendMessage("");
-    }
-
-    private void pluginInfo(CommandSender sender) {
-        sender.sendMessage(MsgType.PREFIX.getMessage()
-                + ChatColor.GRAY + "You're running " + ChatColor.WHITE
-                + plugin.getDescription().getName() + ChatColor.GRAY + " version "
-                + ChatColor.GREEN + "v" + plugin.getDescription().getVersion()
-                + ChatColor.GRAY + " by" + ChatColor.WHITE + " Nik");
     }
 }
