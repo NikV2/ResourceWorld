@@ -17,13 +17,9 @@ import java.util.List;
 
 public class CommandManager implements TabExecutor {
 
-    private final ResourceWorld plugin;
-
     private final List<SubCommand> subcommands = new ArrayList<>();
 
     public CommandManager(ResourceWorld plugin) {
-        this.plugin = plugin;
-
         subcommands.add(new Teleport());
         subcommands.add(new Reload(plugin));
         subcommands.add(new Menu(plugin));

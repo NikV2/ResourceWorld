@@ -46,7 +46,7 @@ public class CustomWorld {
         return name;
     }
 
-    public void generate() {
+    public CustomWorld generate() {
 
         WorldCreator wc = new WorldCreator(this.name);
 
@@ -79,6 +79,8 @@ public class CustomWorld {
         Bukkit.getWorlds().add(rw);
 
         if (!MiscUtils.isLegacy() && this.keepInventory) rw.setGameRule(GameRule.KEEP_INVENTORY, true);
+
+        return this;
     }
 
     public boolean reset() {

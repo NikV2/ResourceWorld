@@ -49,9 +49,9 @@ public final class ResourceWorld extends JavaPlugin {
     private static ResourceWorld plugin;
     private static Economy econ = null;
 
-    private Config config;
-    private Data data;
-    private Lang lang;
+    private final Config config = new Config(this);
+    private final Data data = new Data();
+    private final Lang lang = new Lang();
 
     public static ResourceWorld getInstance() {
         return plugin;
@@ -76,12 +76,22 @@ public final class ResourceWorld extends JavaPlugin {
         this.listenerModules.forEach(ListenerModule::shutdown);
 
         //Store Time Left
-        storeTimeLeft();
+        if (Config.Setting.WORLD_RESETS_ENABLED.getBoolean() && Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean()) {
+            this.data.get().set("world.timer", Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L - (System.currentTimeMillis() - this.data.get().getLong("world.millis")) / 1000D * 20D);
+        }
+        if (Config.Setting.NETHER_RESETS_ENABLED.getBoolean() && Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean()) {
+            this.data.get().set("nether.timer", Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000L - (System.currentTimeMillis() - this.data.get().getLong("nether.millis")) / 1000D * 20D);
+        }
+        if (Config.Setting.END_RESETS_ENABLED.getBoolean() && Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean()) {
+            this.data.get().set("end.timer", Config.Setting.END_RESETS_INTERVAL.getInt() * 72000L - (System.currentTimeMillis() - this.data.get().getLong("end.millis")) / 1000D * 20D);
+        }
+
+        this.data.save();
 
         //Reload Files
-        config.reset();
-        lang.reload();
-        lang.save();
+        this.config.reset();
+        this.lang.reload();
+        this.lang.save();
 
         HandlerList.unregisterAll(this);
         this.getServer().getScheduler().cancelTasks(this);
@@ -99,39 +109,53 @@ public final class ResourceWorld extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        this.config = new Config(this);
-        this.data = new Data();
-        this.lang = new Lang();
 
         //Startup Message
         this.getServer().getConsoleSender().sendMessage(STARTUP_MESSAGE);
 
         //Load Files
-        loadFiles();
+        this.config.setup();
+
+        this.lang.setup(this);
+        this.lang.addDefaults();
+        this.lang.get().options().copyDefaults(true);
+        this.lang.save();
+
+        this.data.setup(this);
+        this.data.addDefaults();
+        this.data.get().options().copyDefaults(true);
+        this.data.save();
 
         //Load Vault if found
-        setupEconomy();
+        if (getServer().getPluginManager().getPlugin("Vault") == null) return;
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) return;
+        econ = rsp.getProvider();
 
         getCommand("resource").setExecutor(new CommandManager(this));
 
-        initializeListeners();
+        PluginManager pm = this.getServer().getPluginManager();
 
-        initWorlds();
+        //Load listener modules
+        this.listenerModules.addAll(Arrays.asList(
+                new LeaveWorld(this),
+                new Suffocation(this),
+                new SuffocationEnd(this),
+                new SuffocationNether(this),
+                new PortalEnd(this),
+                new PortalNether(this),
+                new CommandsEnd(this),
+                new CommandsNether(this),
+                new CommandsWorld(this)
+        ));
 
-        manageMillis();
+        //Initialize them
+        this.listenerModules.forEach(ListenerModule::load);
 
-        startIntervals();
+        //Don't be an idiot Nik, Always register this Listener
+        pm.registerEvents(new GuiListener(), this);
 
-        initializeTasks();
-
-        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PapiHook(this).register();
-        }
-
-        new MetricsLite(this, 6981);
-    }
-
-    private void initWorlds() {
+        //Handle resource worlds
         this.resourceWorlds.clear();
 
         if (Config.Setting.WORLD_ENABLED.getBoolean()) {
@@ -148,7 +172,7 @@ public final class ResourceWorld extends JavaPlugin {
                             Config.Setting.WORLD_BORDER_SIZE.getInt(),
                             Config.Setting.WORLD_PVP.getBoolean(),
                             Config.Setting.WORLD_KEEP_INVENTORY.getBoolean(),
-                    ResourceWorldType.RESOURCE_WORLD));
+                            ResourceWorldType.RESOURCE_WORLD).generate());
         }
 
         if (Config.Setting.NETHER_ENABLED.getBoolean()) {
@@ -165,7 +189,7 @@ public final class ResourceWorld extends JavaPlugin {
                             Config.Setting.NETHER_BORDER_SIZE.getInt(),
                             Config.Setting.NETHER_PVP.getBoolean(),
                             Config.Setting.NETHER_KEEP_INVENTORY.getBoolean(),
-                    ResourceWorldType.RESOURCE_NETHER));
+                            ResourceWorldType.RESOURCE_NETHER).generate());
         }
 
         if (Config.Setting.END_ENABLED.getBoolean()) {
@@ -182,17 +206,98 @@ public final class ResourceWorld extends JavaPlugin {
                             Config.Setting.END_BORDER_SIZE.getInt(),
                             Config.Setting.END_PVP.getBoolean(),
                             Config.Setting.END_KEEP_INVENTORY.getBoolean(),
-                    ResourceWorldType.RESOURCE_END));
+                            ResourceWorldType.RESOURCE_END).generate());
         }
 
-        this.resourceWorlds.values().forEach(CustomWorld::generate);
-    }
+        //Handle timestamps
 
-    private void setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) return;
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return;
-        econ = rsp.getProvider();
+        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean() && this.data.get().getLong("world.millis") <= 0) {
+            this.data.get().set("world.millis", System.currentTimeMillis());
+            this.data.save();
+            this.data.reload();
+        }
+        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean() && this.data.get().getLong("nether.millis") <= 0) {
+            this.data.get().set("nether.millis", System.currentTimeMillis());
+            this.data.save();
+            this.data.reload();
+        }
+        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean() && this.data.get().getLong("end.millis") <= 0) {
+            this.data.get().set("end.millis", System.currentTimeMillis());
+            this.data.save();
+            this.data.reload();
+        }
+
+        this.data.get().set("world.papi", System.currentTimeMillis());
+        this.data.get().set("nether.papi", System.currentTimeMillis());
+        this.data.get().set("end.papi", System.currentTimeMillis());
+
+        //Initialize tasks
+
+        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
+
+            long timer;
+
+            if (!Config.Setting.WORLD_STORE_TIME.getBoolean()) {
+                timer = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L;
+            } else if (this.data.get().getLong("world.timer") <= 0) {
+                timer = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L;
+            } else {
+                timer = this.data.get().getLong("world.timer");
+            }
+
+            long interval = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
+
+            new ResetWorld(this).runTaskTimer(this, timer, interval);
+        }
+
+        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
+
+            long timer;
+
+            if (!Config.Setting.NETHER_STORE_TIME.getBoolean()) {
+                timer = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
+            } else if (this.data.get().getLong("nether.timer") <= 0) {
+                timer = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
+            } else {
+                timer = this.data.get().getLong("nether.timer");
+            }
+
+            long interval = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
+
+            new ResetNetherWorld(this).runTaskTimer(this, timer, interval);
+        }
+
+        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_RESETS_ENABLED.getBoolean()) {
+
+            long timer;
+
+            if (!Config.Setting.END_STORE_TIME.getBoolean()) {
+                timer = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
+            } else if (this.data.get().getLong("end.timer") <= 0) {
+                timer = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
+            } else {
+                timer = this.data.get().getLong("end.timer");
+            }
+
+            long interval = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
+
+            new ResetEndWorld(this).runTaskTimer(this, timer, interval);
+        }
+
+        if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) new AlwaysDay().runTaskTimer(this, 1200L, 1200L);
+
+        //Check for updates
+        if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
+            new UpdateChecker(this).runTaskAsynchronously(this);
+        } else Messenger.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
+
+        //PlaceholderAPI
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PapiHook(this).register();
+        }
+
+        //BStats
+        new MetricsLite(this, 6981);
     }
 
     public CustomWorld getResourceWorld(ResourceWorldType type) {
@@ -217,130 +322,5 @@ public final class ResourceWorld extends JavaPlugin {
 
     public void reloadData() {
         data.reload();
-    }
-
-    private void initializeTasks() {
-        if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
-            new UpdateChecker(this).runTaskAsynchronously(this);
-        } else Messenger.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
-
-        if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) new AlwaysDay().runTaskTimer(this, 1200, 1200);
-    }
-
-    private void manageMillis() {
-        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean() && data.get().getLong("world.millis") <= 0) {
-            data.get().set("world.millis", System.currentTimeMillis());
-            data.save();
-            data.reload();
-        }
-        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean() && data.get().getLong("nether.millis") <= 0) {
-            data.get().set("nether.millis", System.currentTimeMillis());
-            data.save();
-            data.reload();
-        }
-        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean() && data.get().getLong("end.millis") <= 0) {
-            data.get().set("end.millis", System.currentTimeMillis());
-            data.save();
-            data.reload();
-        }
-        data.get().set("world.papi", System.currentTimeMillis());
-        data.get().set("nether.papi", System.currentTimeMillis());
-        data.get().set("end.papi", System.currentTimeMillis());
-    }
-
-    private void storeTimeLeft() {
-        if (Config.Setting.WORLD_RESETS_ENABLED.getBoolean() && Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-            data.get().set("world.timer", Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000 - (System.currentTimeMillis() - data.get().getLong("world.millis")) / 1000D * 20D);
-        }
-        if (Config.Setting.NETHER_RESETS_ENABLED.getBoolean() && Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean()) {
-            data.get().set("nether.timer", Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000 - (System.currentTimeMillis() - data.get().getLong("nether.millis")) / 1000D * 20D);
-        }
-        if (Config.Setting.END_RESETS_ENABLED.getBoolean() && Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean()) {
-            data.get().set("end.timer", Config.Setting.END_RESETS_INTERVAL.getInt() * 72000 - (System.currentTimeMillis() - data.get().getLong("end.millis")) / 1000D * 20D);
-        }
-        data.save();
-    }
-
-    private long worldTimer() {
-        if (!Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-            return Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L;
-        } else if (data.get().getLong("world.timer") <= 0) {
-            return Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L;
-        } else {
-            return data.get().getLong("world.timer");
-        }
-    }
-
-    private long netherTimer() {
-        if (!Config.Setting.NETHER_STORE_TIME.getBoolean()) {
-            return Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000L;
-        } else if (data.get().getLong("nether.timer") <= 0) {
-            return Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000L;
-        } else {
-            return data.get().getLong("nether.timer");
-        }
-    }
-
-    private long endTimer() {
-        if (!Config.Setting.END_STORE_TIME.getBoolean()) {
-            return Config.Setting.END_RESETS_INTERVAL.getInt() * 72000L;
-        } else if (data.get().getLong("end.timer") <= 0) {
-            return Config.Setting.END_RESETS_INTERVAL.getInt() * 72000L;
-        } else {
-            return data.get().getLong("end.timer");
-        }
-    }
-
-    private void loadFiles() {
-        config.setup();
-
-        lang.setup(this);
-        lang.addDefaults();
-        lang.get().options().copyDefaults(true);
-        lang.save();
-
-        data.setup(this);
-        data.addDefaults();
-        data.get().options().copyDefaults(true);
-        data.save();
-    }
-
-    private void initializeListeners() {
-
-        final PluginManager pm = this.getServer().getPluginManager();
-
-        //Load listener modules
-        this.listenerModules.addAll(Arrays.asList(
-                new LeaveWorld(this),
-                new Suffocation(this),
-                new SuffocationEnd(this),
-                new SuffocationNether(this),
-                new PortalEnd(this),
-                new PortalNether(this),
-                new CommandsEnd(this),
-                new CommandsNether(this),
-                new CommandsWorld(this)
-        ));
-
-        //Initialize them
-        this.listenerModules.forEach(ListenerModule::load);
-
-        //Don't be an idiot Nik, Always register this Listener
-        pm.registerEvents(new GuiListener(), this);
-    }
-
-    private void startIntervals() {
-        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
-            int interval = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000;
-            new ResetWorld(this).runTaskTimer(this, worldTimer(), interval);
-        }
-        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
-            int interval = Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000;
-            new ResetNetherWorld(this).runTaskTimer(this, netherTimer(), interval);
-        }
-        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_RESETS_ENABLED.getBoolean()) {
-            int interval = Config.Setting.END_RESETS_INTERVAL.getInt() * 72000;
-            new ResetEndWorld(this).runTaskTimer(this, endTimer(), interval);
-        }
     }
 }

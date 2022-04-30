@@ -1,4 +1,4 @@
-package me.nik.resourceworld;
+package me.nik.resourceworld.managers;
 
 public enum Permissions {
     ADMIN("rw.admin"),

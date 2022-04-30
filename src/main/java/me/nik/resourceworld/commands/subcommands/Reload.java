@@ -1,9 +1,9 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.managers.Permissions;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

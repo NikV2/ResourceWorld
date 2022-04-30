@@ -1,11 +1,11 @@
 package me.nik.resourceworld.commands.subcommands;
 
 import io.papermc.lib.PaperLib;
-import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.managers.Permissions;
 import me.nik.resourceworld.utils.LocationFinder;
 import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.custom.ExpiringMap;

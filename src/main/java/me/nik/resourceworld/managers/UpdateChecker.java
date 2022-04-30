@@ -1,6 +1,5 @@
 package me.nik.resourceworld.managers;
 
-import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.utils.Messenger;
 import org.bukkit.event.EventHandler;

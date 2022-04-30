@@ -1,10 +1,10 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
 import me.nik.resourceworld.gui.menus.MainGui;
+import me.nik.resourceworld.managers.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

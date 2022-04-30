@@ -1,9 +1,9 @@
 package me.nik.resourceworld.modules.impl.disabledcommands;
 
-import me.nik.resourceworld.Permissions;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.managers.Permissions;
 import me.nik.resourceworld.modules.ListenerModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
