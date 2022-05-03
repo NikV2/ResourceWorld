@@ -92,7 +92,7 @@ public class MiscUtils {
             format = format.replace("%seconds%", String.valueOf(0));
         }
 
-        return Messenger.format(format);
+        return ChatUtils.format(format);
     }
 
     /**

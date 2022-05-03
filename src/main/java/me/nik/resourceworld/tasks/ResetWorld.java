@@ -1,7 +1,7 @@
 package me.nik.resourceworld.tasks;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.managers.custom.ResourceWorldType;
+import me.nik.resourceworld.api.ResourceWorldType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ResetWorld extends BukkitRunnable {

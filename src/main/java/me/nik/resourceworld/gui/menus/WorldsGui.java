@@ -1,10 +1,10 @@
 package me.nik.resourceworld.gui.menus;
 
 import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.api.ResourceWorldType;
 import me.nik.resourceworld.gui.Menu;
 import me.nik.resourceworld.gui.PlayerMenuUtility;
 import me.nik.resourceworld.managers.MsgType;
-import me.nik.resourceworld.managers.custom.ResourceWorldType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

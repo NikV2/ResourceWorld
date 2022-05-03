@@ -1,6 +1,7 @@
 package me.nik.resourceworld.managers.custom;
 
 import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.api.ResourceWorldType;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.MiscUtils;

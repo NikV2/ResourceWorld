@@ -24,6 +24,7 @@ public class Config {
     };
 
     private final ResourceWorld plugin;
+    private static boolean exists;
     private CommentedFileConfiguration configuration;
 
     public Config(ResourceWorld plugin) {
@@ -32,7 +33,11 @@ public class Config {
 
     public void setup() {
         File configFile = new File(this.plugin.getDataFolder(), "config.yml");
-        boolean setHeaderFooter = !configFile.exists();
+
+        exists = configFile.exists();
+
+        boolean setHeaderFooter = !exists;
+
         boolean changed = setHeaderFooter;
 
         this.configuration = CommentedFileConfiguration.loadConfiguration(this.plugin, configFile);
@@ -92,7 +97,7 @@ public class Config {
         WORLD_RESETS_INTERVAL("world.automated_resets.interval", 8, "The Interval between Resource World Resets. (In Hours)"),
         WORLD_STORE_TIME("world.automated_resets.store_time_on_shutdown", true, "Do you wan't the plugin to store the remaining reset time once the server shuts down? and use the remaining time once it starts up again?"),
         WORLD_COMMANDS("world.commands_after_reset", "", "Execute specific commands after the world generates"),
-        WORLD_COMMANDS_ENABLED("world.commands_after_reset.enabled", false, "Should we enable this?"),
+        WORLD_COMMANDS_ENABLED("world.commands_after_reset.enabled", true, "Should we enable this?"),
         WORLD_COMMANDS_COMMANDS("world.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource World\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
         WORLD_DISABLED_COMMANDS("world.disabled_commands", "", "Disabled Commands Settings"),
         WORLD_DISABLED_COMMANDS_ENABLED("world.disabled_commands.enabled", false, "Should we enable this?"),
@@ -124,7 +129,7 @@ public class Config {
         NETHER_RESETS_INTERVAL("nether.automated_resets.interval", 4, "The Interval between Resource World Resets. (In Hours)"),
         NETHER_STORE_TIME("nether.automated_resets.store_time_on_shutdown", true, "Do you wan't the plugin to store the remaining reset time once the server shuts down? and use the remaining time once it starts up again?"),
         NETHER_COMMANDS("nether.commands_after_reset", "", "Execute specific commands after the world generates"),
-        NETHER_COMMANDS_ENABLED("nether.commands_after_reset.enabled", false, "Should we enable this?"),
+        NETHER_COMMANDS_ENABLED("nether.commands_after_reset.enabled", true, "Should we enable this?"),
         NETHER_COMMANDS_COMMANDS("nether.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource Nether\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
         NETHER_DISABLED_COMMANDS("nether.disabled_commands", "", "Disabled Commands Settings"),
         NETHER_DISABLED_COMMANDS_ENABLED("nether.disabled_commands.enabled", false, "Should we enable this?"),
@@ -155,35 +160,44 @@ public class Config {
         END_RESETS_INTERVAL("end.automated_resets.interval", 6, "The Interval between Resource World Resets. (In Hours)"),
         END_STORE_TIME("end.automated_resets.store_time_on_shutdown", true, "Do you wan't the plugin to store the remaining reset time once the server shuts down? and use the remaining time once it starts up again?"),
         END_COMMANDS("end.commands_after_reset", "", "Execute specific commands after the world generates"),
-        END_COMMANDS_ENABLED("end.commands_after_reset.enabled", false, "Should we enable this?"),
+        END_COMMANDS_ENABLED("end.commands_after_reset.enabled", true, "Should we enable this?"),
         END_COMMANDS_COMMANDS("end.commands_after_reset.commands", Arrays.asList("title @p title {\\\"text\\\":\\\"The Resource End\\\",\\\"color\\\":\\\"green\\\"}", "title @p subtitle {\\\"text\\\":\\\"Has been Reset!\\\",\\\"color\\\":\\\"green\\\"}"), "Commands listed below will be executed upon reset"),
         END_DISABLED_COMMANDS("end.disabled_commands", "", "Disabled Commands Settings"),
         END_DISABLED_COMMANDS_ENABLED("end.disabled_commands.enabled", false, "Should we enable this?"),
         END_DISABLED_COMMANDS_LIST("end.disabled_commands.commands", Arrays.asList("/sethome", "/claim", "/setwarp", "/tpahere"), "Commands listed below will be Disabled if they're executed inside this World"),
 
         TELEPORT("teleport_settings", "", "Teleport Settings"),
-        TELEPORT_PRICE("teleport_settings.price", 100, "The price needed for a player to Teleport to a Resource World (Requires Vault)"),
-        TELEPORT_COOLDOWN("teleport_settings.cooldown", 60, "Interval is in Seconds, So by default: 1 Minute"),
-        TELEPORT_DELAY("teleport_settings.delay", 3, "The delay between Teleportations"),
+        TELEPORT_PRICE("teleport_settings.price", 0, "The price needed for a player to Teleport to a Resource World (Requires Vault)"),
+        TELEPORT_COOLDOWN("teleport_settings.cooldown", 30, "The cooldown between teleportations"),
+        TELEPORT_DELAY("teleport_settings.delay", 3, "The delay between teleportations"),
         TELEPORT_WORLD_MAX_RANGE("teleport_settings.world_max_teleport_range", 800, "The maximum X, Z The player will be teleported in the Resource World", "DO NOT Set this value higher than your World Border"),
         TELEPORT_NETHER_MAX_RANGE("teleport_settings.nether_max_teleport_range", 800, "The maximum X, Z The player will be teleported in the Resource Nether", "DO NOT Set this value higher than your World Border"),
         TELEPORT_END_MAX_RANGE("teleport_settings.end_max_teleport_range", 800, "The maximum X, Z The player will be teleported in the Resource End", "DO NOT Set this value higher than your World Border"),
         TELEPORT_EFFECTS("teleport_settings.effects", "", "Effect Properties"),
+        TELEPORT_EFFECTS_ENABLED("teleport_settings.effects.enabled", true, "Would you like the player to get an effect after teleporting?"),
         TELEPORT_EFFECT("teleport_settings.effects.effect", "ABSORPTION", "Available Effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html"),
-        TELEPORT_EFFECT_DURATION("teleport_settings.effects.duration", 7, "The duration of the Effect"),
+        TELEPORT_EFFECT_DURATION("teleport_settings.effects.duration", 5, "The duration of the Effect"),
         TELEPORT_EFFECT_AMPLIFIER("teleport_settings.effects.amplifier", 2, "The amplifier of the Effect"),
         TELEPORT_SOUNDS("teleport_settings.sounds", "", "Sound Properties"),
-        TELEPORT_SOUND_ENABLED("teleport_settings.sounds.enabled", false, "Would you like it to play a sound after a player Teleports to the Resource Worlds?"),
-        TELEPORT_SOUND("teleport_settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT", "You should pick a sound that exists on your server's version API", "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
+        TELEPORT_SOUND_ENABLED("teleport_settings.sounds.enabled", true, "Would you like it to play a sound after a player teleports?"),
+        TELEPORT_SOUND("teleport_settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT", "You should pick a sound that exists on the Spigot API", "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
 
         private final String key;
         private final Object defaultValue;
+        private boolean excluded;
         private final String[] comments;
         private Object value = null;
 
         Setting(String key, Object defaultValue, String... comments) {
             this.key = key;
             this.defaultValue = defaultValue;
+            this.comments = comments != null ? comments : new String[0];
+        }
+
+        Setting(String key, Object defaultValue, boolean excluded, String... comments) {
+            this.key = key;
+            this.defaultValue = defaultValue;
+            this.excluded = excluded;
             this.comments = comments != null ? comments : new String[0];
         }
 
@@ -268,6 +282,8 @@ public class Config {
 
         private boolean setIfNotExists(CommentedFileConfiguration fileConfiguration) {
             this.loadValue();
+
+            if (exists && this.excluded) return false;
 
             if (fileConfiguration.get(this.key) == null) {
                 List<String> comments = Stream.of(this.comments).collect(Collectors.toList());

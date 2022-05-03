@@ -1,30 +1,30 @@
 package me.nik.resourceworld.utils;
 
+import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.files.Config;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 public class LocationFinder {
 
-    /**
-     * Checks for a safe location within that world
-     *
-     * @param world The world to find a random location from
-     * @return A random location
-     */
-    public Location generateLocation(World world) {
+    private static final Random random = new Random();
+
+    public void teleportSafely(Player player, World world) {
 
         final World.Environment environment = world.getEnvironment();
 
-        Location randomLocation = null;
-
-        int x;
-        int y = environment == World.Environment.NETHER ? 50 : 100;
-        int z;
+        int x, z;
+        final boolean nether;
 
         switch (environment) {
 
@@ -32,98 +32,119 @@ public class LocationFinder {
 
                 x = randomInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
                 z = randomInt(Config.Setting.TELEPORT_NETHER_MAX_RANGE.getInt());
+                nether = true;
 
-                boolean safe = false;
-
-                while (!safe) {
-
-                    randomLocation = new Location(world, x, y, z);
-
-                    if (!randomLocation.getBlock().isEmpty()) {
-
-                        randomLocation.setY(y + 1);
-
-                        safe = true;
-
-                    } else y--;
-                }
-
-                if (!isLocationSafe(randomLocation)) {
-
-                    randomLocation = generateLocation(world);
-                }
-
-                return randomLocation;
+                break;
 
             case THE_END:
 
                 x = randomInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
                 z = randomInt(Config.Setting.TELEPORT_END_MAX_RANGE.getInt());
+                nether = false;
 
-                randomLocation = new Location(world, x, y, z);
-
-                y = randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 1;
-
-                randomLocation.setY(y);
-
-                if (!randomLocation.getWorld().getBlockAt(x, y - 3, z).getType().isSolid()) {
-                    randomLocation = generateLocation(world);
-                }
-
-                return randomLocation;
+                break;
 
             default:
 
                 x = randomInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
                 z = randomInt(Config.Setting.TELEPORT_WORLD_MAX_RANGE.getInt());
+                nether = false;
 
-                randomLocation = new Location(world, x, y, z);
-
-                randomLocation.setY(randomLocation.getWorld().getHighestBlockYAt(randomLocation) + 1);
-
-                if (!isLocationSafe(randomLocation)) {
-                    randomLocation = generateLocation(world);
-                }
-
-                return randomLocation;
+                break;
         }
-    }
 
-    private boolean isLocationSafe(Location location) {
+        Location location = new Location(world, x, (world.getHighestBlockYAt(x, z) + 1), z);
 
-        final Block feet = location.getBlock();
+        //Load the chunk.
+        CompletableFuture<Chunk> chunk = PaperLib.getChunkAtAsync(location);
 
-        if (feet.getRelative(BlockFace.UP).getType().isSolid()) return false;
+        //Once it's grabbed, execute the following action.
+        chunk.thenRunAsync(() -> {
 
-        if (location.getWorld().getEnvironment() == World.Environment.NETHER) {
+            //Special things we need to account for the nether world.
+            if (nether) {
 
-            final double expand = .5D;
+                //Usually the best height.
+                location.setY(80);
 
-            Block under, center;
-
-            for (double x = -expand; x <= expand; x += expand) {
-
-                for (double z = -expand; z <= expand; z += expand) {
-
-                    under = location.clone().add(z, 0D, x).getBlock();
-
-                    center = location.clone().add(z, -.5D, x).getBlock();
-
-                    if (under.isLiquid() || center.isLiquid()) return false;
+                //Keep subtracting until we reach the ground.
+                while (world.getBlockAt(location).isEmpty()) {
+                    location.subtract(0, 1, 0);
                 }
+
+                //Add one to make sure the player teleports on top of the block.
+                location.add(0, 1, 0);
             }
 
-            return true;
+            //If the location is safe, proceed otherwise just look for another location.
+            if (isLocationSafe(location, world, environment)) {
+
+                //Finally teleport and apply effects on the main thread.
+                TaskUtils.task(() -> {
+
+                    PaperLib.teleportAsync(player, location);
+
+                    //Idiot proof
+                    try {
+
+                        if (Config.Setting.TELEPORT_EFFECTS_ENABLED.getBoolean()) {
+                            player.addPotionEffect(
+                                    new PotionEffect(
+                                            PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()),
+                                            Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20,
+                                            Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
+                        }
+
+                        if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
+                            player.playSound(player.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
+                        }
+
+                    } catch (IllegalArgumentException ignored) {
+                    }
+                });
+
+            } else teleportSafely(player, world); //Repeat
+        });
+    }
+
+    private boolean isLocationSafe(Location location, World world, World.Environment environment) {
+
+        int blockX = location.getBlockX();
+        int blockY = location.getBlockY();
+        int blockZ = location.getBlockZ();
+
+        final Block feet = world.getBlockAt(blockX, blockY, blockZ);
+
+        if (!feet.getRelative(BlockFace.UP).isEmpty()) return false;
+
+        switch (environment) {
+
+            case NETHER:
+
+                for (int x = (blockX - 1); x <= (blockX + 1); x++) {
+                    for (int y = (blockY - 1); y <= (blockY + 1); y++) {
+                        for (int z = (blockZ - 1); z <= (blockZ + 1); z++) {
+                            //Make sure no liquid (Lava) is nearby.
+                            if (world.getBlockAt(x, y, z).isLiquid()) return false;
+                        }
+                    }
+                }
+
+                return true;
+
+            case THE_END:
+                //Make sure the player is not floating
+                return !feet.getRelative(BlockFace.DOWN, 2).isEmpty();
         }
 
+        //Return false on liquid otherwise the player will only teleport in the sea.
         return !feet.getRelative(BlockFace.DOWN).isLiquid();
     }
 
-    private int randomInt(int random) {
-        Random r = new Random();
+    private int randomInt(int value) {
 
-        int min = -random;
+        int min = -value;
 
-        return r.nextInt((random - min) + 1) + min;
+        return random.nextInt((value - min) + 1) + min;
     }
 }

@@ -1,4 +1,4 @@
-package me.nik.resourceworld.managers.custom;
+package me.nik.resourceworld.api;
 
 public enum ResourceWorldType {
     RESOURCE_WORLD,

@@ -1,7 +1,7 @@
 package me.nik.resourceworld.managers;
 
 import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.ChatUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -32,10 +32,10 @@ public class UpdateChecker extends BukkitRunnable implements Listener {
         }
 
         if (!plugin.getDescription().getVersion().equals(newVersion)) {
-            Messenger.consoleMessage(MsgType.UPDATE_FOUND.getMessage().replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
+            ChatUtils.consoleMessage(MsgType.UPDATE_FOUND.getMessage().replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
         } else {
-            Messenger.consoleMessage(MsgType.UPDATE_NOT_FOUND.getMessage());
+            ChatUtils.consoleMessage(MsgType.UPDATE_NOT_FOUND.getMessage());
         }
     }
 

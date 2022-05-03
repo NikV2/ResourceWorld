@@ -1,5 +1,6 @@
 package me.nik.resourceworld;
 
+import me.nik.resourceworld.api.ResourceWorldType;
 import me.nik.resourceworld.commands.CommandManager;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.files.Data;
@@ -10,7 +11,6 @@ import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.managers.PapiHook;
 import me.nik.resourceworld.managers.UpdateChecker;
 import me.nik.resourceworld.managers.custom.CustomWorld;
-import me.nik.resourceworld.managers.custom.ResourceWorldType;
 import me.nik.resourceworld.metrics.MetricsLite;
 import me.nik.resourceworld.modules.ListenerModule;
 import me.nik.resourceworld.modules.impl.LeaveWorld;
@@ -26,7 +26,7 @@ import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
-import me.nik.resourceworld.utils.Messenger;
+import me.nik.resourceworld.utils.ChatUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
@@ -127,10 +127,11 @@ public final class ResourceWorld extends JavaPlugin {
         this.data.save();
 
         //Load Vault if found
-        if (getServer().getPluginManager().getPlugin("Vault") == null) return;
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return;
-        econ = rsp.getProvider();
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
+            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+            if (rsp == null) return;
+            econ = rsp.getProvider();
+        }
 
         getCommand("resource").setExecutor(new CommandManager(this));
 
@@ -238,16 +239,16 @@ public final class ResourceWorld extends JavaPlugin {
             long timer;
 
             if (!Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-                timer = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L;
+                timer = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
             } else if (this.data.get().getLong("world.timer") <= 0) {
-                timer = Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L;
+                timer = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
             } else {
                 timer = this.data.get().getLong("world.timer");
             }
 
-            long interval = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
-
-            new ResetWorld(this).runTaskTimer(this, timer, interval);
+            new ResetWorld(this).runTaskTimer(this,
+                    timer,
+                    Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L);
         }
 
         if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
@@ -262,9 +263,9 @@ public final class ResourceWorld extends JavaPlugin {
                 timer = this.data.get().getLong("nether.timer");
             }
 
-            long interval = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
-
-            new ResetNetherWorld(this).runTaskTimer(this, timer, interval);
+            new ResetNetherWorld(this).runTaskTimer(this,
+                    timer,
+                    Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L);
         }
 
         if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_RESETS_ENABLED.getBoolean()) {
@@ -279,9 +280,9 @@ public final class ResourceWorld extends JavaPlugin {
                 timer = this.data.get().getLong("end.timer");
             }
 
-            long interval = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
-
-            new ResetEndWorld(this).runTaskTimer(this, timer, interval);
+            new ResetEndWorld(this).runTaskTimer(this,
+                    timer,
+                    Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L);
         }
 
         if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) new AlwaysDay().runTaskTimer(this, 1200L, 1200L);
@@ -289,7 +290,7 @@ public final class ResourceWorld extends JavaPlugin {
         //Check for updates
         if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
             new UpdateChecker(this).runTaskAsynchronously(this);
-        } else Messenger.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
+        } else ChatUtils.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
 
         //PlaceholderAPI
         if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {

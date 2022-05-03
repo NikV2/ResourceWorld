@@ -1,6 +1,5 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
@@ -11,13 +10,9 @@ import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.custom.ExpiringMap;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +24,8 @@ public class Teleport extends SubCommand {
     Clear outdated cache automatically.
      */
     private final ExpiringMap<UUID, Long> cooldown = new ExpiringMap<>(600000);
+
+    private final LocationFinder locationFinder = new LocationFinder();
 
     @Override
     public String getName() {
@@ -100,6 +97,26 @@ public class Teleport extends SubCommand {
             return;
         }
 
+        UUID uuid = player.getUniqueId();
+
+        long currentTime = System.currentTimeMillis();
+
+        if (this.cooldown.containsKey(uuid)) {
+
+            long secondsleft = ((this.cooldown.get(uuid) / 1000L) + Config.Setting.TELEPORT_COOLDOWN.getLong()) - (currentTime / 1000L);
+
+            if (secondsleft <= 0L) {
+
+                this.cooldown.remove(uuid);
+
+            } else {
+
+                player.sendMessage(MsgType.COOLDOWN_MESSAGE.getMessage().replaceAll("%seconds%", String.valueOf(secondsleft)));
+
+                return;
+            }
+        }
+
         World world = null;
 
         switch (args.length) {
@@ -146,80 +163,42 @@ public class Teleport extends SubCommand {
 
         if (world == null) return;
 
-        final UUID uuid = player.getUniqueId();
+        boolean notBypassing = !player.hasPermission(Permissions.ADMIN.getPermission());
 
-        if (this.cooldown.containsKey(uuid)) {
+        //Handle vault
+        if (ResourceWorld.getEconomy() != null && Config.Setting.TELEPORT_PRICE.getDouble() > 0D && notBypassing) {
 
-            long secondsleft = ((this.cooldown.get(uuid) / 1000L) + Config.Setting.TELEPORT_COOLDOWN.getInt()) - (System.currentTimeMillis() / 1000L);
+            EconomyResponse res = ResourceWorld.getEconomy().withdrawPlayer(player, Config.Setting.TELEPORT_PRICE.getDouble());
 
-            if (secondsleft > 0) {
+            if (res.transactionSuccess()) {
 
-                player.sendMessage(MsgType.COOLDOWN_MESSAGE.getMessage().replaceAll("%seconds%", String.valueOf(secondsleft)));
+                player.sendMessage(MsgType.TELEPORT_PAID.getMessage().replace("%price%", ResourceWorld.getEconomy().format(res.amount)));
+
+            } else {
+
+                player.sendMessage(MsgType.TELEPORT_ERROR.getMessage());
 
                 return;
             }
-
-            this.cooldown.remove(uuid);
         }
 
-        if (!dealWithCash(player)) return;
+        //Add to cooldown
+        if (notBypassing && Config.Setting.TELEPORT_COOLDOWN.getLong() > 0L) {
 
-        if (!player.hasPermission("rw.admin")) cooldown.put(uuid, System.currentTimeMillis());
+            this.cooldown.put(player.getUniqueId(), System.currentTimeMillis());
+        }
 
-        if (Config.Setting.TELEPORT_DELAY.getInt() < 1) {
+        //Finally teleport
+        if (Config.Setting.TELEPORT_DELAY.getLong() <= 0L) {
 
-            teleport(player, new LocationFinder().generateLocation(world));
+            this.locationFinder.teleportSafely(player, world);
 
         } else {
 
-            player.sendMessage(MsgType.TELEPORT_DELAY.getMessage().replaceAll("%seconds%", String.valueOf(Config.Setting.TELEPORT_DELAY.getInt())));
+            player.sendMessage(MsgType.TELEPORT_DELAY.getMessage().replaceAll("%seconds%", String.valueOf(Config.Setting.TELEPORT_DELAY.getLong())));
 
             World finalWorld = world;
-            TaskUtils.taskLater(() -> teleport(player, new LocationFinder().generateLocation(finalWorld)), Config.Setting.TELEPORT_DELAY.getLong() * 20L);
-        }
-    }
-
-    private void teleport(Player player, Location location) {
-
-        if (!player.hasPermission("rw.admin")) cooldown.put(player.getUniqueId(), System.currentTimeMillis());
-
-        PaperLib.teleportAsync(player, location);
-
-        player.addPotionEffect(
-                new PotionEffect(
-                        PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()),
-                        Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20,
-                        Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()
-                )
-        );
-
-        if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
-
-            try {
-                player.playSound(player.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
-            } catch (IllegalArgumentException ignored) {
-            }
-        }
-    }
-
-    private boolean dealWithCash(Player player) {
-        if (player.hasPermission(Permissions.ADMIN.getPermission())
-                || ResourceWorld.getEconomy() == null
-                || Config.Setting.TELEPORT_PRICE.getDouble() < 1) return true;
-
-        EconomyResponse res = ResourceWorld.getEconomy().withdrawPlayer(player, Config.Setting.TELEPORT_PRICE.getDouble());
-
-        if (res.transactionSuccess()) {
-
-            player.sendMessage(MsgType.TELEPORT_PAID.getMessage().replace("%price%", ResourceWorld.getEconomy().format(res.amount)));
-
-            return true;
-
-        } else {
-
-            player.sendMessage(MsgType.TELEPORT_ERROR.getMessage());
-
-            return false;
+            TaskUtils.taskLater(() -> this.locationFinder.teleportSafely(player, finalWorld), Config.Setting.TELEPORT_DELAY.getLong() * 20L);
         }
     }
 

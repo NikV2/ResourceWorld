@@ -11,11 +11,11 @@ public final class TaskUtils {
         throw new ResourceWorldException("This is a static class dummy!");
     }
 
-    public static BukkitTask taskLater(Runnable runnable, long delay) {
-        return Bukkit.getScheduler().runTaskLater(ResourceWorld.getInstance(), runnable, delay);
+    public static BukkitTask task(Runnable runnable) {
+        return Bukkit.getScheduler().runTask(ResourceWorld.getInstance(), runnable);
     }
 
-    public static BukkitTask taskLaterAsync(Runnable runnable, long delay) {
-        return Bukkit.getScheduler().runTaskLaterAsynchronously(ResourceWorld.getInstance(), runnable, delay);
+    public static BukkitTask taskLater(Runnable runnable, long delay) {
+        return Bukkit.getScheduler().runTaskLater(ResourceWorld.getInstance(), runnable, delay);
     }
 }
