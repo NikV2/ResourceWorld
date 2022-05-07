@@ -1,6 +1,5 @@
 package me.nik.resourceworld.commands.subcommands;
 
-import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
@@ -8,17 +7,37 @@ import me.nik.resourceworld.managers.Permissions;
 import me.nik.resourceworld.utils.LocationFinder;
 import me.nik.resourceworld.utils.TaskUtils;
 import me.nik.resourceworld.utils.custom.ExpiringMap;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Teleport extends SubCommand {
+
+    private final Economy economy;
+
+    public Teleport() {
+
+        //Load Vault if found
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+
+            RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+
+            if (rsp != null) {
+                this.economy = rsp.getProvider();
+                return;
+            }
+        }
+
+        this.economy = null;
+    }
 
     /*
     Clear outdated cache automatically.
@@ -166,13 +185,13 @@ public class Teleport extends SubCommand {
         boolean notBypassing = !player.hasPermission(Permissions.ADMIN.getPermission());
 
         //Handle vault
-        if (ResourceWorld.getEconomy() != null && Config.Setting.TELEPORT_PRICE.getDouble() > 0D && notBypassing) {
+        if (this.economy != null && Config.Setting.TELEPORT_PRICE.getDouble() > 0D && notBypassing) {
 
-            EconomyResponse res = ResourceWorld.getEconomy().withdrawPlayer(player, Config.Setting.TELEPORT_PRICE.getDouble());
+            EconomyResponse res = this.economy.withdrawPlayer(player, Config.Setting.TELEPORT_PRICE.getDouble());
 
             if (res.transactionSuccess()) {
 
-                player.sendMessage(MsgType.TELEPORT_PAID.getMessage().replace("%price%", ResourceWorld.getEconomy().format(res.amount)));
+                player.sendMessage(MsgType.TELEPORT_PAID.getMessage().replace("%price%", this.economy.format(res.amount)));
 
             } else {
 

@@ -7,7 +7,6 @@ import me.nik.resourceworld.files.Data;
 import me.nik.resourceworld.files.Lang;
 import me.nik.resourceworld.files.commentedfiles.CommentedFileConfiguration;
 import me.nik.resourceworld.gui.GuiListener;
-import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.managers.PapiHook;
 import me.nik.resourceworld.managers.UpdateChecker;
 import me.nik.resourceworld.managers.custom.CustomWorld;
@@ -26,16 +25,13 @@ import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
 import me.nik.resourceworld.tasks.ResetWorld;
-import me.nik.resourceworld.utils.ChatUtils;
-import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -47,7 +43,6 @@ import java.util.Map;
 public final class ResourceWorld extends JavaPlugin {
 
     private static ResourceWorld plugin;
-    private static Economy econ = null;
 
     private final Config config = new Config(this);
     private final Data data = new Data();
@@ -77,13 +72,16 @@ public final class ResourceWorld extends JavaPlugin {
 
         //Store Time Left
         if (Config.Setting.WORLD_RESETS_ENABLED.getBoolean() && Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-            this.data.get().set("world.timer", Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L - (System.currentTimeMillis() - this.data.get().getLong("world.millis")) / 1000D * 20D);
+            this.data.get().set("world.timer", Config.Setting.WORLD_RESETS_INTERVAL.getInt() * 72000L
+                    - (System.currentTimeMillis() - this.data.get().getLong("world.millis")) / 1000D * 20D);
         }
         if (Config.Setting.NETHER_RESETS_ENABLED.getBoolean() && Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_STORE_TIME.getBoolean()) {
-            this.data.get().set("nether.timer", Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000L - (System.currentTimeMillis() - this.data.get().getLong("nether.millis")) / 1000D * 20D);
+            this.data.get().set("nether.timer", Config.Setting.NETHER_RESETS_INTERVAL.getInt() * 72000L
+                    - (System.currentTimeMillis() - this.data.get().getLong("nether.millis")) / 1000D * 20D);
         }
         if (Config.Setting.END_RESETS_ENABLED.getBoolean() && Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_STORE_TIME.getBoolean()) {
-            this.data.get().set("end.timer", Config.Setting.END_RESETS_INTERVAL.getInt() * 72000L - (System.currentTimeMillis() - this.data.get().getLong("end.millis")) / 1000D * 20D);
+            this.data.get().set("end.timer", Config.Setting.END_RESETS_INTERVAL.getInt() * 72000L
+                    - (System.currentTimeMillis() - this.data.get().getLong("end.millis")) / 1000D * 20D);
         }
 
         this.data.save();
@@ -96,10 +94,6 @@ public final class ResourceWorld extends JavaPlugin {
         HandlerList.unregisterAll(this);
         this.getServer().getScheduler().cancelTasks(this);
         plugin = null;
-    }
-
-    public static Economy getEconomy() {
-        return econ;
     }
 
     public Map<ResourceWorldType, CustomWorld> getResourceWorlds() {
@@ -126,16 +120,7 @@ public final class ResourceWorld extends JavaPlugin {
         this.data.get().options().copyDefaults(true);
         this.data.save();
 
-        //Load Vault if found
-        if (getServer().getPluginManager().getPlugin("Vault") != null) {
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-            if (rsp == null) return;
-            econ = rsp.getProvider();
-        }
-
         getCommand("resource").setExecutor(new CommandManager(this));
-
-        PluginManager pm = this.getServer().getPluginManager();
 
         //Load listener modules
         this.listenerModules.addAll(Arrays.asList(
@@ -154,7 +139,7 @@ public final class ResourceWorld extends JavaPlugin {
         this.listenerModules.forEach(ListenerModule::load);
 
         //Don't be an idiot Nik, Always register this Listener
-        pm.registerEvents(new GuiListener(), this);
+        Bukkit.getPluginManager().registerEvents(new GuiListener(), this);
 
         //Handle resource worlds
         this.resourceWorlds.clear();
@@ -290,7 +275,7 @@ public final class ResourceWorld extends JavaPlugin {
         //Check for updates
         if (Config.Setting.SETTINGS_CHECK_FOR_UPDATES.getBoolean()) {
             new UpdateChecker(this).runTaskAsynchronously(this);
-        } else ChatUtils.consoleMessage(MsgType.UPDATE_DISABLED.getMessage());
+        }
 
         //PlaceholderAPI
         if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {

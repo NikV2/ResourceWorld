@@ -62,6 +62,5 @@ public class Lang {
         get().addDefault("teleport_error", "&cYou do not have enough money to Teleport to the Resource World.");
         get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
         get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
-        get().addDefault("update_disabled", "&f&lUpdate Checker is Disabled, Skipping");
     }
 }

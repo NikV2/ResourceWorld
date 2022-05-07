@@ -2,6 +2,7 @@ package me.nik.resourceworld.managers;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.utils.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -24,32 +25,35 @@ public class UpdateChecker extends BukkitRunnable implements Listener {
 
     @Override
     public void run() {
+
         try {
-            newVersion = readLines();
+
+            URLConnection connection = new URL("https://raw.githubusercontent.com/NikV2/ResourceWorld/master/version.txt").openConnection();
+
+            connection.addRequestProperty("User-Agent", "Mozilla/4.0");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            final String line = reader.readLine();
+
+            reader.close();
+
+            this.newVersion = line;
+
         } catch (IOException e) {
             plugin.getLogger().warning("Couldn't check for updates, Is the server connected to the internet?");
             return;
         }
 
         if (!plugin.getDescription().getVersion().equals(newVersion)) {
-            ChatUtils.consoleMessage(MsgType.UPDATE_FOUND.getMessage().replaceAll("%current%", plugin.getDescription().getVersion()).replaceAll("%new%", newVersion));
-            plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        } else {
-            ChatUtils.consoleMessage(MsgType.UPDATE_NOT_FOUND.getMessage());
-        }
-    }
 
-    private String readLines() throws IOException {
-        URLConnection connection = new URL("https://raw.githubusercontent.com/NikV2/ResourceWorld/master/version.txt").openConnection();
-        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
+            ChatUtils.consoleMessage(MsgType.UPDATE_FOUND.getMessage()
+                    .replace("%current%", plugin.getDescription().getVersion())
+                    .replace("%new%", newVersion));
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            Bukkit.getPluginManager().registerEvents(this, plugin);
 
-        final String line = reader.readLine();
-
-        reader.close();
-
-        return line;
+        } else ChatUtils.consoleMessage(MsgType.UPDATE_NOT_FOUND.getMessage());
     }
 
     @EventHandler
