@@ -101,8 +101,6 @@ public class CustomWorld {
 
         Bukkit.unloadWorld(world, false);
 
-        Bukkit.getWorlds().remove(world);
-
         MiscUtils.deleteDirectory(world.getWorldFolder());
 
         switch (this.resourceWorldType) {
