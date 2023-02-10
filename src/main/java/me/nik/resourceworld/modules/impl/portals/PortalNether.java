@@ -24,7 +24,7 @@ public class PortalNether extends ListenerModule {
         if (Config.Setting.NETHER_PORTALS_ONLY_RESOURCE.getBoolean() && !e.getFrom().getWorld().getName().equals(Config.Setting.WORLD_NAME.getString()))
             return;
 
-        World world = Bukkit.getWorld(Config.Setting.END_NAME.getString());
+        World world = Bukkit.getWorld(Config.Setting.NETHER_NAME.getString());
 
         if (world == null) return;
 
