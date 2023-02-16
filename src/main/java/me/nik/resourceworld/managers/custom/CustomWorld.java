@@ -4,7 +4,9 @@ import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.ResourceWorldType;
 import me.nik.resourceworld.files.Config;
 import me.nik.resourceworld.managers.MsgType;
+import me.nik.resourceworld.utils.ChatUtils;
 import me.nik.resourceworld.utils.MiscUtils;
+import me.nik.resourceworld.utils.TaskUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
@@ -12,8 +14,13 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class CustomWorld {
+public class CustomWorld implements Listener {
 
     private final ResourceWorldType resourceWorldType;
     private final String name;
@@ -84,13 +91,15 @@ public class CustomWorld {
         return this;
     }
 
-    public boolean reset() {
+    public void reset() {
+
+        ChatUtils.consoleMessage("Executing world reset...");
+
+        //Phase 1
 
         World world = Bukkit.getWorld(this.name);
 
-        if (world == null) return false;
-
-        ResourceWorld plugin = ResourceWorld.getInstance();
+        if (world == null) return;
 
         Bukkit.getOnlinePlayers().stream().filter(player -> player.getWorld().getUID().equals(world.getUID())).forEach(player -> {
 
@@ -99,95 +108,127 @@ public class CustomWorld {
             player.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
         });
 
-        Bukkit.unloadWorld(world, false);
+        ResourceWorld plugin = ResourceWorld.getInstance();
 
-        MiscUtils.deleteDirectory(world.getWorldFolder());
+        Bukkit.getPluginManager().registerEvents(this, plugin);
 
-        switch (this.resourceWorldType) {
+        ChatUtils.consoleMessage("Phase 1 completed...");
 
-            case RESOURCE_END:
+        //Phase 2
+        TaskUtils.taskLater(() -> {
 
-                Bukkit.broadcastMessage(MsgType.RESETTING_THE_END.getMessage());
+            switch (this.resourceWorldType) {
 
-                if (Config.Setting.END_STORE_TIME.getBoolean()) {
-                    plugin.getData().set("end.millis", System.currentTimeMillis());
-                }
+                case RESOURCE_END:
 
-                break;
+                    Bukkit.broadcastMessage(MsgType.RESETTING_THE_END.getMessage());
 
-            case RESOURCE_WORLD:
-
-                Bukkit.broadcastMessage(MsgType.RESETTING_THE_WORLD.getMessage());
-
-                if (Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-                    plugin.getData().set("world.millis", System.currentTimeMillis());
-                }
-
-                break;
-
-            case RESOURCE_NETHER:
-
-                Bukkit.broadcastMessage(MsgType.RESETTING_THE_NETHER.getMessage());
-
-                if (Config.Setting.NETHER_STORE_TIME.getBoolean()) {
-                    plugin.getData().set("nether.millis", System.currentTimeMillis());
-                }
-
-                break;
-        }
-
-        generate();
-
-        switch (this.resourceWorldType) {
-
-            case RESOURCE_END:
-
-                if (Config.Setting.END_COMMANDS_ENABLED.getBoolean()) {
-
-                    for (String cmd : Config.Setting.END_COMMANDS_COMMANDS.getStringList()) {
-
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    if (Config.Setting.END_STORE_TIME.getBoolean()) {
+                        plugin.getData().set("end.millis", System.currentTimeMillis());
                     }
-                }
 
-                Bukkit.broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
+                    plugin.getData().set("end.papi", System.currentTimeMillis());
 
-                plugin.getData().set("end.papi", System.currentTimeMillis());
+                    break;
 
-                break;
+                case RESOURCE_WORLD:
 
-            case RESOURCE_WORLD:
-                if (Config.Setting.WORLD_COMMANDS_ENABLED.getBoolean()) {
-                    for (String cmd : Config.Setting.WORLD_COMMANDS_COMMANDS.getStringList()) {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    Bukkit.broadcastMessage(MsgType.RESETTING_THE_WORLD.getMessage());
+
+                    if (Config.Setting.WORLD_STORE_TIME.getBoolean()) {
+                        plugin.getData().set("world.millis", System.currentTimeMillis());
                     }
-                }
 
-                Bukkit.broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
+                    plugin.getData().set("world.papi", System.currentTimeMillis());
 
-                plugin.getData().set("world.papi", System.currentTimeMillis());
+                    break;
 
-                break;
-            case RESOURCE_NETHER:
+                case RESOURCE_NETHER:
 
-                if (Config.Setting.NETHER_COMMANDS_ENABLED.getBoolean()) {
+                    Bukkit.broadcastMessage(MsgType.RESETTING_THE_NETHER.getMessage());
 
-                    for (String cmd : Config.Setting.NETHER_COMMANDS_COMMANDS.getStringList()) {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    if (Config.Setting.NETHER_STORE_TIME.getBoolean()) {
+                        plugin.getData().set("nether.millis", System.currentTimeMillis());
                     }
-                }
 
-                Bukkit.broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
+                    plugin.getData().set("nether.papi", System.currentTimeMillis());
 
-                plugin.getData().set("nether.papi", System.currentTimeMillis());
+                    break;
+            }
 
-                break;
-        }
+            plugin.saveData();
+            plugin.reloadData();
+            plugin.saveData();
 
-        plugin.saveData();
-        plugin.reloadData();
-        plugin.saveData();
+            Bukkit.unloadWorld(world, false);
 
-        return true;
+            MiscUtils.deleteDirectory(world.getWorldFolder());
+
+            ChatUtils.consoleMessage("Phase 2 completed...");
+
+            //Phase 3
+            TaskUtils.taskLater(() -> {
+
+                generate();
+
+                ChatUtils.consoleMessage("Phase 3 completed...");
+
+                //Phase 4
+                TaskUtils.taskLater(() -> {
+
+                    switch (this.resourceWorldType) {
+
+                        case RESOURCE_END:
+
+                            if (Config.Setting.END_COMMANDS_ENABLED.getBoolean()) {
+
+                                for (String cmd : Config.Setting.END_COMMANDS_COMMANDS.getStringList()) {
+
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                                }
+                            }
+
+                            Bukkit.broadcastMessage(MsgType.END_HAS_BEEN_RESET.getMessage());
+
+                            break;
+
+                        case RESOURCE_WORLD:
+                            if (Config.Setting.WORLD_COMMANDS_ENABLED.getBoolean()) {
+                                for (String cmd : Config.Setting.WORLD_COMMANDS_COMMANDS.getStringList()) {
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                                }
+                            }
+
+                            Bukkit.broadcastMessage(MsgType.WORLD_HAS_BEEN_RESET.getMessage());
+
+                            break;
+                        case RESOURCE_NETHER:
+
+                            if (Config.Setting.NETHER_COMMANDS_ENABLED.getBoolean()) {
+
+                                for (String cmd : Config.Setting.NETHER_COMMANDS_COMMANDS.getStringList()) {
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                                }
+                            }
+
+                            Bukkit.broadcastMessage(MsgType.NETHER_HAS_BEEN_RESET.getMessage());
+
+                            break;
+                    }
+
+                    HandlerList.unregisterAll(this);
+
+                    ChatUtils.consoleMessage("All phases completed!");
+
+                }, 160L);
+
+            }, 80L);
+
+        }, 80L);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onWorldTeleport(PlayerTeleportEvent e) {
+        if (e.getTo().getWorld().getName().equals(this.name)) e.setCancelled(true);
     }
 }

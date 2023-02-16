@@ -30,19 +30,16 @@ public class WorldsGui extends Menu {
         Player p = (Player) e.getWhoClicked();
         switch (e.getSlot()) {
             case 13:
-                if (this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_WORLD).reset()) {
-                    p.closeInventory();
-                }
+                this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_WORLD).reset();
+                p.closeInventory();
                 break;
             case 11:
-                if (this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_NETHER).reset()) {
-                    p.closeInventory();
-                }
+                this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_NETHER).reset();
+                p.closeInventory();
                 break;
             case 15:
-                if (this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_END).reset()) {
-                    p.closeInventory();
-                }
+                this.plugin.getResourceWorld(ResourceWorldType.RESOURCE_END).reset();
+                p.closeInventory();
                 break;
             case 31:
                 p.closeInventory();
