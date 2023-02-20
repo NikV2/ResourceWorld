@@ -19,10 +19,10 @@ public abstract class Menu implements InventoryHolder {
 
     protected Inventory inventory;
 
-    protected PlayerMenuUtility playerMenuUtility;
+    protected PlayerMenu playerMenu;
 
-    public Menu(PlayerMenuUtility playerMenuUtility, ResourceWorld plugin) {
-        this.playerMenuUtility = playerMenuUtility;
+    public Menu(PlayerMenu playerMenu, ResourceWorld plugin) {
+        this.playerMenu = playerMenu;
         this.plugin = plugin;
     }
 
@@ -39,7 +39,7 @@ public abstract class Menu implements InventoryHolder {
 
         this.setMenuItems();
 
-        playerMenuUtility.getOwner().openInventory(inventory);
+        playerMenu.getOwner().openInventory(inventory);
     }
 
     protected ItemStack makeItem(Material material, int amount, String displayName, List<String> lore) {

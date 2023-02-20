@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 
 public class GuiListener implements Listener {
 
@@ -13,10 +14,9 @@ public class GuiListener implements Listener {
 
         InventoryHolder holder = e.getInventory().getHolder();
 
-        if (!(holder instanceof Menu)) return;
+        ItemStack item = e.getCurrentItem();
 
-        if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
+        if (!(holder instanceof Menu) || item == null || item.getType() == Material.AIR) return;
 
         e.setCancelled(true);
 

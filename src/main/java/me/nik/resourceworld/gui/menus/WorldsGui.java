@@ -3,7 +3,7 @@ package me.nik.resourceworld.gui.menus;
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.api.ResourceWorldType;
 import me.nik.resourceworld.gui.Menu;
-import me.nik.resourceworld.gui.PlayerMenuUtility;
+import me.nik.resourceworld.gui.PlayerMenu;
 import me.nik.resourceworld.managers.MsgType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,8 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class WorldsGui extends Menu {
-    public WorldsGui(PlayerMenuUtility playerMenuUtility, ResourceWorld plugin) {
-        super(playerMenuUtility, plugin);
+    public WorldsGui(PlayerMenu playerMenu, ResourceWorld plugin) {
+        super(playerMenu, plugin);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class WorldsGui extends Menu {
                 break;
             case 31:
                 p.closeInventory();
-                new MainGui(playerMenuUtility, plugin).open();
+                new MainGui(playerMenu, plugin).open();
                 break;
         }
     }

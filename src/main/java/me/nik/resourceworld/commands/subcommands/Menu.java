@@ -2,7 +2,7 @@ package me.nik.resourceworld.commands.subcommands;
 
 import me.nik.resourceworld.ResourceWorld;
 import me.nik.resourceworld.commands.SubCommand;
-import me.nik.resourceworld.gui.PlayerMenuUtility;
+import me.nik.resourceworld.gui.PlayerMenu;
 import me.nik.resourceworld.gui.menus.MainGui;
 import me.nik.resourceworld.managers.Permissions;
 import org.bukkit.command.CommandSender;
@@ -50,7 +50,7 @@ public class Menu extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        new MainGui(new PlayerMenuUtility((Player) sender), plugin).open();
+        new MainGui(new PlayerMenu((Player) sender), plugin).open();
     }
 
     @Override
