@@ -73,48 +73,13 @@ public class Teleport extends SubCommand {
 
     @Override
     public boolean canConsoleExecute() {
-        return true;
+        return false;
     }
 
     @Override
     public void perform(CommandSender sender, String[] args) {
 
-        final Player player;
-
-        if (sender instanceof Player) {
-
-            player = (Player) sender;
-
-        } else {
-
-            switch (args.length) {
-
-                case 2:
-
-                    player = Bukkit.getPlayer(args[1]);
-
-                    break;
-
-                case 3:
-
-                    player = Bukkit.getPlayer(args[2]);
-
-                    break;
-
-                default:
-
-                    player = null;
-
-                    break;
-            }
-        }
-
-        if (player == null) {
-
-            sender.sendMessage("Player not found.");
-
-            return;
-        }
+        Player player = (Player) sender;
 
         UUID uuid = player.getUniqueId();
 
