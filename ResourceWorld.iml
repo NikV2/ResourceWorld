@@ -23,7 +23,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: io.papermc:paperlib:1.0.8" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.20.3-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:32.1.2-jre" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
