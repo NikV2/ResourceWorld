@@ -22,9 +22,8 @@ public class Config {
             "|                                                                                              |",
             "+----------------------------------------------------------------------------------------------+"
     };
-
-    private final ResourceWorld plugin;
     private static boolean exists;
+    private final ResourceWorld plugin;
     private CommentedFileConfiguration configuration;
 
     public Config(ResourceWorld plugin) {
@@ -184,8 +183,8 @@ public class Config {
 
         private final String key;
         private final Object defaultValue;
-        private boolean excluded;
         private final String[] comments;
+        private boolean excluded;
         private Object value = null;
 
         Setting(String key, Object defaultValue, String... comments) {

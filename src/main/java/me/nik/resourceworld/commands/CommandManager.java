@@ -17,6 +17,11 @@ import java.util.List;
 
 public class CommandManager implements TabExecutor {
 
+    private static final String INFO_MESSAGE = MsgType.PREFIX.getMessage()
+            + ChatColor.GRAY + "You're running " + ChatColor.WHITE
+            + ResourceWorld.getInstance().getDescription().getName() + ChatColor.GRAY + " version "
+            + ChatColor.GREEN + "v" + ResourceWorld.getInstance().getDescription().getVersion()
+            + ChatColor.GRAY + " by" + ChatColor.WHITE + " Nik";
     private final List<SubCommand> subcommands = new ArrayList<>();
 
     public CommandManager(ResourceWorld plugin) {
@@ -25,12 +30,6 @@ public class CommandManager implements TabExecutor {
         subcommands.add(new Menu(plugin));
         subcommands.add(new Reset(plugin));
     }
-
-    private static final String INFO_MESSAGE = MsgType.PREFIX.getMessage()
-            + ChatColor.GRAY + "You're running " + ChatColor.WHITE
-            + ResourceWorld.getInstance().getDescription().getName() + ChatColor.GRAY + " version "
-            + ChatColor.GREEN + "v" + ResourceWorld.getInstance().getDescription().getVersion()
-            + ChatColor.GRAY + " by" + ChatColor.WHITE + " Nik";
 
     public List<SubCommand> getSubcommands() {
         return subcommands;

@@ -11,15 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 public class MiscUtils {
 
-    private MiscUtils() {
-        throw new ResourceWorldException("This is a static class dummy!");
-    }
-
     private static final boolean LEGACY = Bukkit.getVersion().contains("1.8")
             || Bukkit.getVersion().contains("1.9")
             || Bukkit.getVersion().contains("1.10")
             || Bukkit.getVersion().contains("1.11")
             || Bukkit.getVersion().contains("1.12");
+
+    private MiscUtils() {
+        throw new ResourceWorldException("This is a static class dummy!");
+    }
 
     public static void deleteDirectory(File directory) {
         if (directory.exists()) {

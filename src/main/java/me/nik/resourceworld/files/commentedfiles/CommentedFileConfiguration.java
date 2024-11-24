@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 
 public class CommentedFileConfiguration extends CommentedConfigurationSection {
 
-    private int comments;
     private final CommentedFileConfigurationHelper helper;
     private final File file;
+    private int comments;
 
     public CommentedFileConfiguration(Reader configStream, File configFile, int comments, JavaPlugin plugin) {
         super(YamlConfiguration.loadConfiguration(configStream));

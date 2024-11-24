@@ -12,15 +12,11 @@ import me.nik.resourceworld.managers.UpdateChecker;
 import me.nik.resourceworld.managers.custom.CustomWorld;
 import me.nik.resourceworld.metrics.MetricsLite;
 import me.nik.resourceworld.modules.ListenerModule;
+import me.nik.resourceworld.modules.impl.DisabledCommands;
 import me.nik.resourceworld.modules.impl.LeaveWorld;
-import me.nik.resourceworld.modules.impl.disabledcommands.CommandsEnd;
-import me.nik.resourceworld.modules.impl.disabledcommands.CommandsNether;
-import me.nik.resourceworld.modules.impl.disabledcommands.CommandsWorld;
+import me.nik.resourceworld.modules.impl.Suffocation;
 import me.nik.resourceworld.modules.impl.portals.PortalEnd;
 import me.nik.resourceworld.modules.impl.portals.PortalNether;
-import me.nik.resourceworld.modules.impl.suffocation.Suffocation;
-import me.nik.resourceworld.modules.impl.suffocation.SuffocationEnd;
-import me.nik.resourceworld.modules.impl.suffocation.SuffocationNether;
 import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
@@ -47,11 +43,6 @@ public final class ResourceWorld extends JavaPlugin {
     private final Config config = new Config(this);
     private final Data data = new Data();
     private final Lang lang = new Lang();
-
-    public static ResourceWorld getInstance() {
-        return plugin;
-    }
-
     private final String[] STARTUP_MESSAGE = {
             " ",
             ChatColor.GREEN + "Resource World v" + this.getDescription().getVersion(),
@@ -59,10 +50,12 @@ public final class ResourceWorld extends JavaPlugin {
             ChatColor.WHITE + "     Author: Nik",
             " "
     };
-
     private final Map<ResourceWorldType, CustomWorld> resourceWorlds = new HashMap<>();
-
     private final List<ListenerModule> listenerModules = new ArrayList<>();
+
+    public static ResourceWorld getInstance() {
+        return plugin;
+    }
 
     @Override
     public void onDisable() {
@@ -126,13 +119,9 @@ public final class ResourceWorld extends JavaPlugin {
         this.listenerModules.addAll(Arrays.asList(
                 new LeaveWorld(this),
                 new Suffocation(this),
-                new SuffocationEnd(this),
-                new SuffocationNether(this),
                 new PortalEnd(this),
                 new PortalNether(this),
-                new CommandsEnd(this),
-                new CommandsNether(this),
-                new CommandsWorld(this)
+                new DisabledCommands(this)
         ));
 
         //Initialize them

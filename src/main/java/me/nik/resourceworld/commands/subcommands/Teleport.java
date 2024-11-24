@@ -22,6 +22,11 @@ import java.util.UUID;
 public class Teleport extends SubCommand {
 
     private final Economy economy;
+    /*
+    Clear outdated cache automatically.
+     */
+    private final ExpiringMap<UUID, Long> cooldown = new ExpiringMap<>(600000);
+    private final LocationFinder locationFinder = new LocationFinder();
 
     public Teleport() {
 
@@ -38,13 +43,6 @@ public class Teleport extends SubCommand {
 
         this.economy = null;
     }
-
-    /*
-    Clear outdated cache automatically.
-     */
-    private final ExpiringMap<UUID, Long> cooldown = new ExpiringMap<>(600000);
-
-    private final LocationFinder locationFinder = new LocationFinder();
 
     @Override
     public String getName() {

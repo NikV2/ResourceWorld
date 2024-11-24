@@ -2,14 +2,14 @@ name: ResourceWorld
 version: ${project.version}
 main: me.nik.resourceworld.ResourceWorld
 api-version: 1.13
-authors: [Nik]
+authors: [ Nik ]
 description: ${project.description}
 website: https://discord.gg/m7j2Y9H
 softdepend: [ PlaceholderAPI, Vault ]
 commands:
   resource:
     description: Unlimited resources!
-    aliases: [resourceworld, rw]
+    aliases: [ resourceworld, rw ]
 permissions:
   rw.tp:
     description: Randomly Teleport To The Resource World!
