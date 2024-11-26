@@ -25,7 +25,10 @@ public enum MsgType {
     TELEPORT_PAID(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleport_paid"))),
     TELEPORT_ERROR(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleport_error"))),
     TELEPORTED_PLAYERS(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleported_players"))),
-    UPDATE_NOT_FOUND(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("update_not_found")));
+    UPDATE_NOT_FOUND(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("update_not_found"))),
+	PLAYER_DONT_EXIST(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("player_dont_exist"))),
+	TELEPORTING_OTHER(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleporting_other"))),
+	TELEPORTED_BY_ADMIN(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleported_by_admin")));
 
     private final String message;
 
