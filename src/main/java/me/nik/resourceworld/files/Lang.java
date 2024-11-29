@@ -82,8 +82,9 @@ public class Lang {
 		get().addDefault("teleported_players", "&aTeleported all the players back to spawn!");
 		get().addDefault("update_not_found", "&f&lYou're running the Latest Version &c&l<3");
 		get().addDefault("player_dont_exist", "The player %player% is not online or doesn't exist.");
-		get().addDefault("teleporting_other", "&aTeleporting %player% in the resource world.");
-		get().addDefault("teleported_by_admin", "&aYou are teleported in the resource world by an admin.");
+		get().addDefault("teleporting_other", "&aTeleporting %player% in the Resource World.");
+		get().addDefault("teleported_by_admin", "&aYou are teleported in the Resource World by an admin.");
+		get().addDefault("finding_location", "&eFinding a safe location before teleporting you to the Resource World...");
 
 	}
 }
