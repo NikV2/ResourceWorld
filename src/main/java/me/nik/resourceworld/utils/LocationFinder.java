@@ -2,12 +2,15 @@ package me.nik.resourceworld.utils;
 
 import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.files.Config;
+import me.nik.resourceworld.managers.MsgType;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,6 +23,8 @@ public class LocationFinder {
     private static final Random random = new Random();
 
     public void teleportSafely(Player player, World world) {
+    	
+    	sendColoredText(player, MsgType.FINDING_LOCATION.getMessage());
 
         final World.Environment environment = world.getEnvironment();
 
@@ -147,4 +152,8 @@ public class LocationFinder {
 
         return random.nextInt((value - min) + 1) + min;
     }
+    
+	private void sendColoredText(CommandSender sender, String message) {
+		sender.sendMessage(ChatUtils.format(message));
+	}
 }
