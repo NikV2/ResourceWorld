@@ -14,9 +14,8 @@ import me.nik.resourceworld.metrics.MetricsLite;
 import me.nik.resourceworld.modules.ListenerModule;
 import me.nik.resourceworld.modules.impl.DisabledCommands;
 import me.nik.resourceworld.modules.impl.LeaveWorld;
+import me.nik.resourceworld.modules.impl.Portals;
 import me.nik.resourceworld.modules.impl.Suffocation;
-import me.nik.resourceworld.modules.impl.portals.PortalEnd;
-import me.nik.resourceworld.modules.impl.portals.PortalNether;
 import me.nik.resourceworld.tasks.AlwaysDay;
 import me.nik.resourceworld.tasks.ResetEndWorld;
 import me.nik.resourceworld.tasks.ResetNetherWorld;
@@ -119,8 +118,7 @@ public final class ResourceWorld extends JavaPlugin {
         this.listenerModules.addAll(Arrays.asList(
                 new LeaveWorld(this),
                 new Suffocation(this),
-                new PortalEnd(this),
-                new PortalNether(this),
+                new Portals(this),
                 new DisabledCommands(this)
         ));
 
