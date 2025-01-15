@@ -1,123 +1,123 @@
 package me.nik.resourceworld.commands;
 
-import me.nik.resourceworld.ResourceWorld;
-import me.nik.resourceworld.commands.subcommands.Menu;
-import me.nik.resourceworld.commands.subcommands.Reload;
-import me.nik.resourceworld.commands.subcommands.Reset;
-import me.nik.resourceworld.commands.subcommands.Teleport;
-import me.nik.resourceworld.managers.MsgType;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 
-import java.util.ArrayList;
-import java.util.List;
+import me.nik.resourceworld.ResourceWorld;
+import me.nik.resourceworld.commands.subcommands.Menu;
+import me.nik.resourceworld.commands.subcommands.Reload;
+import me.nik.resourceworld.commands.subcommands.Reset;
+import me.nik.resourceworld.commands.subcommands.Teleport;
+import me.nik.resourceworld.commands.subcommands.TpPlayer;
+import me.nik.resourceworld.managers.MsgType;
 
 public class CommandManager implements TabExecutor {
 
-    private static final String INFO_MESSAGE = MsgType.PREFIX.getMessage()
-            + ChatColor.GRAY + "You're running " + ChatColor.WHITE
-            + ResourceWorld.getInstance().getDescription().getName() + ChatColor.GRAY + " version "
-            + ChatColor.GREEN + "v" + ResourceWorld.getInstance().getDescription().getVersion()
-            + ChatColor.GRAY + " by" + ChatColor.WHITE + " Nik";
-    private final List<SubCommand> subcommands = new ArrayList<>();
+	private static final String INFO_MESSAGE = MsgType.PREFIX.getMessage() + ChatColor.GRAY + "You're running "
+			+ ChatColor.WHITE + ResourceWorld.getInstance().getDescription().getName() + ChatColor.GRAY + " version "
+			+ ChatColor.GREEN + "v" + ResourceWorld.getInstance().getDescription().getVersion() + ChatColor.GRAY + " by"
+			+ ChatColor.WHITE + " Nik";
+	private final static List<SubCommand> subcommands = new ArrayList<>();
 
-    public CommandManager(ResourceWorld plugin) {
-        subcommands.add(new Teleport());
-        subcommands.add(new Reload(plugin));
-        subcommands.add(new Menu(plugin));
-        subcommands.add(new Reset(plugin));
-    }
+	public CommandManager(ResourceWorld plugin) {
+		subcommands.add(new Teleport());
+		subcommands.add(new Reload(plugin));
+		subcommands.add(new Menu(plugin));
+		subcommands.add(new Reset(plugin));
+		subcommands.add(new TpPlayer());
+	}
 
-    public List<SubCommand> getSubcommands() {
-        return subcommands;
-    }
+	public List<SubCommand> getSubcommands() {
+		return subcommands;
+	}
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) {
-            ArrayList<String> subcommandsArgs = new ArrayList<>();
-            for (int i = 0; i < getSubcommands().size(); i++) {
-                subcommandsArgs.add(getSubcommands().get(i).getName());
-            }
-            return subcommandsArgs;
-        } else if (args.length == 2) {
-            for (int i = 0; i < getSubcommands().size(); i++) {
-                if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
-                    return getSubcommands().get(i).getSubcommandArguments(sender, args);
-                }
-            }
-        }
-        return null;
-    }
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args.length == 1) {
+			ArrayList<String> subcommandsArgs = new ArrayList<>();
+			for (int i = 0; i < getSubcommands().size(); i++) {
+				subcommandsArgs.add(getSubcommands().get(i).getName());
+			}
+			return subcommandsArgs;
+		} else if (args.length == 2) {
+			for (int i = 0; i < getSubcommands().size(); i++) {
+				if (args[0].equalsIgnoreCase(getSubcommands().get(i).getName())) {
+					return getSubcommands().get(i).getSubcommandArguments(sender, args);
+				}
+			}
+		}
+		return null;
+	}
 
-    private void helpMessage(CommandSender sender) {
-        sender.sendMessage("");
-        sender.sendMessage(MsgType.PREFIX.getMessage() + ChatColor.GRAY + "Available Commands");
-        sender.sendMessage("");
-        this.subcommands.stream().filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
-                .forEach(subCommand -> sender.sendMessage(ChatColor.GREEN
-                        + subCommand.getSyntax()
-                        + ChatColor.DARK_GRAY + " - "
-                        + ChatColor.GRAY + subCommand.getDescription()));
-        sender.sendMessage("");
-    }
+	public static void helpMessage(CommandSender sender) {
+		sender.sendMessage("");
+		sender.sendMessage(MsgType.PREFIX.getMessage() + ChatColor.GRAY + "Available Commands");
+		sender.sendMessage("");
+		subcommands.stream().filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
+				.forEach(subCommand -> sender.sendMessage(ChatColor.GREEN + subCommand.getSyntax() + ChatColor.DARK_GRAY
+						+ " - " + ChatColor.GRAY + subCommand.getDescription()));
+		sender.sendMessage("");
+	}
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length > 0) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (args.length > 0) {
 
-            for (int i = 0; i < getSubcommands().size(); i++) {
+			for (int i = 0; i < getSubcommands().size(); i++) {
 
-                final SubCommand subCommand = getSubcommands().get(i);
+				final SubCommand subCommand = getSubcommands().get(i);
 
-                if (args[0].equalsIgnoreCase(subCommand.getName())) {
+				if (args[0].equalsIgnoreCase(subCommand.getName())) {
 
-                    if (!subCommand.canConsoleExecute() && sender instanceof ConsoleCommandSender) {
+					if (!subCommand.canConsoleExecute() && sender instanceof ConsoleCommandSender) {
 
-                        sender.sendMessage(MsgType.CONSOLE_MESSAGE.getMessage());
+						sender.sendMessage(MsgType.CONSOLE_MESSAGE.getMessage());
 
-                        return true;
-                    }
+						return true;
+					}
 
-                    if (!sender.hasPermission(subCommand.getPermission())) {
+					if (!sender.hasPermission(subCommand.getPermission())) {
 
-                        sender.sendMessage(MsgType.NO_PERMISSION.getMessage());
+						sender.sendMessage(MsgType.NO_PERMISSION.getMessage());
 
-                        return true;
-                    }
+						return true;
+					}
 
-                    if (args.length < subCommand.maxArguments()) {
+					if (args.length < subCommand.maxArguments()) {
 
-                        helpMessage(sender);
+						helpMessage(sender);
 
-                        return true;
-                    }
+						return true;
+					}
 
-                    subCommand.perform(sender, args);
+					subCommand.perform(sender, args);
 
-                    return true;
-                }
+					return true;
+				}
 
-                if (args[0].equalsIgnoreCase("help")) {
+				if (args[0].equalsIgnoreCase("help")) {
 
-                    helpMessage(sender);
+					helpMessage(sender);
 
-                    return true;
-                }
-            }
+					return true;
+				}
+			}
 
-        } else {
+		} else {
 
-            sender.sendMessage(INFO_MESSAGE);
+			sender.sendMessage(INFO_MESSAGE);
 
-            return true;
-        }
+			return true;
+		}
 
-        helpMessage(sender);
+		helpMessage(sender);
 
-        return true;
-    }
+		return true;
+	}
 }
