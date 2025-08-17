@@ -22,7 +22,9 @@ public class DisabledCommands extends ListenerModule {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
-
+        
+        if(e.isCancelled()) return;
+        
         Player player = e.getPlayer();
 
         if (player.hasPermission(Permissions.ADMIN.getPermission()) || e.getMessage().equals("/")) return;
