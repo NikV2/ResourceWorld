@@ -20,10 +20,8 @@ public class DisabledCommands extends ListenerModule {
                 || Config.Setting.END_DISABLED_COMMANDS_ENABLED.getBoolean()), plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)
     public void disableWorldCommands(PlayerCommandPreprocessEvent e) {
-        
-        if(e.isCancelled()) return;
         
         Player player = e.getPlayer();
 
