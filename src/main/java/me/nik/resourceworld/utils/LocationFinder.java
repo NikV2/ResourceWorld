@@ -1,6 +1,5 @@
 package me.nik.resourceworld.utils;
 
-import io.papermc.lib.PaperLib;
 import me.nik.resourceworld.files.Config;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -56,7 +55,7 @@ public class LocationFinder {
         Location location = new Location(world, x, (world.getHighestBlockYAt(x, z) + 1), z);
 
         //Load the chunk.
-        CompletableFuture<Chunk> chunk = PaperLib.getChunkAtAsync(location);
+        CompletableFuture<Chunk> chunk = world.getChunkAtAsync(location);
 
         //Once it's grabbed, execute the following action.
         chunk.thenRunAsync(() -> {
@@ -82,7 +81,7 @@ public class LocationFinder {
                 //Finally teleport and apply effects on the main thread.
                 TaskUtils.task(() -> {
 
-                    PaperLib.teleportAsync(player, location);
+                    player.teleportAsync(location);
 
                     //Idiot proof
                     try {
