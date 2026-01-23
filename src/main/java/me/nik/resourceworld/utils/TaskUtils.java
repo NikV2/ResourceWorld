@@ -18,4 +18,8 @@ public final class TaskUtils {
     public static BukkitTask taskLater(Runnable runnable, long delay) {
         return Bukkit.getScheduler().runTaskLater(ResourceWorld.getInstance(), runnable, delay);
     }
+
+    public static BukkitTask taskAsync(Runnable runnable) {
+        return Bukkit.getScheduler().runTaskAsynchronously(ResourceWorld.getInstance(), runnable);
+    }
 }

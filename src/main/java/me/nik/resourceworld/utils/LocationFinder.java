@@ -17,6 +17,17 @@ import java.util.concurrent.CompletableFuture;
 public class LocationFinder {
 
     private static final Random random = new Random();
+    private static final boolean PAPER_API;
+
+    static {
+        boolean paper = false;
+        try {
+            Class.forName("io.papermc.paper.util.Tick");
+            paper = true;
+        } catch (ClassNotFoundException ignored) {
+        }
+        PAPER_API = paper;
+    }
 
     public void teleportSafely(Player player, World world) {
 
@@ -54,56 +65,71 @@ public class LocationFinder {
 
         Location location = new Location(world, x, (world.getHighestBlockYAt(x, z) + 1), z);
 
-        //Load the chunk.
-        CompletableFuture<Chunk> chunk = world.getChunkAtAsync(location);
+        if (PAPER_API) {
+            //Load the chunk asynchronously (Paper only).
+            CompletableFuture<Chunk> chunk = world.getChunkAtAsync(location);
 
-        //Once it's grabbed, execute the following action.
-        chunk.thenRunAsync(() -> {
+            //Once it's grabbed, execute the following action.
+            chunk.thenRunAsync(() -> {
+                processLocationAndTeleport(player, world, location, nether, environment);
+            });
+        } else {
+            //Spigot fallback: load chunk synchronously on async thread.
+            TaskUtils.taskAsync(() -> {
+                world.getChunkAt(location);
+                processLocationAndTeleport(player, world, location, nether, environment);
+            });
+        }
+    }
 
-            //Special things we need to account for the nether world.
-            if (nether) {
+    private void processLocationAndTeleport(Player player, World world, Location location, boolean nether, World.Environment environment) {
+        //Special things we need to account for the nether world.
+        if (nether) {
 
-                //Usually the best height.
-                location.setY(80);
+            //Usually the best height.
+            location.setY(80);
 
-                //Keep subtracting until we reach the ground.
-                while (world.getBlockAt(location).isEmpty()) {
-                    location.subtract(0, 1, 0);
-                }
-
-                //Add one to make sure the player teleports on top of the block.
-                location.add(0, 1, 0);
+            //Keep subtracting until we reach the ground.
+            while (world.getBlockAt(location).isEmpty()) {
+                location.subtract(0, 1, 0);
             }
 
-            //If the location is safe, proceed otherwise just look for another location.
-            if (isLocationSafe(location, world, environment)) {
+            //Add one to make sure the player teleports on top of the block.
+            location.add(0, 1, 0);
+        }
 
-                //Finally teleport and apply effects on the main thread.
-                TaskUtils.task(() -> {
+        //If the location is safe, proceed otherwise just look for another location.
+        if (isLocationSafe(location, world, environment)) {
 
+            //Finally teleport and apply effects on the main thread.
+            TaskUtils.task(() -> {
+
+                if (PAPER_API) {
                     player.teleportAsync(location);
+                } else {
+                    player.teleport(location);
+                }
 
-                    //Idiot proof
-                    try {
+                //Idiot proof
+                try {
 
-                        if (Config.Setting.TELEPORT_EFFECTS_ENABLED.getBoolean()) {
-                            player.addPotionEffect(
-                                    new PotionEffect(
-                                            PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()),
-                                            Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20,
-                                            Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
-                        }
-
-                        if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
-                            player.playSound(player.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
-                        }
-
-                    } catch (IllegalArgumentException ignored) {
+                    if (Config.Setting.TELEPORT_EFFECTS_ENABLED.getBoolean()) {
+                        player.addPotionEffect(
+                                new PotionEffect(
+                                        PotionEffectType.getByName(Config.Setting.TELEPORT_EFFECT.getString()),
+                                        Config.Setting.TELEPORT_EFFECT_DURATION.getInt() * 20,
+                                        Config.Setting.TELEPORT_EFFECT_AMPLIFIER.getInt()));
                     }
-                });
 
-            } else teleportSafely(player, world); //Repeat
-        });
+                    if (Config.Setting.TELEPORT_SOUND_ENABLED.getBoolean()) {
+                        player.playSound(player.getLocation(), Sound.valueOf(Config.Setting.TELEPORT_SOUND.getString()), 2, 2);
+                    }
+
+                } catch (IllegalArgumentException ignored) {
+                }
+            });
+
+        } else teleportSafely(player, world); //Repeat
     }
 
     private boolean isLocationSafe(Location location, World world, World.Environment environment) {
