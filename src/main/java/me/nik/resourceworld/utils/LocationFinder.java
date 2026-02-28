@@ -70,9 +70,7 @@ public class LocationFinder {
             CompletableFuture<Chunk> chunk = world.getChunkAtAsync(location);
 
             //Once it's grabbed, execute the following action.
-            chunk.thenRunAsync(() -> {
-                processLocationAndTeleport(player, world, location, nether, environment);
-            });
+            chunk.thenRunAsync(() -> processLocationAndTeleport(player, world, location, nether, environment));
         } else {
             //Spigot fallback: load chunk synchronously on async thread.
             TaskUtils.taskAsync(() -> {
@@ -82,6 +80,7 @@ public class LocationFinder {
         }
     }
 
+    @SuppressWarnings("all")
     private void processLocationAndTeleport(Player player, World world, Location location, boolean nether, World.Environment environment) {
         //Special things we need to account for the nether world.
         if (nether) {
@@ -101,12 +100,14 @@ public class LocationFinder {
         //If the location is safe, proceed otherwise just look for another location.
         if (isLocationSafe(location, world, environment)) {
 
+            if (PAPER_API) {
+                player.teleportAsync(location);
+            }
+
             //Finally teleport and apply effects on the main thread.
             TaskUtils.task(() -> {
 
-                if (PAPER_API) {
-                    player.teleportAsync(location);
-                } else {
+                if (!PAPER_API) {
                     player.teleport(location);
                 }
 
