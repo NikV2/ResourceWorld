@@ -206,56 +206,65 @@ public final class ResourceWorld extends JavaPlugin {
 
         //Initialize tasks
 
-        if (Config.Setting.WORLD_ENABLED.getBoolean() && Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
+        if (Config.Setting.WORLD_ENABLED.getBoolean()) {
 
-            long timer;
+            if (Config.Setting.WORLD_RESETS_ENABLED.getBoolean()) {
 
-            if (!Config.Setting.WORLD_STORE_TIME.getBoolean()) {
-                timer = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
-            } else if (this.data.get().getLong("world.timer") <= 0) {
-                timer = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
-            } else {
-                timer = this.data.get().getLong("world.timer");
-            }
+                long timer;
 
-            new ResetWorld(this).runTaskTimer(this,
-                    timer,
-                    Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L);
-        } else new ResetWorld(this).run(); //Reset on startup
+                if (!Config.Setting.WORLD_STORE_TIME.getBoolean()) {
+                    timer = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
+                } else if (this.data.get().getLong("world.timer") <= 0) {
+                    timer = Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L;
+                } else {
+                    timer = this.data.get().getLong("world.timer");
+                }
 
-        if (Config.Setting.NETHER_ENABLED.getBoolean() && Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
+                new ResetWorld(this).runTaskTimer(this,
+                        timer,
+                        Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L);
+            } else new ResetWorld(this).runTaskLater(plugin, 60L); //Reset on startup
+        }
 
-            long timer;
+        if (Config.Setting.NETHER_ENABLED.getBoolean()) {
 
-            if (!Config.Setting.NETHER_STORE_TIME.getBoolean()) {
-                timer = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
-            } else if (this.data.get().getLong("nether.timer") <= 0) {
-                timer = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
-            } else {
-                timer = this.data.get().getLong("nether.timer");
-            }
+            if (Config.Setting.NETHER_RESETS_ENABLED.getBoolean()) {
 
-            new ResetNetherWorld(this).runTaskTimer(this,
-                    timer,
-                    Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L);
-        } else new ResetNetherWorld(this).run(); //Reset on startup
+                long timer;
 
-        if (Config.Setting.END_ENABLED.getBoolean() && Config.Setting.END_RESETS_ENABLED.getBoolean()) {
+                if (!Config.Setting.NETHER_STORE_TIME.getBoolean()) {
+                    timer = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
+                } else if (this.data.get().getLong("nether.timer") <= 0) {
+                    timer = Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L;
+                } else {
+                    timer = this.data.get().getLong("nether.timer");
+                }
 
-            long timer;
+                new ResetNetherWorld(this).runTaskTimer(this,
+                        timer,
+                        Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L);
+            } else new ResetNetherWorld(this).run(); //Reset on startup
+        }
 
-            if (!Config.Setting.END_STORE_TIME.getBoolean()) {
-                timer = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
-            } else if (this.data.get().getLong("end.timer") <= 0) {
-                timer = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
-            } else {
-                timer = this.data.get().getLong("end.timer");
-            }
+        if (Config.Setting.END_ENABLED.getBoolean()) {
 
-            new ResetEndWorld(this).runTaskTimer(this,
-                    timer,
-                    Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L);
-        } else new ResetEndWorld(this).run(); //Reset on startup
+            if (Config.Setting.END_RESETS_ENABLED.getBoolean()) {
+
+                long timer;
+
+                if (!Config.Setting.END_STORE_TIME.getBoolean()) {
+                    timer = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
+                } else if (this.data.get().getLong("end.timer") <= 0) {
+                    timer = Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L;
+                } else {
+                    timer = this.data.get().getLong("end.timer");
+                }
+
+                new ResetEndWorld(this).runTaskTimer(this,
+                        timer,
+                        Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L);
+            } else new ResetEndWorld(this).run(); //Reset on startup
+        }
 
         if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) new AlwaysDay().runTaskTimer(this, 1200L, 1200L);
 
