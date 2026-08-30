@@ -104,12 +104,25 @@ public class CustomWorld implements Listener {
 
         if (world == null) return;
 
-        Location spawnLocation = null;
-        String dataSpawn = ResourceWorld.getInstance().getData().getString("spawn_location");
+        Location spawnLocation = Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
 
-        if (dataSpawn != null && !dataSpawn.isEmpty()) {
-            spawnLocation = MiscUtils.stringToLocation(dataSpawn);
-        } else Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
+        switch (this.resourceWorldType) {
+            case RESOURCE_WORLD:
+                if (Config.Setting.WORLD_RESET_ON_STARTUP.getBoolean()) {
+                    spawnLocation = MiscUtils.stringToLocation(ResourceWorld.getInstance().getData().getString("spawn_location"));
+                }
+                break;
+            case RESOURCE_NETHER:
+                if (Config.Setting.NETHER_RESET_ON_STARTUP.getBoolean()) {
+                    spawnLocation = MiscUtils.stringToLocation(ResourceWorld.getInstance().getData().getString("spawn_location"));
+                }
+                break;
+            case RESOURCE_END:
+                if (Config.Setting.END_RESET_ON_STARTUP.getBoolean()) {
+                    spawnLocation = MiscUtils.stringToLocation(ResourceWorld.getInstance().getData().getString("spawn_location"));
+                }
+                break;
+        }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
 
