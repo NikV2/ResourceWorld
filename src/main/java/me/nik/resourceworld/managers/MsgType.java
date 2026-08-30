@@ -18,6 +18,7 @@ public enum MsgType {
     COOLDOWN_MESSAGE(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("cooldown_message"))),
     RELOADED(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("reloaded"))),
     TELEPORT_DELAY(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleport_delay"))),
+    SPAWN_SET(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("spawn_set"))),
     GUI_NAME(ChatUtils.format(ResourceWorld.getInstance().getLang().getString("gui_name"))),
     WORLDS_GUI_NAME(ChatUtils.format(ResourceWorld.getInstance().getLang().getString("worlds_gui_name"))),
     TELEPORTED_MESSAGE(PREFIX.getMessage() + ChatUtils.format(ResourceWorld.getInstance().getLang().getString("teleported_message"))),

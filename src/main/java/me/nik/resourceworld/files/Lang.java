@@ -43,6 +43,7 @@ public class Lang {
         get().addDefault("update_found", "&aThere is an Update available, Your version &f%current%&a new version &f%new%");
         get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
         get().addDefault("resetting_the_world", "&fCleaning up the Resource World, This may cause Lag!");
+        get().addDefault("spawn_set", "&fSpawnpoint has been set!");
         get().addDefault("resetting_the_nether", "&fCleaning up the Nether World, This may cause Lag!");
         get().addDefault("resetting_the_end", "&fCleaning up the End World, This may cause Lag!");
         get().addDefault("world_has_been_reset", "&fThe Resource World has been Reset!");

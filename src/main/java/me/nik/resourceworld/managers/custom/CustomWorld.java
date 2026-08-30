@@ -10,16 +10,19 @@ import me.nik.resourceworld.utils.TaskUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+@SuppressWarnings("all")
 public class CustomWorld implements Listener {
 
     private final ResourceWorldType resourceWorldType;
@@ -101,12 +104,21 @@ public class CustomWorld implements Listener {
 
         if (world == null) return;
 
-        Bukkit.getOnlinePlayers().stream().filter(player -> player.getWorld().getUID().equals(world.getUID())).forEach(player -> {
+        Location spawnLocation = null;
+        String dataSpawn = ResourceWorld.getInstance().getData().getString("spawn_location");
 
-            player.teleport(Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation());
+        if (dataSpawn != null && !dataSpawn.isEmpty()) {
+            spawnLocation = MiscUtils.stringToLocation(dataSpawn);
+        } else Bukkit.getWorld(Config.Setting.SETTINGS_SPAWN_WORLD.getString()).getSpawnLocation();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            if (!player.getWorld().getUID().equals(world.getUID())) continue;
+
+            player.teleport(spawnLocation);
 
             player.sendMessage(MsgType.TELEPORTED_MESSAGE.getMessage());
-        });
+        }
 
         ResourceWorld plugin = ResourceWorld.getInstance();
 
