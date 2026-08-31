@@ -223,7 +223,11 @@ public final class ResourceWorld extends JavaPlugin {
                 new ResetWorld(this).runTaskTimer(this,
                         timer,
                         Config.Setting.WORLD_RESETS_INTERVAL.getLong() * 72000L);
-            } else new ResetWorld(this).runTaskLater(plugin, 60L); //Reset on startup
+            } else {
+                if (Config.Setting.WORLD_RESET_ON_STARTUP.getBoolean()) {
+                    new ResetWorld(this).runTaskLater(this, 120L); //Reset on startup
+                }
+            }
         }
 
         if (Config.Setting.NETHER_ENABLED.getBoolean()) {
@@ -243,7 +247,11 @@ public final class ResourceWorld extends JavaPlugin {
                 new ResetNetherWorld(this).runTaskTimer(this,
                         timer,
                         Config.Setting.NETHER_RESETS_INTERVAL.getLong() * 72000L);
-            } else new ResetNetherWorld(this).run(); //Reset on startup
+            } else {
+                if (Config.Setting.NETHER_RESET_ON_STARTUP.getBoolean()) {
+                    new ResetNetherWorld(this).runTaskLater(this, 120L); //Reset on startup
+                }
+            }
         }
 
         if (Config.Setting.END_ENABLED.getBoolean()) {
@@ -263,7 +271,11 @@ public final class ResourceWorld extends JavaPlugin {
                 new ResetEndWorld(this).runTaskTimer(this,
                         timer,
                         Config.Setting.END_RESETS_INTERVAL.getLong() * 72000L);
-            } else new ResetEndWorld(this).run(); //Reset on startup
+            } else {
+                if (Config.Setting.END_RESET_ON_STARTUP.getBoolean()) {
+                    new ResetEndWorld(this).runTaskLater(this, 120L); //Reset on startup
+                }
+            }
         }
 
         if (Config.Setting.WORLD_ALWAYS_DAY.getBoolean()) new AlwaysDay().runTaskTimer(this, 1200L, 1200L);
