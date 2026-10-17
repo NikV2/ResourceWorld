@@ -41,7 +41,7 @@ public class UpdateChecker extends BukkitRunnable implements Listener {
             reader.close();
 
         } catch (IOException e) {
-            ChatUtils.consoleMessage("Couldn't check for updates, Is the server connected to the internet?");
+            ChatUtils.log("Couldn't check for updates, Is the server connected to the internet?");
             return;
         }
 

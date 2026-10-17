@@ -96,7 +96,7 @@ public class CustomWorld implements Listener {
 
     public void reset() {
 
-        ChatUtils.consoleMessage("Executing world reset...");
+        ChatUtils.log("Executing world reset...");
 
         //Phase 1
 
@@ -137,7 +137,7 @@ public class CustomWorld implements Listener {
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
-        ChatUtils.consoleMessage("Phase 1 completed...");
+        ChatUtils.log("Phase 1 completed...");
 
         //Phase 2
         TaskUtils.taskLater(() -> {
@@ -189,14 +189,14 @@ public class CustomWorld implements Listener {
 
             MiscUtils.deleteDirectory(world.getWorldFolder());
 
-            ChatUtils.consoleMessage("Phase 2 completed...");
+            ChatUtils.log("Phase 2 completed...");
 
             //Phase 3
             TaskUtils.taskLater(() -> {
 
                 generate();
 
-                ChatUtils.consoleMessage("Phase 3 completed...");
+                ChatUtils.log("Phase 3 completed...");
 
                 //Phase 4
                 TaskUtils.taskLater(() -> {
@@ -243,7 +243,7 @@ public class CustomWorld implements Listener {
 
                     HandlerList.unregisterAll(this);
 
-                    ChatUtils.consoleMessage("All phases completed!");
+                    ChatUtils.log("All phases completed!");
 
                 }, 160L);
 

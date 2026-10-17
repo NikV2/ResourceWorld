@@ -39,7 +39,7 @@ public class Lang {
 
     public void addDefaults() {
         get().options().header("+----------------------------------------------------------------------------------------------+" + "\n" + "|                                                                                              |" + "\n" + "|                                         Resource World                                       |" + "\n" + "|                                                                                              |" + "\n" + "|                               Discord: https://discord.gg/m7j2Y9H                            |" + "\n" + "|                                                                                              |" + "\n" + "|                                           Author: Nik                                        |" + "\n" + "|                                                                                              |" + "\n" + "+----------------------------------------------------------------------------------------------+" + "\n");
-        get().addDefault("prefix", "&a&l[&2Resource World&a&l]&f&l: ");
+        get().addDefault("prefix", "&#11998E&lR&#14A08D&le&#18A78B&ls&#1BAF8A&lo&#1EB688&lu&#21BD87&lr&#25C486&lc&#28CB84&le&#2BD283&lW&#2EDA81&lo&#32E180&lr&#35E87E&ll&#38EF7D&ld &f&l»&r ");
         get().addDefault("update_found", "&aThere is an Update available, Your version &f%current%&a new version &f%new%");
         get().addDefault("disabled_command", "&cSorry, You can't use that Command in this World!");
         get().addDefault("resetting_the_world", "&fCleaning up the Resource World, This may cause Lag!");

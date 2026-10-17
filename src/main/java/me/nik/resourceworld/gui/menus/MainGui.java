@@ -50,12 +50,6 @@ public class MainGui extends Menu {
 
                 p.sendMessage(MsgType.TELEPORTED_PLAYERS.getMessage());
                 break;
-            case 15:
-                p.closeInventory();
-                plugin.onDisable();
-                plugin.onEnable();
-                p.sendMessage(MsgType.RELOADED.getMessage());
-                break;
             case 30:
                 p.closeInventory();
                 p.sendMessage(ChatColor.BLUE + ">> " + ChatColor.WHITE + "https://github.com/NikV2/ResourceWorld/issues/new/choose" + ChatColor.BLUE + " <<");
@@ -80,13 +74,6 @@ public class MainGui extends Menu {
         teleportLore.add("&7Back to spawn.");
         ItemStack teleport = makeItem(Material.ENDER_PEARL, 1, "&aTeleport All", teleportLore);
 
-        ArrayList<String> reloadLore = new ArrayList<>();
-        reloadLore.add(" ");
-        reloadLore.add("&7WARNING!");
-        reloadLore.add(" ");
-        reloadLore.add("&7Reloading may cause issues.");
-        ItemStack reload = makeItem(Material.REDSTONE, 1, "&aReload", reloadLore);
-
         ItemStack support = makeItem(Material.DIAMOND, 1, "&aLooking for Support?", null);
         ItemStack exit = makeItem(Material.BARRIER, 1, "&cExit", null);
 
@@ -97,7 +84,6 @@ public class MainGui extends Menu {
         ItemStack reset = makeItem(Material.EMERALD, 1, "&aReset", resetLore);
 
         inventory.setItem(13, teleport);
-        inventory.setItem(15, reload);
         inventory.setItem(30, support);
         inventory.setItem(32, reset);
         inventory.setItem(49, exit);
