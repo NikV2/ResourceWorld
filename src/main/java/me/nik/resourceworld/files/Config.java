@@ -83,6 +83,11 @@ public class Config {
         WORLD_CUSTOM_SEED("world.custom_seed", "", "Seed Properties"),
         WORLD_SEED_ENABLED("world.custom_seed.enabled", false, "Should we use a custom seed?"),
         WORLD_SEED("world.custom_seed.seed", -686298914, "The seed to use"),
+        WORLD_USE_LAZY_INIT("world.use_lazy_init", false, "Allow for the Resource World Plugin to load even if there is already a world with the same named that exists."),
+        WORLD_DATAPACK("world.datapack", "resource_world", "The Resource World Data Pack"),
+        WORLD_DATAPACK_USE_BIOMES("world.use_biomes_from_datapack", false, "Whether to add biomes from a given Datapack."),
+        WORLD_DATAPACK_DATAPACK_NAME("world.datapack.datapack_name", "Terralith_26.1_v2.6.2", "The name of the biome providing datapack in the datapacks folder. i.e. \"Terralith_26.1_v2.6.2\""),
+        WORLD_DATAPACK_DIMENSION_NAME("world.datapack.dimension_name", "resource_world", "The name of the dimension definition within the given Datapack."),
         WORLD_BORDER("world.world_border", "", "World Border Properties"),
         WORLD_BORDER_ENABLED("world.world_border.enabled", true, "Should we enable this?"),
         WORLD_BORDER_SIZE("world.world_border.size", 4500, "The border size (Note that if you set the World Border for example to 2000, It will be 1000 in one side and 1000 in the opposite one)"),
@@ -183,6 +188,7 @@ public class Config {
         TELEPORT_SOUNDS("teleport_settings.sounds", "", "Sound Properties"),
         TELEPORT_SOUND_ENABLED("teleport_settings.sounds.enabled", true, "Would you like it to play a sound after a player teleports?"),
         TELEPORT_SOUND("teleport_settings.sounds.sound", "ENTITY_ENDERMAN_TELEPORT", "You should pick a sound that exists on the Spigot API", "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
+
 
         private final String key;
         private final Object defaultValue;
