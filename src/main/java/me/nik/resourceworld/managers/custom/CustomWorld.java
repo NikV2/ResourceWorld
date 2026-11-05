@@ -7,14 +7,8 @@ import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.ChatUtils;
 import me.nik.resourceworld.utils.MiscUtils;
 import me.nik.resourceworld.utils.TaskUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.GameRule;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.WorldBorder;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
+import net.kyori.adventure.key.Key;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -59,7 +53,18 @@ public class CustomWorld implements Listener {
 
     public CustomWorld generate() {
 
-        WorldCreator wc = new WorldCreator(this.name);
+        boolean lazyInit = Config.Setting.WORLD_USE_LAZY_INIT.getBoolean();
+        NamespacedKey worldKey = new NamespacedKey("minecraft", this.name);
+
+        // Check if the world is already loaded in memory
+        World rw = lazyInit ? Bukkit.getWorld(worldKey) : Bukkit.getWorld(this.name);
+
+        if (rw != null) {
+            ChatUtils.log("A world already exists with this name, skipping generation...");
+            return this;
+        }
+
+        WorldCreator wc = lazyInit ? new WorldCreator(worldKey) : new WorldCreator(this.name);
 
         wc.type(this.type);
 
@@ -69,27 +74,56 @@ public class CustomWorld implements Listener {
 
         if (this.useSeed) wc.seed(this.seed);
 
-        wc.createWorld();
-
-        World rw = Bukkit.getWorld(this.name);
-
-        if (this.useBorder) {
-
-            WorldBorder wb = rw.getWorldBorder();
-
-            wb.setCenter(0, 0);
-
-            wb.setSize(this.borderSize);
-
+        // Grab config defined biome providing datapack and demision name.
+        try {
+            String datapack = Config.Setting.WORLD_DATAPACK_DATAPACK_NAME.getString();
+            String dimensionDef = Config.Setting.WORLD_DATAPACK_DIMENSION_NAME.getString();
+            if (datapack.isEmpty() || dimensionDef.isEmpty()) {
+                ChatUtils.log("Invalid config for datapack or dimension, check config.");
+            } else {
+                // Inject custom datapack biome provider
+                wc.biomeProvider(new DatapackBiomeProvider(datapack, dimensionDef));
+            }
+        } catch (Exception e) {
+            ChatUtils.log("Error while trying to configure biome provider: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        rw.setPVP(this.pvp);
 
-        rw.setDifficulty(this.difficulty);
+        // Try to create the world
+        try {
+            rw = wc.createWorld();
+        } catch (Exception e) {
+            ChatUtils.log("Error while trying to create world: " + e.getMessage());
+            e.printStackTrace();
+        }
 
-        Bukkit.getWorlds().add(rw);
+        // Apply configurations to the resource world
+        if (rw != null) {
 
-        if (!MiscUtils.isLegacy() && this.keepInventory) rw.setGameRule(GameRule.KEEP_INVENTORY, true);
+            if (this.useBorder) {
+
+                WorldBorder wb = rw.getWorldBorder();
+
+                wb.setCenter(0, 0);
+
+                wb.setSize(this.borderSize);
+            }
+
+            rw.setPVP(this.pvp);
+
+            rw.setDifficulty(this.difficulty);
+
+            if (!Bukkit.getWorlds().contains(rw)) {
+                Bukkit.getWorlds().add(rw);
+            }
+
+            if (!MiscUtils.isLegacy() && this.keepInventory) {
+                rw.setGameRule(GameRule.KEEP_INVENTORY, true);
+            }
+        } else {
+            ChatUtils.log("Error while initializing world instance for " + this.name);
+        }
 
         return this;
     }
@@ -100,7 +134,10 @@ public class CustomWorld implements Listener {
 
         //Phase 1
 
-        World world = Bukkit.getWorld(this.name);
+        boolean lazyInit = Config.Setting.WORLD_USE_LAZY_INIT.getBoolean();
+
+        // make sure we are grabbing the world key if we are lazy init
+        World world = lazyInit ? Bukkit.getWorld(new NamespacedKey("minecraft", this.name)) : Bukkit.getWorld(this.name);
 
         if (world == null) return;
 
