@@ -1,13 +1,14 @@
 package me.nik.resourceworld.utils.datapack;
 
 
-import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Getter
 public class DimensionWorldGenerator {
-    private BiomeSource biomeSource;
+    private final BiomeSource biomeSource;
+
+    public DimensionWorldGenerator(BiomeSource biomeSource) {
+        this.biomeSource = biomeSource;
+    }
+
+    public BiomeSource getBiomeSource() {
+        return biomeSource;
+    }
 }

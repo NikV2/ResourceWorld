@@ -1,12 +1,5 @@
 package me.nik.resourceworld.utils.datapack;
 
-import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
-import org.bukkit.generator.BiomeParameterPoint;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Data Class for storing dimension definitions in Minecraft datapacks.
  * Intended to be parsed by GSON. Field names must match the field
@@ -16,10 +9,21 @@ import java.util.List;
  * </p>
  * Not all fields need to be listed, and extra ones can be defined if convenient.
  */
-@Getter
 public class DimensionDefinition {
 
-    private String type;
-    private DimensionWorldGenerator generator;
+    private final String type;
+    private final DimensionWorldGenerator generator;
 
+    public DimensionDefinition(String type, DimensionWorldGenerator generator) {
+        this.type = type;
+        this.generator = generator;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public DimensionWorldGenerator getGenerator() {
+        return generator;
+    }
 }

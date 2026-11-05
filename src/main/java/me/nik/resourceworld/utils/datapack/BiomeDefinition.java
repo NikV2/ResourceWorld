@@ -1,9 +1,19 @@
 package me.nik.resourceworld.utils.datapack;
 
-import lombok.Getter;
-
-@Getter
 public class BiomeDefinition {
-    private String biome;
-    private BiomeParameterPointDefinition parameters;
+    private final String biome;
+    private final BiomeParameterPointDefinition parameters;
+
+    public BiomeDefinition(String biome, BiomeParameterPointDefinition parameters) {
+        this.biome = biome;
+        this.parameters = parameters;
+    }
+
+    public String getBiome() {
+        return biome;
+    }
+
+    public BiomeParameterPointDefinition getParameters() {
+        return parameters;
+    }
 }
