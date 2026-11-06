@@ -7,7 +7,7 @@ import me.nik.resourceworld.managers.MsgType;
 import me.nik.resourceworld.utils.ChatUtils;
 import me.nik.resourceworld.utils.MiscUtils;
 import me.nik.resourceworld.utils.TaskUtils;
-import net.kyori.adventure.key.Key;
+import me.nik.resourceworld.utils.TarGzUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +15,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @SuppressWarnings("all")
 public class CustomWorld implements Listener {
@@ -56,39 +59,57 @@ public class CustomWorld implements Listener {
         boolean lazyInit = Config.Setting.WORLD_USE_LAZY_INIT.getBoolean();
         NamespacedKey worldKey = new NamespacedKey("minecraft", this.name);
 
+        // Unpackage zipped world file before init rw
+        boolean unpackFirst = Config.Setting.WORLD_UNPACK_FIRST.getBoolean();
+        if (unpackFirst) {
+            ChatUtils.log("Unpacking First Enabled...");
+            // look up if there is a zipped world to use
+            Path packagedPath = ResourceWorld.getInstance().getDataPath()
+                    .resolve("packaged")
+                    .resolve(this.name + ".tar.gz");
+
+            // if so, unpack it
+            if (packagedPath.toFile().exists()) {
+                try {
+                    // create the destination
+                    Path destinationPath = Bukkit.getWorldContainer().toPath()
+                            .resolve("world")
+                            .resolve("dimensions")
+                            .resolve("minecraft")
+                            .toAbsolutePath()
+                            .normalize();
+
+                    // Ensure parent directories exist before unpacking
+                    if (!Files.exists(destinationPath.getParent())) {
+                        Files.createDirectories(destinationPath.getParent());
+                    }
+
+                    // unpack using zip util
+                    TarGzUtil.unzip(packagedPath, destinationPath);
+
+                    ChatUtils.log("Unzipped Packaged World at=" + destinationPath.toString());
+                } catch (Exception e) {
+                    ChatUtils.log("An error occurred while unzipping packaged world.");
+                    e.printStackTrace();
+                }
+            } else {
+                ChatUtils.log("Failed to find packaged world path=" + packagedPath.toString());
+            }
+            // if not, fallback to normal generation
+        }
+
+        WorldCreator wc = lazyInit ? new WorldCreator(worldKey) : new WorldCreator(this.name);
+
+        // configure world creator
+        setupCreation(wc, unpackFirst);
+
         // Check if the world is already loaded in memory
         World rw = lazyInit ? Bukkit.getWorld(worldKey) : Bukkit.getWorld(this.name);
 
         if (rw != null) {
             ChatUtils.log("A world already exists with this name, skipping generation...");
-            return this;
+            return configureWorld(rw);
         }
-
-        WorldCreator wc = lazyInit ? new WorldCreator(worldKey) : new WorldCreator(this.name);
-
-        wc.type(this.type);
-
-        wc.generateStructures(this.structures);
-
-        wc.environment(this.environment);
-
-        if (this.useSeed) wc.seed(this.seed);
-
-        // Grab config defined biome providing datapack and demision name.
-        try {
-            String datapack = Config.Setting.WORLD_DATAPACK_DATAPACK_NAME.getString();
-            String dimensionDef = Config.Setting.WORLD_DATAPACK_DIMENSION_NAME.getString();
-            if (datapack.isEmpty() || dimensionDef.isEmpty()) {
-                ChatUtils.log("Invalid config for datapack or dimension, check config.");
-            } else {
-                // Inject custom datapack biome provider
-                wc.biomeProvider(new DatapackBiomeProvider(datapack, dimensionDef));
-            }
-        } catch (Exception e) {
-            ChatUtils.log("Error while trying to configure biome provider: " + e.getMessage());
-            e.printStackTrace();
-        }
-
 
         // Try to create the world
         try {
@@ -99,8 +120,44 @@ public class CustomWorld implements Listener {
         }
 
         // Apply configurations to the resource world
-        if (rw != null) {
+        return configureWorld(rw);
+    }
 
+    private void setupCreation(WorldCreator wc, boolean unpackFirst) {
+
+        wc.type(this.type);
+
+        wc.generateStructures(this.structures);
+
+        wc.environment(this.environment);
+
+        if (this.useSeed) wc.seed(this.seed);
+
+        if(unpackFirst) {
+            // skip generating world if prepacked
+            ChatUtils.log("Placing packaged world...");
+            return;
+        }
+        // Grab config defined biome providing datapack and demision name.
+        try {
+            String datapack = Config.Setting.WORLD_DATAPACK_DATAPACK_NAME.getString();
+            String dimensionDef = Config.Setting.WORLD_DATAPACK_DIMENSION_NAME.getString();
+            if (datapack.isEmpty() || dimensionDef.isEmpty()) {
+                ChatUtils.log("Invalid config for datapack or dimension, check config.");
+            } else {
+                // Inject custom datapack biome provider
+                wc.biomeProvider(new DatapackBiomeProvider(datapack, dimensionDef));
+                ChatUtils.log("Datapack Biomes added...");
+            }
+        } catch (Exception e) {
+            ChatUtils.log("Error while trying to configure biome provider: " + e.getMessage());
+            e.printStackTrace();
+        }
+        ChatUtils.log("World Creator Settings Applied...");
+    }
+
+    private CustomWorld configureWorld(World rw) {
+        if (rw != null) {
             if (this.useBorder) {
 
                 WorldBorder wb = rw.getWorldBorder();
@@ -124,7 +181,7 @@ public class CustomWorld implements Listener {
         } else {
             ChatUtils.log("Error while initializing world instance for " + this.name);
         }
-
+        ChatUtils.log("World Config Applied...");
         return this;
     }
 
