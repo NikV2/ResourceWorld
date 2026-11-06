@@ -83,6 +83,7 @@ public class Config {
         WORLD_CUSTOM_SEED("world.custom_seed", "", "Seed Properties"),
         WORLD_SEED_ENABLED("world.custom_seed.enabled", false, "Should we use a custom seed?"),
         WORLD_SEED("world.custom_seed.seed", -686298914, "The seed to use"),
+        WORLD_UNPACK_FIRST("world.unpack_first", false, "Whether to unpack a zipped world within the plugin data folder before trying to create a map. Assuming the zip has the same name as resource world."),
         WORLD_USE_LAZY_INIT("world.use_lazy_init", false, "Allow for the Resource World Plugin to load even if there is already a world with the same named that exists."),
         WORLD_DATAPACK("world.datapack", "resource_world", "The Resource World Data Pack"),
         WORLD_DATAPACK_USE_BIOMES("world.use_biomes_from_datapack", false, "Whether to add biomes from a given Datapack."),
